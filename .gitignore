@@ -59,6 +59,7 @@ db.sqlite3
 # Flask stuff:
 instance/
 .webassets-cache
+.vscode/
 
 # Scrapy stuff:
 .scrapy
@@ -84,8 +85,10 @@ celerybeat-schedule
 # Environments
 .env
 .venv
+.store
 env/
 venv/
+store/
 ENV/
 env.bak/
 venv.bak/
