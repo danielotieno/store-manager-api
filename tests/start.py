@@ -31,7 +31,7 @@ class BaseClass(unittest.TestCase):
             role="Store Attendant")
 
         self.test_user = User(
-            username='danny',
+            username='dannyke',
             email='danny@mail.com',
             password='password2',
             role="Store Attendant")

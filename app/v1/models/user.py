@@ -39,7 +39,7 @@ class User(Start):
 
     def __init__(self, username, password, email, role):
         """ A constructor method for creating a user """
-        self.id = uuid.uuid1()
+        self.id = None
         self.username = username
         self.password = generate_password_hash(password)
         self.email = email
@@ -51,6 +51,13 @@ class User(Start):
         if check_password_hash(self.password, password):
             return True
         return False
+
+    def save(self):
+        """ Method for saving user registration details """
+        setattr(self, 'id', DB.user_count + 1)
+        DB.users.update({self.id: self})
+        DB.user_count += 1
+        return self.view()
 
     @classmethod
     def get_user_by_username(cls, username):
