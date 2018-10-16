@@ -61,6 +61,7 @@ db.sqlite3
 instance/
 .webassets-cache
 .vscode/
+.vscode
 
 # Scrapy stuff:
 .scrapy
