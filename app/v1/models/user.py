@@ -35,3 +35,10 @@ class User:
         self.email = email
         self.password = password
         self.role = "Store Attendant"
+
+    def get_user_by_email(self, email):
+        """ A method to get user by email """
+        for user in user_list:
+            if user.email == email:
+                return user
+        return "User does not exist"
