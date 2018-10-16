@@ -1,3 +1,5 @@
+sudo: false
+
 language: python
 
 python:
@@ -19,4 +21,4 @@ after_script:
   - if [[ "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_PYTHON_VERSION" == "3.6-dev" ]]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi
 
 after_success:
-  - coveralls
+  - codecov
