@@ -13,5 +13,9 @@ def create_app(config_name):
     app.config.from_object(app_config[config_name])
     app.url_map.strict_slashes = False
 
+    from app.v1.views.users_view import Signup, Login
+
+    api.add_resource(Signup, '/api/v1/user/signup')
+    api.add_resource(Login, '/api/v1/user/login')
 
     return app
