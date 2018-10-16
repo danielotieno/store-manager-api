@@ -1,6 +1,11 @@
 from flask import Flask
 from flask_restful import Resource, reqparse
+from flask_jwt_extended import (
+    jwt_required, create_access_token,
+    get_jwt_identity
+)
 import re
+import datetime
 
 from app.v1.models.user import User
 from utlis.required import required
@@ -16,18 +21,18 @@ class Signup(Resource):
                         help='Username cannot be blank', type=str)
     parser.add_argument('email', required=True,
                         help='Email cannot be blank', type=str)
-    parser.add_argument('password', required=True,
-                        help='Password cannot be blank', type=str)
     parser.add_argument('role', required=True,
+                        help='Password cannot be blank', type=str)
+    parser.add_argument('password', required=True,
                         help='Password cannot be blank', type=str)
 
     def post(self):
         """ Method to register a user """
         args = Signup.parser.parse_args()
-        password = args.get('password')
         username = args.get('username')
         email = args.get('email')
         role = args.get('role')
+        password = args.get('password')
 
         email_format = re.compile(
             r"(^[a-zA-Z0-9_.-]+@[a-zA-Z-]+\.[a-zA-Z-]+$)")
@@ -78,4 +83,9 @@ class Login(Resource):
             return {'message': 'User unavailable'}, 404
         if user.validate_password(password):
             return {"message": "You are successfully logged in", 'user': user.view()}, 200
-        return {"message": "Username or password is wrong."}, 401
+        return {"message": "Email or password is wrong."}, 401
+
+        email = get_jwt_identity()
+        expires = datetime.timedelta(minutes=30)
+        token = create_access_token(email, expires_delta=expires)
+        return {'token': token, 'message': 'successfully logged'}, 200

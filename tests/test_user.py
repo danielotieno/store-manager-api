@@ -114,4 +114,4 @@ class UserTests(BaseClass):
                                     content_type='application/json')
         self.assertEqual(response.status_code, 401)
         result = json.loads(response.data.decode())
-        self.assertEqual(result['message'], 'Username or password is wrong.')
+        self.assertEqual(result['message'], 'Email or password is wrong.')
