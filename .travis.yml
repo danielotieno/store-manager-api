@@ -10,13 +10,14 @@ before_script:
 
 install:
   - pip install -r requirements.txt
+  - pip install --user codecov
 
 script:
-  - pytest --cov=tests/
+  - pytest --cov=app/
 
 after_script:
   - coverage xml
   - if [[ "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_PYTHON_VERSION" == "3.6-dev" ]]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi
 
 after_success:
-  - coveralls
+  - bash <(curl -s https://codecov.io/bash)
