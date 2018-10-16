@@ -59,3 +59,11 @@ class User:
                 else:
                     return "Invalid password or username"
         return "User does not exist"
+
+    def reset_password(self, email, newpassword):
+        """ A method to reset user password """
+        for user in user_list:
+            if user['email'] == email:
+                user['password'] = newpassword
+                return "successful"
+            return "Incorrect email"
