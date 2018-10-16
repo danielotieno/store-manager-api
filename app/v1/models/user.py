@@ -37,15 +37,25 @@ class User:
         self.role = "Store Attendant"
 
     def get_user_by_email(self, email):
-        """ A method to get user by email """
+        """ A method to get a user by email """
         for user in user_list:
             if user.email == email:
                 return user
         return "User does not exist"
 
     def get_user_by_id(self, user_id):
-        """ Get user given user id """
+        """ Get user given a user id """
         for user in user_list:
             if user['id'] == user_id:
                 return user
+        return "User does not exist"
+
+    def user_login(self, email, password):
+        """ A method for a user to login with correct details """
+        for user in user_list:
+            if email == user['email']:
+                if password == user['password']:
+                    return "Login successful"
+                else:
+                    return "Invalid password or username"
         return "User does not exist"
