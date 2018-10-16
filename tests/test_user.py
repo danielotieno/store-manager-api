@@ -18,3 +18,13 @@ class UserTests(BaseClass):
         result = json.loads(response.data.decode())
         self.assertEqual(result["message"],
                          "registration successful, now login")
+
+    def test_user_wrong_registration(self):
+        """Test wrong registration when user doesn't fill fields"""
+        response = self.client.post(SIGNUP_URL,
+                                    data=json.dumps(
+                                        {'username': 'danny', 'email': 'short@gmail.com', 'password': ''}),
+                                    content_type='application/json')
+        self.assertEqual(response.status_code, 400)
+        result = json.loads(response.data.decode())
+        self.assertEqual(result["message"], "All fields are required")
