@@ -1,12 +1,20 @@
 """This module defines tests for the user class and its methods"""
-import unittest
-from app.v1.models.user import User
+import json
+
+from .start import BaseClass
+
+SIGNUP_URL = '/api/v1/user/signup'
+LOGIN_URL = '/api/v1/user/login'
 
 
-class UserTests(unittest.TestCase):
-    """Define and setup testing class"""
+class UserTests(BaseClass):
+    """ Defining and setup user class tests """
 
-    def test_user_login(self):
-        """Test if a user with valid details can login"""
-        res = User().user_login("dan", "123456789")
-        self.assertEqual(res, "Login successful")
+    def test_user_registration(self):
+        """ Test user registration works correcty """
+        response = self.client.post(SIGNUP_URL,
+                                    data=json.dumps(self.user_data), content_type='application/json')
+        self.assertEqual(response.status_code, 201)
+        result = json.loads(response.data.decode())
+        self.assertEqual(result["message"],
+                         "registration successful, now login")
