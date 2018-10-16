@@ -42,3 +42,10 @@ class User:
             if user.email == email:
                 return user
         return "User does not exist"
+
+    def get_user_by_id(self, user_id):
+        """ Get user given user id """
+        for user in user_list:
+            if user['id'] == user_id:
+                return user
+        return "User does not exist"
