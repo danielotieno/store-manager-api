@@ -79,13 +79,10 @@ class Login(Resource):
             return {'message': 'All fields are required'}, 400
 
         user = User.get_user_by_email(email)
+        expires = datetime.timedelta(minutes=30)
+        token = create_access_token(user, expires_delta=expires)
         if not user:
-            return {'message': 'User unavailable'}, 404
+            return {'token': token, 'message': 'User unavailable'}, 404
         if user.validate_password(password):
             return {"message": "You are successfully logged in", 'user': user.view()}, 200
         return {"message": "Email or password is wrong."}, 401
-
-        email = get_jwt_identity()
-        expires = datetime.timedelta(minutes=30)
-        token = create_access_token(email, expires_delta=expires)
-        return {'token': token, 'message': 'successfully logged'}, 200
