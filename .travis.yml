@@ -13,9 +13,7 @@ before_script:
 install:
   - pip install -r requirements.txt
 
-script:
-  - coverage run --source=app/v1/ -m pytest -s -vv
-  - coverage report
+script: -pytest --cov=.app/
 
 after_script:
   - coverage xml
