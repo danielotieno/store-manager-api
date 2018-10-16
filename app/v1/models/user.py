@@ -27,3 +27,11 @@ class User:
             return "Your passwords must match"
         else:
             return True
+
+    def __init__(self, username, email, password, role):
+        """ A constructor method for creating a user """
+        self.id = uuid.uuid1()
+        self.username = username
+        self.email = email
+        self.password = password
+        self.role = "Store Attendant"
