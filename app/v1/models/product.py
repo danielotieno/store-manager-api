@@ -21,7 +21,7 @@ class Product:
 
         self.product_details = {}
 
-        self.id = uuid.uuid1()
+        self.product_id = uuid.uuid1()
         self.product_details['name'] = name
         self.product_details['description'] = description
         self.product_details['price'] = price
@@ -29,3 +29,35 @@ class Product:
         self.product_details['low_inventory'] = low_inventory
         self.product_list.append(self.product_details)
         return self.product_list, 201
+
+    def get_products(self):
+        """ A method to get all products """
+        return self.product_list, 200
+
+    def get_product_by_id(self, product_id):
+        """ A method to get a single product """
+        product = next(
+            filter(lambda x: x['product_id'] == product_id, self.product_list), None)
+        return {'Product': product}, 200 if product else 404
+
+    def update_a_product(self, product_id):
+        """ A method to update a specific product """
+        data = request.get_json()
+        product = next(
+            filter(lambda x: x['product_id'] == product_id, self.product_list), None)
+
+        if product is None:
+            product = {
+                'name': data['name']
+            }
+            self.product_list.append(product), 201
+        else:
+            product.update(product), 200
+        return product
+
+    def delete_a_product(self, product_id):
+        """ A method to delete a single product using product id """
+        self.product_list
+        self.product_list = list(
+            filter(lambda x: x['product_id'] != product_id, self.product_list))
+        return {'message': 'Product deleted successfully'}, 200
