@@ -1,5 +1,5 @@
 from flask import Flask, request
-from flask_restful import Resource, reqparse
+from flask_restful import Resource
 
 from app.v1.models.product import Product
 from utlis.required import validate_data
