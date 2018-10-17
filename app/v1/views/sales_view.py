@@ -2,7 +2,7 @@ from flask import Flask, request
 from flask_restful import Resource
 
 from app.v1.models.sale_order import Sale
-from utlis.required import validate_data
+from utlis.salereq import validate_data
 
 saleObject = Sale()
 

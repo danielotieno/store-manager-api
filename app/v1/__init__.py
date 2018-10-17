@@ -24,10 +24,12 @@ def create_app(config_name):
     from app.v1.views.users_view import Signup, Login
     from app.v1.views.products_view import Products
     from app.v1.views.products_view import ProductView
+    from app.v1.views.sales_view import Sales
 
     api.add_resource(Signup, '/api/v1/user/signup')
     api.add_resource(Login, '/api/v1/user/login')
     api.add_resource(Products, '/api/v1/products')
     api.add_resource(ProductView, '/api/v1/products/<product_id>')
+    api.add_resource(Sales, '/api/v1/sales')
 
     return app
