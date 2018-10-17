@@ -16,19 +16,20 @@ class Product:
         """ Initialize empty Product list"""
         self.product_list = []
 
-    def create_product(self, name, description, price, category, low_inventory):
+    def create_product(self, name, description, price, category, quantity, low_inventory):
         """Create product item"""
 
         self.product_details = {}
 
-        self.product_id = uuid.uuid1()
+        self.product_details['product_id'] = str(uuid.uuid1())
         self.product_details['name'] = name
         self.product_details['description'] = description
         self.product_details['price'] = price
         self.product_details['category'] = category
+        self.product_details['quantity'] = quantity
         self.product_details['low_inventory'] = low_inventory
         self.product_list.append(self.product_details)
-        return self.product_list, 201
+        return {'Products': self.product_list, 'message': 'Product added successfully'}, 201
 
     def get_products(self):
         """ A method to get all products """

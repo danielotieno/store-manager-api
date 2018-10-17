@@ -1,3 +1,4 @@
+import os
 import unittest
 import json
 
@@ -13,30 +14,21 @@ DELETE_URL = '/api/v1/products/2'
 MODIFY_URL = '/api/v1/products/8'
 
 
-class TestBase(unittest.TestCase):
+class TestProducts(unittest.TestCase):
     """ Class for setup tests """
 
     def create_app(self):
         """ Add Test configuration """
-        config_name = 'testing'
-        app = create_app(config_name)
+        self.app = create_app("testing")
+        self.client = self.app.test_client()
 
         self.create_product = json.dumps(dict(
             name="Shirt",
             description="Modern polo shirt",
             price=350,
             category="Polo",
+            quantity=3,
             low_inventory=10))
-        self.client = app.test_client()
-        self.client.post(
-            GET_ALL_URL,
-            data=self.create_product,
-            content_type='application/json')
-
-        return app
-
-
-class TestProducts(TestBase):
 
     def test_add_a_product(self):
         """ Test to add a product """

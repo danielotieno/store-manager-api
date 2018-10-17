@@ -22,8 +22,10 @@ def create_app(config_name):
     jwt.init_app(app)
 
     from app.v1.views.users_view import Signup, Login
+    from app.v1.views.products_view import Products
 
     api.add_resource(Signup, '/api/v1/user/signup')
     api.add_resource(Login, '/api/v1/user/login')
+    api.add_resource(Products, '/api/v1/products')
 
     return app
