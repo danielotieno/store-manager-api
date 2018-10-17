@@ -30,4 +30,4 @@ class Sale:
         self.sales_details['sales_date'] = str(datetime.now().replace(
             second=0, microsecond=0))
         self.sales_list.append(self.sales_details)
-        return {'Sales': self.sales_list, 'message': 'Sale successfully created'}, 201
+        return {'Sale Orders': self.sales_list, 'message': 'Sale Order successfully created'}, 201

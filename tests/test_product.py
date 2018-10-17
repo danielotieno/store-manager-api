@@ -1,9 +1,7 @@
 import unittest
 import json
 
-
 from app.v1 import create_app
-
 
 ADD_UPDATE_URL = '/api/v1/products/3'
 GET_SINGLE_URL = '/api/v1/products/1'
