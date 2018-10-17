@@ -35,7 +35,7 @@ class Product:
 
     def get_products(self):
         """ A method to get all products """
-        return self.product_list, 200
+        return {'Products': self.product_list, 'message': 'Successfully'}, 200
 
     def get_product_by_id(self, product_id):
         """ A method to get a single product """

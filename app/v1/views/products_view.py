@@ -31,3 +31,7 @@ class Products(Resource):
 
             return res
         return {"message": res}, 400
+
+    def get(self):
+        get_all = productObject.get_products()
+        return get_all
