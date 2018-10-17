@@ -21,6 +21,7 @@ class TestProduct(unittest.TestCase):
         self.client = self.app.test_client()
 
         self.create_product = json.dumps(dict(
+            product_id=1,
             name='Shirt',
             description='Cool Polo shirt',
             price=500,
@@ -54,5 +55,12 @@ class TestProduct(unittest.TestCase):
             content_type='application/json')
 
         data = json.loads(resource.data.decode())
+        print(data)
         self.assertEqual(resource.status_code, 200)
+        self.assertEqual(resource.content_type, 'application/json')
+
+    def test_get_specific_product_by_id(self):
+        """ Test for getting specific product by id """
+        resource = self.client.get(GET_SINGLE_URL)
+        self.assertEqual(resource.status_code, 404)
         self.assertEqual(resource.content_type, 'application/json')
