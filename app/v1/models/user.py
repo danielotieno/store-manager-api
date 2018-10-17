@@ -3,7 +3,6 @@ This model defines a user class and it's methods
 It also create data structure to store user data
 
 """
-import uuid
 from datetime import datetime, timedelta
 from flask import current_app
 from werkzeug.security import check_password_hash, generate_password_hash
