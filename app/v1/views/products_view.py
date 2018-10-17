@@ -35,3 +35,14 @@ class Products(Resource):
     def get(self):
         get_all = productObject.get_products()
         return get_all
+
+
+class ProductView(Resource):
+    """
+    Resource for product endpoints with ids
+    """
+
+    def get(self, product_id):
+        """ Get a specific product method """
+        get_product = productObject.get_product_by_id(product_id)
+        return get_product
