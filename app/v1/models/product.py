@@ -4,7 +4,7 @@ It also create data structure to store product data
 
 """
 import uuid
-from datetime import datetime, timedelta
+from datetime import date, datetime
 from flask import request
 from flask import current_app
 
@@ -28,6 +28,8 @@ class Product:
         self.product_details['category'] = category
         self.product_details['quantity'] = quantity
         self.product_details['low_inventory'] = low_inventory
+        self.product_details['date'] = str(datetime.now().replace(
+            second=0, microsecond=0))
         self.product_list.append(self.product_details)
         return {'Products': self.product_list, 'message': 'Product added successfully'}, 201
 
