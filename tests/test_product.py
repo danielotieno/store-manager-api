@@ -45,3 +45,14 @@ class TestProduct(unittest.TestCase):
         print(data)
         self.assertEqual(resource.status_code, 201)
         self.assertEqual(resource.content_type, 'application/json')
+
+    def test_get_all_products(self):
+        """ Test for getting all products """
+        resource = self.client.get(
+            GET_ALL_URL,
+            data=json.dumps(dict()),
+            content_type='application/json')
+
+        data = json.loads(resource.data.decode())
+        self.assertEqual(resource.status_code, 200)
+        self.assertEqual(resource.content_type, 'application/json')
