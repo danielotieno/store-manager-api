@@ -64,3 +64,7 @@ class TestProduct(unittest.TestCase):
         resource = self.client.get(GET_SINGLE_URL)
         self.assertEqual(resource.status_code, 404)
         self.assertEqual(resource.content_type, 'application/json')
+
+
+if __name__ == '__main__':
+    unittest.main()
