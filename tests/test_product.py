@@ -5,7 +5,7 @@ import json
 from app.v1 import create_app
 
 ADD_ENTRY_URL = '/api/v1/products/7'
-ADD_UPDATE_URL = '/api/v1/products/8'
+ADD_UPDATE_URL = '/api/v1/products/3'
 GET_SINGLE_URL = '/api/v1/products/1'
 GET_ALL_URL = '/api/v1/products'
 DELETE_URL = '/api/v1/products/2'
