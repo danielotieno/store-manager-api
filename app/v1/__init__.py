@@ -4,9 +4,13 @@ from flask import Flask
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 
+from app.v1.models.admin import Admin
+
 from config import app_config
 
 jwt = JWTManager()
+
+admin = Admin()
 
 
 def create_app(config_name):
@@ -20,6 +24,8 @@ def create_app(config_name):
     app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
 
     jwt.init_app(app)
+
+    admin.create_admin('admin', 'admin@email.com', 'admin12345', 'Admin')
 
     from app.v1.views.users_view import Signup, Login
     from app.v1.views.products_view import Products
