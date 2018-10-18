@@ -23,7 +23,8 @@ def create_app(config_name):
 
     jwt.init_app(app)
 
-    User.create_admin('admin', 'admin@email.com', 'admin12345', 'Admin')
+    user = User('admin', 'admin@mail.com', 'admin12345', 'Admin')
+    user = user.save()
 
     from app.v1.views.users_view import Signup, Login
     from app.v1.views.products_view import Products

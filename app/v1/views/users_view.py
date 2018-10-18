@@ -31,7 +31,7 @@ class Signup(Resource):
         args = Signup.parser.parse_args()
         username = args.get('username')
         email = args.get('email')
-        # role = args.get('role')
+        role = args.get('role')
         password = args.get('password')
 
         email_format = re.compile(
@@ -44,7 +44,7 @@ class Signup(Resource):
             return {'message': 'Invalid email. Ensure email is of the form example@mail.com'}, 400
         if len(username) < 4:
             return {'message': 'Username should be atleast 4 characters'}, 400
-        if required(password) or required(username) or required(email):
+        if required(password) or required(username) or required(email) or required(role):
             return {'message': 'All fields are required'}, 400
         if len(password) < 8:
             return {'message': 'Password should be atleast 8 characters'}, 400

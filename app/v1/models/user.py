@@ -36,21 +36,14 @@ class Start():
 class User(Start):
     """ A class to handle activities related to a user """
 
-    def __init__(self, username, password, email, role):
+    def __init__(self, username, email, password, role):
         """ A constructor method for creating a user """
         self.id = None
         self.username = username
+        self.email = email
         self.password = generate_password_hash(password)
-        self.email = email
-        self.role = 'Store Attendant'
-        self.created_at = datetime.utcnow().isoformat()
-
-    def create_admin(self, username, email, password, role):
-        """ Create a defaut admin user """
-        self.username = username
-        self.email = email
-        self.password = password
         self.role = role
+        self.created_at = datetime.utcnow().isoformat()
 
     def validate_password(self, password):
         """ Method for validating password input """
