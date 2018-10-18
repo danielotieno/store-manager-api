@@ -45,6 +45,13 @@ class User(Start):
         self.role = 'Store Attendant'
         self.created_at = datetime.utcnow().isoformat()
 
+    def create_admin(self, username, email, password, role):
+        """ Create a defaut admin user """
+        self.username = username
+        self.email = email
+        self.password = password
+        self.role = role
+
     def validate_password(self, password):
         """ Method for validating password input """
         if check_password_hash(self.password, password):

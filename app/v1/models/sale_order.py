@@ -25,7 +25,7 @@ class Sale:
         self.sales_details['customer'] = customer
         self.sales_details['product'] = product
         self.sales_details['quantity'] = quantity
-        self.sales_details['created_by'] = 'Store Attendant'
+        self.sales_details['created_by'] = created_by
         self.sales_details['total_amount'] = total_amount
         self.sales_details['sales_date'] = str(datetime.now().replace(
             second=0, microsecond=0))
