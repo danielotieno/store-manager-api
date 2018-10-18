@@ -31,3 +31,7 @@ class Sale:
             second=0, microsecond=0))
         self.sales_list.append(self.sales_details)
         return {'Sale Orders': self.sales_list, 'message': 'Sale Order successfully created'}, 201
+
+    def get_sales(self):
+        """ A method to get all sales record """
+        return {'Sales Record': self.sales_list, 'message': 'Successfully'}, 200
