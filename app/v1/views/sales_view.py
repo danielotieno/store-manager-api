@@ -30,3 +30,7 @@ class Sales(Resource):
 
             return res
         return {"message": res}, 400
+
+    def get(self):
+        get_record = saleObject.get_sales()
+        return get_record
