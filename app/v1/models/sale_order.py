@@ -5,7 +5,6 @@ It also create data structure to store sales order data
 """
 import uuid
 from datetime import date, datetime
-from flask import request
 from flask import current_app
 
 

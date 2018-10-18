@@ -4,7 +4,7 @@ It also create data structure to store product data
 
 """
 import uuid
-from datetime import date, datetime
+from datetime import datetime
 from flask import request
 from flask import current_app
 

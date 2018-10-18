@@ -1,3 +1,4 @@
+""" This is the file that start our application and contains api endpoints """
 import os
 
 from flask import Flask
@@ -8,7 +9,7 @@ from app.v1.models.user import User
 
 from config import app_config
 
-jwt = JWTManager()
+JWT = JWTManager()
 
 
 def create_app(config_name):
@@ -21,7 +22,7 @@ def create_app(config_name):
     app.url_map.strict_slashes = False
     app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
 
-    jwt.init_app(app)
+    JWT.init_app(app)
 
     user = User('admin', 'admin@mail.com', 'admin12345', 'Admin')
     user = user.save()

@@ -3,7 +3,7 @@ This model defines a user class and it's methods
 It also create data structure to store user data
 
 """
-from datetime import datetime, timedelta
+from datetime import datetime
 from flask import current_app
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -12,10 +12,12 @@ class Model():
     """Class for user data structure"""
 
     def __init__(self):
+        """ A constructor to initialize empty user data structure """
         self.users = {}
         self.user_count = 0
 
     def drop(self):
+        """ A constructor to drop the model """
         self.__init__()
 
 
@@ -26,7 +28,7 @@ class Start():
     """Start class to be inherited by User classes"""
 
     def update(self, data):
-        # Validate keys before passing to data.
+        """ Validate keys before passing to data."""
         for key in data:
             setattr(self, key, data[key])
         setattr(self, 'last_modified', datetime.utcnow().isoformat())
