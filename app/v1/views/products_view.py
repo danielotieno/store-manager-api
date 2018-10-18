@@ -1,10 +1,11 @@
-from flask import Flask, request
+""" This is a resource view for products """
+from flask import request
 from flask_restful import Resource
 
 from app.v1.models.product import Product
 from utlis.required import validate_data
 
-productObject = Product()
+PRODUCT_OBJECT = Product()
 
 
 class Products(Resource):
@@ -26,14 +27,15 @@ class Products(Resource):
             quantity = data['quantity']
             low_inventory = data['low_inventory']
 
-            res = productObject.create_product(
+            res = PRODUCT_OBJECT.create_product(
                 name, description, price, category, quantity, low_inventory)
 
             return res
         return {"message": res}, 400
 
     def get(self):
-        get_all = productObject.get_products()
+        """ A method to get all products """
+        get_all = PRODUCT_OBJECT.get_products()
         return get_all
 
 
@@ -44,5 +46,5 @@ class ProductView(Resource):
 
     def get(self, product_id):
         """ Get a specific product method """
-        get_product = productObject.get_product_by_id(product_id)
+        get_product = PRODUCT_OBJECT.get_product_by_id(product_id)
         return get_product
