@@ -1,10 +1,11 @@
-from flask import Flask, request
+""" A resource view for sales endpoints """
+from flask import request
 from flask_restful import Resource
 
 from app.v1.models.sale_order import Sale
 from utlis.salereq import validate_data
 
-saleObject = Sale()
+SALE_OBJECT = Sale()
 
 
 class Sales(Resource):
@@ -25,14 +26,15 @@ class Sales(Resource):
             created_by = data['created_by']
             total_amount = data['total_amount']
 
-            res = saleObject.create_sale(
+            res = SALE_OBJECT.create_sale(
                 customer, product, quantity, created_by, total_amount)
 
             return res
         return {"message": res}, 400
 
     def get(self):
-        get_record = saleObject.get_sales()
+        """ A method to get all sales record """
+        get_record = SALE_OBJECT.get_sales()
         return get_record
 
 
@@ -43,5 +45,5 @@ class SaleView(Resource):
 
     def get(self, sale_id):
         """ Get a specific sale record method """
-        get_sale = saleObject.get_sale_record_by_id(sale_id)
+        get_sale = SALE_OBJECT.get_sale_record_by_id(sale_id)
         return get_sale
