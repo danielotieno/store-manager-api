@@ -35,3 +35,9 @@ class Sale:
     def get_sales(self):
         """ A method to get all sales record """
         return {'Sales Record': self.sales_list, 'message': 'Successfully'}, 200
+
+    def get_sale_record_by_id(self, sale_id):
+        """ A method to get a single sale record """
+        sale = next(
+            filter(lambda x: x['sale_id'] == sale_id, self.sales_list), None)
+        return {'Sale Record': sale}, 200 if sale else 404
