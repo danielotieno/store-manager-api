@@ -34,3 +34,14 @@ class Sales(Resource):
     def get(self):
         get_record = saleObject.get_sales()
         return get_record
+
+
+class SaleView(Resource):
+    """
+    Resource for sales endpoints with ids
+    """
+
+    def get(self, sale_id):
+        """ Get a specific sale record method """
+        get_sale = saleObject.get_sale_record_by_id(sale_id)
+        return get_sale
