@@ -21,7 +21,7 @@ class TestUserModel(BaseClass):
     def test_can_save_user(self):
         """Test successful save operation for user"""
         user = self.user1.save()
-        self.assertEqual(1, len(DB.users))
+        self.assertEqual(2, len(DB.users))
         self.assertTrue(isinstance(user, dict))
 
     def test_can_update_user_details(self):
@@ -40,7 +40,7 @@ class TestUserModel(BaseClass):
     def test_can_delete_user(self):
         """Test suucessful deletion of user"""
         self.user1.save()
-        self.assertEqual(1, len(DB.users))
+        self.assertEqual(2, len(DB.users))
         user = User.get_user_by_id(id=1)
         user.delete_user()
-        self.assertEqual(0, len(DB.users))
+        self.assertEqual(1, len(DB.users))

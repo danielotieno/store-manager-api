@@ -21,8 +21,8 @@ class Signup(Resource):
                         help='Username cannot be blank', type=str)
     parser.add_argument('email', required=True,
                         help='Email cannot be blank', type=str)
-    # parser.add_argument('role', required=True,
-    #                     help='Password cannot be blank', type=str)
+    parser.add_argument('role', required=True,
+                        help='Password cannot be blank', type=str)
     parser.add_argument('password', required=True,
                         help='Password cannot be blank', type=str)
 
