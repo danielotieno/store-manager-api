@@ -1,11 +1,8 @@
-from flask import Flask
-from flask_restful import Resource, reqparse
-from flask_jwt_extended import (
-    jwt_required, create_access_token,
-    get_jwt_identity
-)
-import re
+""" A resource for user view """
 import datetime
+import re
+from flask_restful import Resource, reqparse
+from flask_jwt_extended import create_access_token
 
 from app.v1.models.user import User
 from utlis.required import required
@@ -58,7 +55,6 @@ class Signup(Resource):
         user = User(username=args.get('username'),
                     email=args.get('email'), password=password, role=args.get('role'))
         user = user.save()
-
         return {'message': 'registration successful, now login', 'user': user}, 201
 
 
