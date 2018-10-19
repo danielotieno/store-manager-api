@@ -27,12 +27,14 @@ def create_app(config_name):
     user = User('admin', 'admin@mail.com', 'admin12345', 'Admin')
     user = user.save()
 
+    from app.v1.views.welcome import Welcome
     from app.v1.views.users_view import Signup, Login
     from app.v1.views.products_view import Products
     from app.v1.views.products_view import ProductView
     from app.v1.views.sales_view import Sales
     from app.v1.views.sales_view import SaleView
 
+    api.add_resource(Welcome, '/')
     api.add_resource(Signup, '/api/v1/user/signup')
     api.add_resource(Login, '/api/v1/user/login')
     api.add_resource(Products, '/api/v1/products')
