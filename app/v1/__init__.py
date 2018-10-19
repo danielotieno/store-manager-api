@@ -35,8 +35,8 @@ def create_app(config_name):
     from app.v1.views.sales_view import SaleView
 
     api.add_resource(Welcome, '/')
-    api.add_resource(Signup, '/api/v1/user/signup')
-    api.add_resource(Login, '/api/v1/user/login')
+    api.add_resource(Signup, '/api/v1/auth/signup')
+    api.add_resource(Login, '/api/v1/auth/login')
     api.add_resource(Products, '/api/v1/products')
     api.add_resource(ProductView, '/api/v1/products/<product_id>')
     api.add_resource(Sales, '/api/v1/sales')
