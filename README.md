@@ -9,7 +9,7 @@ Store Manager is a web application that helps store owners manage sales and prod
 
 ## Application Demo
 
-Link to heroku [coming soon](https://fast-chakula-fast.herokuapp.com)
+Deployed Link [store-manager-api](https://store-manager-app-v1.herokuapp.com)
 
 ## API Endpoints
 
