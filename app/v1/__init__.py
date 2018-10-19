@@ -7,7 +7,7 @@ from flask_jwt_extended import JWTManager
 
 from app.v1.models.user import User
 
-from config import app_config
+import config
 
 JWT = JWTManager()
 
@@ -15,10 +15,10 @@ JWT = JWTManager()
 def create_app(config_name):
     """Function to create a flask app depending on the configuration passed"""
 
-    app = Flask(__name__, instance_relative_config=True)
+    app = Flask(__name__)
     api = Api(app)
 
-    app.config.from_object(app_config[config_name])
+    app.config.from_object('config')
     app.url_map.strict_slashes = False
     app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
 

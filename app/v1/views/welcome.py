@@ -8,4 +8,4 @@ class Welcome(Resource):
 
     def get(self):
         """Display the documentation of the api from postman"""
-        return redirect("https://documenter.getpostman.com/view/616287/RWaRMjfq", code=302)
+        return redirect("https://documenter.getpostman.com/view/616287/RWguvbnH", code=302)
