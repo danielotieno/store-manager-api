@@ -38,7 +38,7 @@ class Start():
 class User(Start):
     """ A class to handle activities related to a user """
 
-    def __init__(self, username, email, password, role):
+    def __init__(self, username, email, password, role='Store_Attendant'):
         """ A constructor method for creating a user """
         self.id = None
         self.username = username

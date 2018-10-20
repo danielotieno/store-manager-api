@@ -24,7 +24,8 @@ def create_app(config_name):
 
     JWT.init_app(app)
 
-    user = User('admin', 'admin@mail.com', 'admin12345', 'Admin')
+    user = User(os.getenv('ADMIN_USERNAME'),
+                os.getenv('ADMIN_USERNAME'), os.getenv('ADMIN_USERNAME'), os.getenv('ADMIN_USERNAME'))
     user = user.save()
 
     from app.v1.views.welcome import Welcome
