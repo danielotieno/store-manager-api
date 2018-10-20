@@ -4,6 +4,8 @@ from flask_jwt_extended import get_jwt_identity
 
 from app.v1.models.user import User
 
+import re
+
 
 def admin_only(f):
     ''' Restrict access if not admin '''
@@ -27,24 +29,20 @@ def required(var):
 def validate_data(data):
     """validate product details"""
     try:
-        # check if name is empty
-        if data["name"] is False:
-            return "Product name is required"
-            # check description is empty
-        elif data["description"] is False:
-            return "Product description is required"
-            # check if price field is empty
-        elif data["price"] is False:
-            return "price is required"
-            # check if category field is empty
-        elif data["category"] is False:
-            return "category is required"
-            # check if quantity field is empty
-        elif data["quantity"] is False:
-            return "quantity is required"
-            # check if price field is empty
-        elif data["low_inventory"] is False:
-            return "This field is required"
+        # check if there are specil characters in the username
+        if not re.match("^([a-zA-Z]+\s)*[a-zA-Z]+$", data['name'].strip()):
+            return "username  can only contain alphanumeric characters"
+        # check if the name contains only numbers or underscore
+        elif not re.match("^([a-zA-Z]+\s)*[a-zA-Z]+$", data['description'].strip()):
+            return "description can only contain alphanumeric char"
+        elif not re.match("^[-+]?([0-9]*\.[0-9]+|[0-9]+)", data['price']):
+            return "please provide a valid price"
+        elif not re.match("^[a-zA-Z0-9_]*$", data['category'].strip()):
+            return "category can only contain alphanumeric char"
+        elif not re.match("^[-+]?([0-9]*\.[0-9]+|[0-9]+)", data['quantity']):
+            return "please provide a valid quantity"
+        elif not re.match("^[-+]?([0-9]*\.[0-9]+|[0-9]+)", data['low_inventory']):
+            return "please provide a valid status of inventory"
         else:
             return "valid"
     except Exception as error:

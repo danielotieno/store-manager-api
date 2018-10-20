@@ -22,6 +22,8 @@ class Signup(Resource):
     parser.add_argument('password', required=True,
                         help='Password cannot be blank', type=str)
 
+    @jwt_required
+    @admin_only
     def post(self):
         """ Method to register a user """
         args = Signup.parser.parse_args()
