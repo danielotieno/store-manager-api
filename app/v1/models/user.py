@@ -47,6 +47,16 @@ class User(Start):
         self.role = role
         self.created_at = datetime.utcnow().isoformat()
 
+    def to_json(self):
+        jsonified_user = {
+            "id": self.id,
+            "username": self.username,
+            "email": self.email,
+            "role": self.role
+
+        }
+        return jsonified_user
+
     def validate_password(self, password):
         """ Method for validating password input """
         if check_password_hash(self.password, password):
@@ -76,6 +86,15 @@ class User(Start):
         if not user:
             return {'message': 'User does not exist.'}
         return user
+
+    @classmethod
+    def get_user_by_role(cls, role):
+        """ Method for getting user by email"""
+        for id_ in DB.users:
+            user = DB.users.get(id_)
+            if user.role == role:
+                return user
+        return None
 
     @classmethod
     def get_user_by_email(cls, email):

@@ -2,10 +2,11 @@
 import datetime
 import re
 from flask_restful import Resource, reqparse
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import (
+    create_access_token, jwt_required, get_jwt_claims)
 
 from app.v1.models.user import User
-from utlis.required import required
+from utlis.required import required, admin_only
 
 
 class Signup(Resource):
@@ -51,6 +52,7 @@ class Signup(Resource):
 
         user = User(username=args.get('username'),
                     email=args.get('email'), password=password)
+
         user = user.save()
         return {'message': 'registration successful, now login', 'user': user}, 201
 
@@ -76,6 +78,7 @@ class Login(Resource):
             return {'message': 'User unavailable'}, 404
         if user.validate_password(password):
             expires = datetime.timedelta(minutes=30)
-            token = create_access_token(user.email, expires_delta=expires)
+            token = create_access_token(
+                user.to_json(), expires_delta=expires)
             return {'token': token, "message": "You are successfully logged in", 'user': user.view()}, 200
         return {"message": "Email or password is wrong."}, 401

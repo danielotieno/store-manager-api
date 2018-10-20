@@ -1,3 +1,22 @@
+from functools import wraps
+
+from flask_jwt_extended import get_jwt_identity
+
+from app.v1.models.user import User
+
+
+def admin_only(f):
+    ''' Restrict access if not admin '''
+    @wraps(f)
+    def wrapper_function(*args, **kwargs):
+        user = User.get_user_by_role(get_jwt_identity()['role'])
+
+        if not user.role == 'Admin':
+            return {'message': 'Anauthorized access, you must be an admin to access this level'}, 401
+        return f(*args, **kwargs)
+    return wrapper_function
+
+
 def required(var):
     """checks if any required field is blank"""
     if var.strip() == '':
