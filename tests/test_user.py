@@ -10,6 +10,10 @@ LOGIN_URL = '/api/v1/auth/login'
 class UserTests(BaseClass):
     """ Defining and setup user class tests """
 
+    def test_admin_login(self):
+        res = self.logged_in_admin
+        self.assertEqual(res.status_code, 200)
+
     def test_user_registration(self):
         """ Test user registration works correcty """
         response = self.client.post(SIGNUP_URL,

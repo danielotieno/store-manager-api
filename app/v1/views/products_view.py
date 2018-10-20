@@ -1,9 +1,11 @@
 """ This is a resource view for products """
 from flask import request
 from flask_restful import Resource
+from flask_jwt_extended import (
+    create_access_token, jwt_required, get_jwt_claims)
 
 from app.v1.models.product import Product
-from utlis.required import validate_data
+from utlis.required import validate_data, admin_only
 
 PRODUCT_OBJECT = Product()
 
@@ -13,6 +15,8 @@ class Products(Resource):
     Resource for creating a new product
     """
 
+    @jwt_required
+    @admin_only
     def post(self):
         """ Add a new product endpoint """
 

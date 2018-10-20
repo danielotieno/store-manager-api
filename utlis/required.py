@@ -19,6 +19,18 @@ def admin_only(f):
     return wrapper_function
 
 
+def store_attendant_required(f):
+    ''' A decorator for store attendant '''
+    @wraps(f)
+    def wrapper_function(*args, **kwargs):
+        user = User.get_user_by_role(get_jwt_identity()['role'])
+
+        if not user.role == 'Store_Attendant':
+            return {'message': 'Anauthorized access, you must be a Store Attendant to access this level'}, 401
+        return f(*args, **kwargs)
+    return wrapper_function
+
+
 def required(var):
     """checks if any required field is blank"""
     if var.strip() == '':

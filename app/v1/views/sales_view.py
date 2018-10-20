@@ -2,8 +2,12 @@
 from flask import request
 from flask_restful import Resource
 
+from flask_jwt_extended import (
+    create_access_token, jwt_required, get_jwt_claims)
+
 from app.v1.models.sale_order import Sale
 from utlis.salereq import validate_data
+from utlis.required import required, admin_only, store_attendant_required
 
 SALE_OBJECT = Sale()
 
@@ -13,6 +17,8 @@ class Sales(Resource):
     Resource for creating a new sale order
     """
 
+    @jwt_required
+    @store_attendant_required
     def post(self):
         """ Add a new sale order endpoint """
 
@@ -32,6 +38,8 @@ class Sales(Resource):
             return res
         return {"message": res}, 400
 
+    @jwt_required
+    @admin_only
     def get(self):
         """ A method to get all sales record """
         get_record = SALE_OBJECT.get_sales()

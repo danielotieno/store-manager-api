@@ -17,6 +17,17 @@ class BaseClass(unittest.TestCase):
         self.client = self.app.test_client()
         self.app_context = self.app.app_context()
         self.app_context.push()
+
+        with self.app.app_context():
+            user = User('admin', 'admin@email.com', 'admin12345', 'Admin')
+            user = user.save()
+
+        self.admin_data = {
+            "username": "admin",
+            "email": "admin@email.com"
+
+        }
+
         self.user_data = {
             "username": "danny",
             "email": "danny@gmail.com",
@@ -48,6 +59,20 @@ class BaseClass(unittest.TestCase):
                                content_type='application/json')
 
         return res
+
+    def logged_in_admin(self):
+        res = self.client.post(LOGIN_URL,
+                               data=json.dumps(
+                                   self.admin_data),
+                               content_type='application/json')
+
+        return res
+
+    def get_token_as_admin(self):
+        res = self.logged_in_admin
+        token = json.load(res.data).get('token', None)
+
+        return token
 
     def tearDown(self):
         '''Clears the database'''
