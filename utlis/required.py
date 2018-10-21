@@ -1,5 +1,6 @@
 from functools import wraps
 
+from flask_restful import reqparse
 from flask_jwt_extended import get_jwt_identity
 
 from app.v1.models.user import User
@@ -42,19 +43,16 @@ def validate_data(data):
     """validate product details"""
     try:
         # check if there are specil characters in the username
-        if not re.match("^([a-zA-Z]+\s)*[a-zA-Z]+$", data['name'].strip()):
-            return "username  can only contain alphanumeric characters"
+        if not re.match("^[a-zA-Z0-9_ ]+$", data['name'].strip()):
+            return "product name can only contain characters"
+
         # check if the name contains only numbers or underscore
-        elif not re.match("^([a-zA-Z]+\s)*[a-zA-Z]+$", data['description'].strip()):
-            return "description can only contain alphanumeric char"
-        elif not re.match("^[-+]?([0-9]*\.[0-9]+|[0-9]+)", data['price']):
-            return "please provide a valid price"
-        elif not re.match("^[a-zA-Z0-9_]*$", data['category'].strip()):
-            return "category can only contain alphanumeric char"
-        elif not re.match("^[-+]?([0-9]*\.[0-9]+|[0-9]+)", data['quantity']):
-            return "please provide a valid quantity"
-        elif not re.match("^[-+]?([0-9]*\.[0-9]+|[0-9]+)", data['low_inventory']):
-            return "please provide a valid status of inventory"
+        elif not re.match("^[a-zA-Z0-9_ ]+$", data['description'].strip()):
+            return "description can only contain characters"
+
+        # Check if category contains aplhanumeric characters
+        elif not re.match("^[a-zA-Z0-9_ ]+$", data['category'].strip()):
+            return "category can only contain alphanumeric characters"
         else:
             return "valid"
     except Exception as error:

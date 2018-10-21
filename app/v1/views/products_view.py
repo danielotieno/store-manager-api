@@ -14,7 +14,6 @@ class Products(Resource):
     """
     Resource for creating a new product
     """
-
     @jwt_required
     @admin_only
     def post(self):
@@ -26,10 +25,10 @@ class Products(Resource):
         if res == "valid":
             name = data['name']
             description = data['description']
-            price = data['price']
+            price = float(data['price'])
             category = data['category']
-            quantity = data['quantity']
-            low_inventory = data['low_inventory']
+            quantity = int(data['quantity'])
+            low_inventory = int(data['low_inventory'])
 
             res = PRODUCT_OBJECT.create_product(
                 name, description, price, category, quantity, low_inventory)

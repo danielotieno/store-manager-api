@@ -1,18 +1,17 @@
 def validate_data(data):
-    """validate product details"""
+    """validate sales details when posting"""
     try:
-        # check if customer name is empty
-        if data["customer"] is False:
-            return "Customer name is required"
-            # check if product name is empty
-        elif data["product"] is False:
-            return "Product name is required"
-            # check if quantity field is empty
-        elif data["quantity"] is False:
-            return "quantity is required"
-            # check if total amount field is empty
-        elif data["total_amount"] is False:
-            return "total amount is required"
+        # check if there are specil characters in the username
+        if not re.match("^[a-zA-Z0-9_ ]+$", data['customer'].strip()):
+            return "product name can only contain characters"
+
+        # check if the name contains only numbers or underscore
+        elif not re.match("^[a-zA-Z0-9_ ]+$", data['product'].strip()):
+            return "description can only contain characters"
+
+        # Check if category contains aplhanumeric characters
+        elif not re.match("^[a-zA-Z0-9_ ]+$", data['created_by'].strip()):
+            return "category can only contain alphanumeric characters"
         else:
             return "valid"
     except Exception as error:

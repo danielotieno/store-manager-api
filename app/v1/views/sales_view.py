@@ -28,9 +28,9 @@ class Sales(Resource):
         if res == "valid":
             customer = data['customer']
             product = data['product']
-            quantity = data['quantity']
+            quantity = int(data['quantity'])
             created_by = data['created_by']
-            total_amount = data['total_amount']
+            total_amount = int(data['total_amount'])
 
             res = SALE_OBJECT.create_sale(
                 customer, product, quantity, created_by, total_amount)
