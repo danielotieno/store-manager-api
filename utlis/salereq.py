@@ -1,3 +1,6 @@
+import re
+
+
 def validate_data(data):
     """validate sales details when posting"""
     try:
