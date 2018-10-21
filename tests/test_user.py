@@ -10,9 +10,14 @@ LOGIN_URL = '/api/v1/auth/login'
 class UserTests(BaseClass):
     """ Defining and setup user class tests """
 
-    def test_admin_login(self):
-        res = self.logged_in_admin
-        self.assertEqual(res.status_code, 200)
+    def test_admin_registration(self):
+        """ Test user registration works correcty """
+        response = self.client.post(SIGNUP_URL,
+                                    data=json.dumps(self.admin_data), content_type='application/json', headers=headers)
+        self.assertEqual(response.status_code, 201)
+        result = json.loads(response.data.decode())
+        self.assertEqual(result["message"],
+                         "registration successful, now login")
 
     def test_user_registration(self):
         """ Test user registration works correcty """

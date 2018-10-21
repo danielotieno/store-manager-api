@@ -4,8 +4,8 @@ import json
 from app.v1 import create_app
 from app.v1.models.user import User, DB
 
-SIGNUP_URL = '/api/v1/user/signup'
-LOGIN_URL = '/api/v1/user/login'
+SIGNUP_URL = '/api/v1/auth/signup'
+LOGIN_URL = '/api/v1/auth/login'
 
 
 class BaseClass(unittest.TestCase):
@@ -18,13 +18,11 @@ class BaseClass(unittest.TestCase):
         self.app_context = self.app.app_context()
         self.app_context.push()
 
-        with self.app.app_context():
-            user = User('admin', 'admin@email.com', 'admin12345', 'Admin')
-            user = user.save()
-
         self.admin_data = {
             "username": "admin",
-            "email": "admin@email.com"
+            "email": "admin@email.com",
+            "password": "admin12345",
+            "role": "Admin"
 
         }
 
@@ -55,24 +53,23 @@ class BaseClass(unittest.TestCase):
         # then log in user
         res = self.client.post(LOGIN_URL,
                                data=json.dumps(
-                                   {'username': 'danny', 'password': 'password1'}),
+                                   {'email': 'danny@gmail.com', 'password': 'password1'}),
                                content_type='application/json')
 
         return res
 
     def logged_in_admin(self):
+        # first create admin
+        self.client.post(SIGNUP_URL,
+                         data=json.dumps(self.admin_data), content_type='application/json')
+
+        # then log in admin
         res = self.client.post(LOGIN_URL,
                                data=json.dumps(
                                    self.admin_data),
                                content_type='application/json')
 
         return res
-
-    def get_token_as_admin(self):
-        res = self.logged_in_admin
-        token = json.load(res.data).get('token', None)
-
-        return token
 
     def tearDown(self):
         '''Clears the database'''
