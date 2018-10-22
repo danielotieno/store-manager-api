@@ -80,11 +80,11 @@ Fork the repo here [Fork me](https://github.com/danielotieno/store-manager-api/t
 
 #### User registration
 
-Send a `POST` request to `/api/v1/user/signup` endpoint with the payload in `JSON`
+Send a `POST` request to `/api/v1/auth/signup` endpoint with the payload in `JSON`
 
 #### User Login
 
-Send a `POST` request to `/api/v1/user/login` endpoint with the payload in `JSON`
+Send a `POST` request to `/api/v1/auth/login` endpoint with the payload in `JSON`
 
 #### Get list of all products
 
