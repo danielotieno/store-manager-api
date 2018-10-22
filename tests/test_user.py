@@ -85,15 +85,17 @@ class UserTests(BaseClass):
         self.assertEqual(
             result["message"], "Invalid email. Ensure email is of the form example@mail.com")
 
-    # def test_user_cannot_register_with_invalid_username(self):
-    #     """ Test user should not be able to register with invalid username """
-    #     response = self.client.post(SIGNUP_URL,
-    #                                 data=json.dumps(
-    #                                     {'username': '#_danny', 'email': 'danny@gmail.com', 'password': 'password1', 'role': 'Store Attendant'}),
-    #                                 content_type='application/json')
-    #     self.assertEqual(response.status_code, 400)
-    #     result = json.loads(response.data.decode())
-    #     self.assertEqual(result["message"], "Invalid username")
+    def test_user_cannot_register_with_invalid_username(self):
+        """ Test user should not be able to register with invalid username """
+        access_token = self.get_token()
+        response = self.client.post(SIGNUP_URL,
+                                    data=json.dumps(
+                                        {'username': '#_danny', 'email': 'danny@gmail.com', 'password': 'password1', 'role': 'Store Attendant'}),
+                                    content_type='application/json',
+                                    headers={'Authorization': 'Bearer '+access_token})
+        self.assertEqual(response.status_code, 400)
+        result = json.loads(response.data.decode())
+        self.assertEqual(result["message"], "Invalid username")
 
     def test_login_for_user_not_registered(self):
         """ Test login for Non registered user """
