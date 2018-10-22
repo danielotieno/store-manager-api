@@ -69,7 +69,15 @@ class BaseClass(unittest.TestCase):
                                    self.admin_data),
                                content_type='application/json')
 
-        return res
+        result = json.loads(res.data.decode('utf-8'))
+
+        return result
+
+    def get_token(self):
+        login = self.logged_in_admin()
+        token = login.get('token')
+
+        return token
 
     def tearDown(self):
         '''Clears the database'''
