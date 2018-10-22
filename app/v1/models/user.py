@@ -48,6 +48,7 @@ class User(Start):
         self.created_at = datetime.utcnow().isoformat()
 
     def to_json(self):
+        """ Convert user list to json """
         jsonified_user = {
             "id": self.id,
             "username": self.username,

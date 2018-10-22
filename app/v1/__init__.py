@@ -13,7 +13,7 @@ JWT = JWTManager()
 
 
 def create_app(config_name):
-    """Function to create a flask app depending on the configuration passed"""
+    """The create_app function wraps the creation of a new Flask object."""
 
     app = Flask(__name__)
     api = Api(app)

@@ -39,28 +39,8 @@ class Product:
 
     def get_product_by_id(self, product_id):
         """ A method to get a single product """
+
+        # The function filter function offers an elegant way to filter out all the elements of a list.
         product = next(
             filter(lambda x: x['product_id'] == product_id, self.product_list), None)
         return {'Product': product}, 200 if product else 404
-
-    def update_a_product(self, product_id):
-        """ A method to update a specific product """
-        data = request.get_json()
-        product = next(
-            filter(lambda x: x['product_id'] == product_id, self.product_list), None)
-
-        if product is None:
-            product = {
-                'name': data['name']
-            }
-            self.product_list.append(product), 201
-        else:
-            product.update(product), 200
-        return product
-
-    def delete_a_product(self, product_id):
-        """ A method to delete a single product using product id """
-        self.product_list
-        self.product_list = list(
-            filter(lambda x: x['product_id'] != product_id, self.product_list))
-        return {'message': 'Product deleted successfully'}, 200

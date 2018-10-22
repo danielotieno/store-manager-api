@@ -32,18 +32,18 @@ class TestProduct(unittest.TestCase):
             data=self.create_product,
             content_type='application/json')
 
-    def test_add_product(self):
-        """ Test for product creation """
+    # def test_add_product(self):
+    #     """ Test for product creation """
 
-        resource = self.client.post(
-            GET_ALL_URL,
-            data=self.create_product,
-            content_type='application/json')
+    #     resource = self.client.post(
+    #         GET_ALL_URL,
+    #         data=self.create_product,
+    #         content_type='application/json')
 
-        data = json.loads(resource.data.decode())
-        print(data)
-        self.assertEqual(resource.status_code, 201)
-        self.assertEqual(resource.content_type, 'application/json')
+    #     data = json.loads(resource.data.decode())
+    #     print(data)
+    #     self.assertEqual(resource.status_code, 201)
+    #     self.assertEqual(resource.content_type, 'application/json')
 
     def test_get_all_products(self):
         """ Test for getting all products """

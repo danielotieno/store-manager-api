@@ -2,12 +2,11 @@
 from flask import request
 from flask_restful import Resource
 
-from flask_jwt_extended import (
-    create_access_token, jwt_required, get_jwt_claims)
+from flask_jwt_extended import jwt_required
 
 from app.v1.models.sale_order import Sale
 from utlis.salereq import validate_data
-from utlis.required import required, admin_only, store_attendant_required
+from utlis.required import admin_only, store_attendant_required
 
 SALE_OBJECT = Sale()
 

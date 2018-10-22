@@ -2,8 +2,7 @@
 import datetime
 import re
 from flask_restful import Resource, reqparse
-from flask_jwt_extended import (
-    create_access_token, jwt_required, get_jwt_claims)
+from flask_jwt_extended import (create_access_token, jwt_required)
 
 from app.v1.models.user import User
 from utlis.required import required, admin_only
@@ -37,7 +36,7 @@ class Signup(Resource):
 
         if not (re.match(username_format, username)):
             return {'message': 'Invalid username'}, 400
-        elif not (re.match(email_format, email)):
+        if not (re.match(email_format, email)):
             return {'message': 'Invalid email. Ensure email is of the form example@mail.com'}, 400
         if len(username) < 4:
             return {'message': 'Username should be atleast 4 characters'}, 400
