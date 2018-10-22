@@ -69,18 +69,16 @@ class TestProduct(unittest.TestCase):
         """ Test for product creation """
         access_token = self.get_token()
 
-        if access_token == None:
+        resource = self.client.post(
+            GET_ALL_URL,
+            data=self.create_product,
+            content_type='application/json',
+            headers={'Authorization': 'Bearer '+access_token})
 
-            resource = self.client.post(
-                GET_ALL_URL,
-                data=self.create_product,
-                content_type='application/json',
-                headers={'Authorization': 'Bearer '+access_token})
-
-            data = json.loads(resource.data.decode())
-            print(data)
-            self.assertEqual(resource.status_code, 201)
-            self.assertEqual(resource.content_type, 'application/json')
+        data = json.loads(resource.data.decode())
+        print(data)
+        self.assertEqual(resource.status_code, 201)
+        self.assertEqual(resource.content_type, 'application/json')
 
     def test_get_all_products(self):
         """ Test for getting all products """
