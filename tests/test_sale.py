@@ -1,6 +1,8 @@
 import unittest
 import json
 
+from .start import BaseClass
+
 from app.v1 import create_app
 
 ADD_UPDATE_URL = '/api/v1/sales/3'
@@ -8,6 +10,8 @@ GET_SINGLE_URL = '/api/v1/sales/1'
 GET_ALL_URL = '/api/v1/sales'
 DELETE_URL = '/api/v1/sales/2'
 MODIFY_URL = '/api/v1/sales/8'
+SIGNUP_URL = '/api/v1/auth/signup'
+LOGIN_URL = '/api/v1/auth/login'
 
 
 class TestSale(unittest.TestCase):
@@ -27,20 +31,50 @@ class TestSale(unittest.TestCase):
             total_amount=3000
         ))
 
+        self.user_data = {
+            "username": "danny",
+            "email": "danny@gmail.com",
+            "password": "password1",
+            "role": "Store Attendant"
+        }
+
         self.client.post(
             GET_ALL_URL,
             data=self.create_sale,
             content_type='application/json')
 
+    def logged_in_user(self):
+        # first create admin
+        self.client.post(SIGNUP_URL,
+                         data=json.dumps(self.user_data), content_type='application/json')
+
+        # then log in admin
+        res = self.client.post(LOGIN_URL,
+                               data=json.dumps(
+                                   {'email': 'danny@gmail.com', 'password': 'password1'}),
+                               content_type='application/json')
+
+        result = json.loads(res.data.decode('utf-8'))
+
+        return result
+
+    def get_token(self):
+        login_user = self.logged_in_user()
+        token = login_user.get('token')
+
+        return token
+
     # def test_add_sale(self):
     #     """ Test for sale order creation """
+    #     access_token = self.get_token()
 
     #     resource = self.client.post(
     #         GET_ALL_URL,
     #         data=self.create_sale,
-    #         content_type='application/json')
+    #         content_type='application/json',
+    #         headers={'Authorization': 'Bearer '+access_token})
 
-    #     data = json.loads(resource.data.decode())
+    #     data = json.loads(resource.data.decode('utf-8'))
     #     print(data)
     #     self.assertEqual(resource.status_code, 201)
     #     self.assertEqual(resource.content_type, 'application/json')
