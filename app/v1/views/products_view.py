@@ -4,7 +4,7 @@ from flask_restful import Resource
 from flask_jwt_extended import jwt_required
 
 from app.v1.models.product import Product
-from utlis.required import validate_data, admin_only
+from utlis.required import validate_data, admin_required
 
 PRODUCT_OBJECT = Product()
 
@@ -14,7 +14,7 @@ class Products(Resource):
     Resource for creating a new product
     """
     @jwt_required
-    @admin_only
+    @admin_required
     def post(self):
         """ Add a new product endpoint """
 

@@ -8,7 +8,7 @@ from app.v1.models.user import User
 import re
 
 
-def admin_only(f):
+def admin_required(f):
     ''' Restrict access if not admin '''
     @wraps(f)
     def wrapper_function(*args, **kwargs):

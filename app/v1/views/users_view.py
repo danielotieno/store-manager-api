@@ -5,7 +5,7 @@ from flask_restful import Resource, reqparse
 from flask_jwt_extended import (create_access_token, jwt_required)
 
 from app.v1.models.user import User
-from utlis.required import required, admin_only
+from utlis.required import required, admin_required
 
 
 class Signup(Resource):
@@ -22,7 +22,7 @@ class Signup(Resource):
                         help='Password cannot be blank', type=str)
 
     @jwt_required
-    @admin_only
+    @admin_required
     def post(self):
         """ Method to register a user """
         args = Signup.parser.parse_args()

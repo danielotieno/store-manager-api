@@ -6,7 +6,7 @@ from flask_jwt_extended import jwt_required
 
 from app.v1.models.sale_order import Sale
 from utlis.salereq import validate_data
-from utlis.required import admin_only, store_attendant_required
+from utlis.required import admin_required, store_attendant_required
 
 SALE_OBJECT = Sale()
 
@@ -38,7 +38,7 @@ class Sales(Resource):
         return {"message": res}, 400
 
     @jwt_required
-    @admin_only
+    @admin_required
     def get(self):
         """ A method to get all sales record """
         get_record = SALE_OBJECT.get_sales()
