@@ -34,15 +34,17 @@ class UserTests(BaseClass):
         result = json.loads(response.data.decode())
         self.assertEqual(result["message"], "All fields are required")
 
-    # def test_user_cannot_register_twice(self):
-    #     """ Test User cannot register twice """
-    #     self.client.post(SIGNUP_URL,
-    #                      data=json.dumps(self.user_data), content_type='application/json')
-    #     response2 = self.client.post(SIGNUP_URL,
-    #                                  data=json.dumps(self.user_data), content_type='application/json')
-    #     self.assertEqual(response2.status_code, 203)
-    #     result = json.loads(response2.data.decode())
-    #     self.assertEqual(result["message"], "User already exists")
+    def test_user_cannot_register_twice(self):
+        """ Test User cannot register twice """
+        access_token = self.get_token()
+        self.client.post(SIGNUP_URL,
+                         data=json.dumps(self.user_data), content_type='application/json')
+        response2 = self.client.post(SIGNUP_URL,
+                                     data=json.dumps(self.admin_data), content_type='application/json',
+                                     headers={'Authorization': 'Bearer '+access_token})
+        self.assertEqual(response2.status_code, 203)
+        result = json.loads(response2.data.decode())
+        self.assertEqual(result["message"], "User already exists")
 
     # def test_user_cannot_register_with_short_password(self):
     #     """ Test User cannot register if password is less than 8 characters """
