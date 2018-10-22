@@ -59,16 +59,18 @@ class UserTests(BaseClass):
         self.assertEqual(result["message"],
                          "Password should be atleast 8 characters")
 
-    # def test_user_cannot_register_with_short_username(self):
-    #     """ Test user can register with username less than 4 charcters """
-    #     response = self.client.post(SIGNUP_URL,
-    #                                 data=json.dumps(
-    #                                     {'username': 'dan', 'email': 'oti@gmail.com', 'password': 'pass12345', 'role': 'Store Attendant'}),
-    #                                 content_type='application/json')
-    #     self.assertEqual(response.status_code, 400)
-    #     result = json.loads(response.data.decode())
-    #     self.assertEqual(result["message"],
-    #                      "Username should be atleast 4 characters")
+    def test_user_cannot_register_with_short_username(self):
+        """ Test user can register with username less than 4 charcters """
+        access_token = self.get_token()
+        response = self.client.post(SIGNUP_URL,
+                                    data=json.dumps(
+                                        {'username': 'dan', 'email': 'oti@gmail.com', 'password': 'pass12345', 'role': 'Store Attendant'}),
+                                    content_type='application/json',
+                                    headers={'Authorization': 'Bearer '+access_token})
+        self.assertEqual(response.status_code, 400)
+        result = json.loads(response.data.decode())
+        self.assertEqual(result["message"],
+                         "Username should be atleast 4 characters")
 
     # def test_user_cannot_register_with_wrong_email_format(self):
     #     """ Test user should not be able to register with invalid email """
