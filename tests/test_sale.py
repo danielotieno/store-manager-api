@@ -32,30 +32,30 @@ class TestSale(unittest.TestCase):
             data=self.create_sale,
             content_type='application/json')
 
-    # def test_add_sale(self):
-    #     """ Test for sale order creation """
+    def test_add_sale(self):
+        """ Test for sale order creation """
 
-    #     resource = self.client.post(
-    #         GET_ALL_URL,
-    #         data=self.create_sale,
-    #         content_type='application/json')
+        resource = self.client.post(
+            GET_ALL_URL,
+            data=self.create_sale,
+            content_type='application/json')
 
-    #     data = json.loads(resource.data.decode())
-    #     print(data)
-    #     self.assertEqual(resource.status_code, 201)
-    #     self.assertEqual(resource.content_type, 'application/json')
+        data = json.loads(resource.data.decode())
+        print(data)
+        self.assertEqual(resource.status_code, 201)
+        self.assertEqual(resource.content_type, 'application/json')
 
-    # def test_get_all_sales(self):
-    #     """ Test for getting all sales record """
-    #     resource = self.client.get(
-    #         GET_ALL_URL,
-    #         data=json.dumps(dict()),
-    #         content_type='application/json')
+    def test_get_all_sales(self):
+        """ Test for getting all sales record """
+        resource = self.client.get(
+            GET_ALL_URL,
+            data=json.dumps(dict()),
+            content_type='application/json')
 
-    #     data = json.loads(resource.data.decode())
-    #     print(data)
-    #     self.assertEqual(resource.status_code, 200)
-    #     self.assertEqual(resource.content_type, 'application/json')
+        data = json.loads(resource.data.decode())
+        print(data)
+        self.assertEqual(resource.status_code, 200)
+        self.assertEqual(resource.content_type, 'application/json')
 
     def test_get_specific_sale_by_id(self):
         """ Test for getting specific sale record by id """
