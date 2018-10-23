@@ -89,15 +89,6 @@ class User(Start):
         return user
 
     @classmethod
-    def get_user_by_role(cls, role):
-        """ Method for getting user by email"""
-        for id_ in DB.users:
-            user = DB.users.get(id_)
-            if user.role == role:
-                return user
-        return None
-
-    @classmethod
     def get_user_by_email(cls, email):
         """ Method for getting user by email"""
         for id_ in DB.users:
