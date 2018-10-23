@@ -26,6 +26,7 @@ class Production(Config):
     TESTING = False
 
 
+# The dictionary app_config is used to export the environments we've specified. It's convenient to have it so that we can import the config under its name tag in future.
 app_config = {
     'development': Development,
     'testing': Testing,

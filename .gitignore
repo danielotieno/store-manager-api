@@ -1,5 +1,6 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
+__pycache__
 *.py[cod]
 *$py.class
 
@@ -60,6 +61,7 @@ db.sqlite3
 instance/
 .webassets-cache
 .vscode/
+.vscode
 
 # Scrapy stuff:
 .scrapy
