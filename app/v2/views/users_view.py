@@ -4,7 +4,7 @@ import re
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import (create_access_token, jwt_required)
 
-from app.v1.models.user import User
+from app.v2.models.user import User
 from utlis.required import required, admin_required
 
 

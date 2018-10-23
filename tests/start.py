@@ -1,11 +1,11 @@
 import unittest
 import json
 
-from app.v1 import create_app
-from app.v1.models.user import User, DB
+from app.v2 import create_app
+from app.v2.models.user import User, DB
 
-SIGNUP_URL = '/api/v1/auth/signup'
-LOGIN_URL = '/api/v1/auth/login'
+SIGNUP_URL = '/api/v2/auth/signup'
+LOGIN_URL = '/api/v2/auth/login'
 
 
 class BaseClass(unittest.TestCase):

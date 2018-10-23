@@ -3,15 +3,15 @@ import json
 
 from .start import BaseClass
 
-from app.v1 import create_app
+from app.v2 import create_app
 
-ADD_UPDATE_URL = '/api/v1/sales/3'
-GET_SINGLE_URL = '/api/v1/sales/1'
-GET_ALL_URL = '/api/v1/sales'
-DELETE_URL = '/api/v1/sales/2'
-MODIFY_URL = '/api/v1/sales/8'
-SIGNUP_URL = '/api/v1/auth/signup'
-LOGIN_URL = '/api/v1/auth/login'
+ADD_UPDATE_URL = '/api/v2/sales/3'
+GET_SINGLE_URL = '/api/v2/sales/1'
+GET_ALL_URL = '/api/v2/sales'
+DELETE_URL = '/api/v2/sales/2'
+MODIFY_URL = '/api/v2/sales/8'
+SIGNUP_URL = '/api/v2/auth/signup'
+LOGIN_URL = '/api/v2/auth/login'
 
 
 class TestSale(unittest.TestCase):

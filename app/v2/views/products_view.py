@@ -3,7 +3,7 @@ from flask import request
 from flask_restful import Resource
 from flask_jwt_extended import jwt_required
 
-from app.v1.models.product import Product
+from app.v2.models.product import Product
 from utlis.required import validate_data, admin_required
 
 PRODUCT_OBJECT = Product()

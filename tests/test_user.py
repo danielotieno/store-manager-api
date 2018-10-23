@@ -3,8 +3,8 @@ import json
 
 from .start import BaseClass
 
-SIGNUP_URL = '/api/v1/auth/signup'
-LOGIN_URL = '/api/v1/auth/login'
+SIGNUP_URL = '/api/v2/auth/signup'
+LOGIN_URL = '/api/v2/auth/login'
 
 
 class UserTests(BaseClass):

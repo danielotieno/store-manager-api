@@ -1,4 +1,5 @@
-from app.v1.models.user import User, DB
+""" Tests for user model """
+from app.v2.models.user import User, DB
 from .start import BaseClass
 
 

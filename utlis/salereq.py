@@ -1,3 +1,4 @@
+""" Validations fields for sales """
 import re
 
 

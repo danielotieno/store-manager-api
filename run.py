@@ -1,7 +1,7 @@
 """ This is an entry point to start our app. """
 import os
 
-from app.v1 import create_app
+from app.v2 import create_app
 
 config = os.getenv('APP_SETTINGS')
 app = create_app(config)

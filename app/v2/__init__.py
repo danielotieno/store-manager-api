@@ -5,7 +5,7 @@ from flask import Flask
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 
-from app.v1.models.user import User
+from app.v2.models.user import User
 
 import config
 
@@ -27,19 +27,19 @@ def create_app(config_name):
     user = User('admin', 'admin@email.com', 'admin12345', 'Admin')
     user = user.save()
 
-    from app.v1.views.welcome import Welcome
-    from app.v1.views.users_view import Signup, Login
-    from app.v1.views.products_view import Products
-    from app.v1.views.products_view import ProductView
-    from app.v1.views.sales_view import Sales
-    from app.v1.views.sales_view import SaleView
+    from app.v2.views.welcome import Welcome
+    from app.v2.views.users_view import Signup, Login
+    from app.v2.views.products_view import Products
+    from app.v2.views.products_view import ProductView
+    from app.v2.views.sales_view import Sales
+    from app.v2.views.sales_view import SaleView
 
     api.add_resource(Welcome, '/')
-    api.add_resource(Signup, '/api/v1/auth/signup')
-    api.add_resource(Login, '/api/v1/auth/login')
-    api.add_resource(Products, '/api/v1/products')
-    api.add_resource(ProductView, '/api/v1/products/<product_id>')
-    api.add_resource(Sales, '/api/v1/sales')
-    api.add_resource(SaleView, '/api/v1/sales/<sale_id>')
+    api.add_resource(Signup, '/api/v2/auth/signup')
+    api.add_resource(Login, '/api/v2/auth/login')
+    api.add_resource(Products, '/api/v2/products')
+    api.add_resource(ProductView, '/api/v2/products/<product_id>')
+    api.add_resource(Sales, '/api/v2/sales')
+    api.add_resource(SaleView, '/api/v2/sales/<sale_id>')
 
     return app

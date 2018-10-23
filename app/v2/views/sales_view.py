@@ -4,7 +4,7 @@ from flask_restful import Resource
 
 from flask_jwt_extended import jwt_required
 
-from app.v1.models.sale_order import Sale
+from app.v2.models.sale_order import Sale
 from utlis.salereq import validate_data
 from utlis.required import admin_required, store_attendant_required
 
