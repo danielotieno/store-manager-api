@@ -125,6 +125,18 @@ class TestProduct(unittest.TestCase):
         result = json.loads(response.data.decode('utf-8'))
         print(result)
 
+    def test_delete_a_product(self):
+        """ Test to delete a product """
+        response = self.client.delete(
+            DELETE_URL, data=json.dumps(dict(product_id=2,
+                                             name='Shirt',
+                                             description='Cool Polo shirt',
+                                             price=500,
+                                             category='Polo',
+                                             quantity=5,
+                                             low_inventory=10)), content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+
 
 if __name__ == '__main__':
     unittest.main()
