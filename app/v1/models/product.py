@@ -44,7 +44,7 @@ class Product:
             filter(lambda x: x['product_id'] == product_id, self.product_list), None)
         return {'Product': product}, 200 if product else 404
 
-    def update_an_order(self, product_id):
+    def update_a_product(self, product_id):
         """ A method to update a product """
         data = request.get_json()
         product = next(

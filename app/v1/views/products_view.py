@@ -50,3 +50,8 @@ class ProductView(Resource):
         """ Get a specific product method """
         get_product = PRODUCT_OBJECT.get_product_by_id(product_id)
         return get_product
+
+    def put(self, product_id):
+        """ A method for updating a product """
+        update_product = PRODUCT_OBJECT.update_a_product(product_id)
+        return update_product
