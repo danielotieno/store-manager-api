@@ -57,3 +57,10 @@ class ProductView(Resource):
         """ A method for updating a product """
         update_product = PRODUCT_OBJECT.update_a_product(product_id)
         return update_product
+
+    @jwt_required
+    @admin_required
+    def delete(self, product_id):
+        """ Delete a specific product from the list """
+        delete_product = PRODUCT_OBJECT.delete_a_product(product_id)
+        return delete_product
