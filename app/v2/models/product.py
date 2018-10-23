@@ -68,5 +68,5 @@ class Product:
         """ A method to delete a product using product id """
         self.product_list
         self.product_list = list(
-            filter(lambda x: x['prodcut_id'] != product_id, self.product_list))
+            filter(lambda x: x['product_id'] != product_id, self.product_list))
         return {'message': 'Product deleted successfully'}, 200

@@ -127,6 +127,7 @@ class TestProduct(unittest.TestCase):
 
     def test_delete_a_product(self):
         """ Test to delete a product """
+        access_token = self.get_token()
         response = self.client.delete(
             DELETE_URL, data=json.dumps(dict(product_id=2,
                                              name='Shirt',
@@ -134,7 +135,8 @@ class TestProduct(unittest.TestCase):
                                              price=500,
                                              category='Polo',
                                              quantity=5,
-                                             low_inventory=10)), content_type='application/json')
+                                             low_inventory=10)), content_type='application/json',
+            headers={'Authorization': 'Bearer '+access_token})
         self.assertEqual(response.status_code, 200)
 
 
