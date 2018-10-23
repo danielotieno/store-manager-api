@@ -98,6 +98,29 @@ class TestProduct(unittest.TestCase):
         self.assertEqual(resource.status_code, 404)
         self.assertEqual(resource.content_type, 'application/json')
 
+    def test_update_a_product(self):
+        """ Test to modify a product """
+        response = self.client.post(GET_ALL_URL, data=self.create_product,
+                                    content_type='application/json')
+
+        data = json.loads(response.data.decode('utf-8'))
+        print(data)
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.content_type, 'application/json')
+
+        response = self.client.put(MODIFY_URL,
+                                   data=json.dumps(dict(
+                                       product_id=1,
+                                       name='Suit',
+                                       description='Cool leather suit',
+                                       price=1000,
+                                       category='Polo',
+                                       quantity=5,
+                                       low_inventory=10)), content_type=("application/json"))
+        self.assertEqual(response.status_code, 200)
+        result = json.loads(response.data.decode())
+        print(result)
+
 
 if __name__ == '__main__':
     unittest.main()
