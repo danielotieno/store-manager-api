@@ -100,8 +100,10 @@ class TestProduct(unittest.TestCase):
 
     def test_update_a_product(self):
         """ Test to modify a product """
+        access_token = self.get_token()
         response = self.client.post(GET_ALL_URL, data=self.create_product,
-                                    content_type='application/json')
+                                    content_type='application/json',
+                                    headers={'Authorization': 'Bearer '+access_token})
 
         data = json.loads(response.data.decode('utf-8'))
         print(data)
@@ -116,9 +118,11 @@ class TestProduct(unittest.TestCase):
                                        price=1000,
                                        category='Polo',
                                        quantity=5,
-                                       low_inventory=10)), content_type=("application/json"))
+                                       low_inventory=10)),
+                                   content_type='application/json',
+                                   headers={'Authorization': 'Bearer '+access_token})
         self.assertEqual(response.status_code, 200)
-        result = json.loads(response.data.decode())
+        result = json.loads(response.data.decode('utf-8'))
         print(result)
 
 
