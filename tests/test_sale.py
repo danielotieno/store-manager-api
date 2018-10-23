@@ -39,12 +39,19 @@ class TestSale(unittest.TestCase):
 
         }
 
+        self.user_data = {
+            "username": "danny",
+            "email": "danny@gmail.com",
+            "password": "password1",
+            "role": "Store_Attendant"
+        }
+
         self.client.post(
             GET_ALL_URL,
             data=self.create_sale,
             content_type='application/json')
 
-    def logged_in_user(self):
+    def logged_in_admin(self):
         # first create user
         self.client.post(SIGNUP_URL,
                          data=json.dumps(self.admin_data), content_type='application/json')
@@ -59,31 +66,47 @@ class TestSale(unittest.TestCase):
 
         return result
 
-    def get_token(self):
-        login_user = self.logged_in_user()
-        token = login_user.get('token')
+    def get_admin_token(self):
+        login_admin = self.logged_in_admin()
+        token = login_admin.get('token')
 
         return token
 
-    # def test_add_sale(self):
-    #     """ Test for sale order creation """
-    #     access_token = self.get_token()
-    #     print(access_token)
+    def login_user(self):
+        token = self.get_admin_token()
 
-    #     resource = self.client.post(
-    #         GET_ALL_URL,
-    #         data=self.create_sale,
-    #         content_type='application/json',
-    #         headers={'Authorization': 'Bearer '+access_token})
+        self.client.post(SIGNUP_URL,
+                         data=json.dumps(self.user_data), content_type='application/json',
+                         headers={'Authorization': 'Bearer '+token})
 
-    #     data = json.loads(resource.data.decode('utf-8'))
-    #     print(data)
-    #     self.assertEqual(resource.status_code, 201)
-    #     self.assertEqual(resource.content_type, 'application/json')
+        res = self.client.post(LOGIN_URL,
+                               data=json.dumps(
+                                   self.user_data),
+                               content_type='application/json')
+
+        result = json.loads(res.data.decode('utf-8'))
+
+        return result['token']
+
+    def test_add_sale(self):
+        """ Test for sale order creation """
+        access_token = self.login_user()
+        print(access_token)
+
+        resource = self.client.post(
+            GET_ALL_URL,
+            data=self.create_sale,
+            content_type='application/json',
+            headers={'Authorization': 'Bearer '+access_token})
+
+        data = json.loads(resource.data.decode('utf-8'))
+        print(data)
+        self.assertEqual(resource.status_code, 201)
+        self.assertEqual(resource.content_type, 'application/json')
 
     def test_get_all_sales(self):
         """ Test for getting all sales record """
-        access_token = self.get_token()
+        access_token = self.get_admin_token()
         print(access_token)
         resource = self.client.get(
             GET_ALL_URL,
