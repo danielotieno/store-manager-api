@@ -62,13 +62,14 @@ class TestCategory(unittest.TestCase):
 
         return token
 
-    def test_add_product(self):
+    def test_add_category(self):
         """ Test to add category """
-
+        access_token = self.get_token()
         resource = self.client.post(
             GET_ALL_URL,
             data=self.create_category,
-            content_type='application/json')
+            content_type='application/json',
+            headers={'Authorization': 'Bearer '+access_token})
 
         data = json.loads(resource.data.decode())
         print(data)
@@ -77,8 +78,10 @@ class TestCategory(unittest.TestCase):
 
     def test_modify_category(self):
         """ Test to modify category """
+        access_token = self.get_token()
         response = self.client.post(GET_ALL_URL, data=self.create_category,
-                                    content_type='application/json')
+                                    content_type='application/json',
+                                    headers={'Authorization': 'Bearer '+access_token})
 
         data = json.loads(response.data.decode('utf-8'))
         print(data)
@@ -90,15 +93,18 @@ class TestCategory(unittest.TestCase):
                                        category_id=1,
                                        name='Shirt',
                                        status='Inactive')),
-                                   content_type='application/json')
+                                   content_type='application/json',
+                                   headers={'Authorization': 'Bearer '+access_token})
         self.assertEqual(response.status_code, 200)
         result = json.loads(response.data.decode('utf-8'))
         print(result)
 
     def test_delete_category(self):
         """ Test to delete a category """
+        access_token = self.get_token()
         response = self.client.delete(
             DELETE_URL, data=json.dumps(dict(product_id=2,
                                              name='Shirt',
-                                             status='Active')), content_type='application/json')
+                                             status='Active')), content_type='application/json',
+            headers={'Authorization': 'Bearer '+access_token})
         self.assertEqual(response.status_code, 200)
