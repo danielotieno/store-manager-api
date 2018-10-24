@@ -28,3 +28,20 @@ class Category:
             second=0, microsecond=0))
         self.category_list.append(self.category_details)
         return {'Categories': self.category_list, 'message': 'Category added successfully'}, 201
+
+    def modify_category(self, category_id):
+        """ A method to modify category """
+        data = request.get_json()
+        category = next(
+            filter(lambda x: x['category_id'] == category_id, self.category_list), None)
+
+        if category is None:
+            category = {
+                'name': data['name'],
+                'status': data['status'],
+
+            }
+            self.category_list.append(category), 201
+        else:
+            category.update(category)
+        return {'Category': category, 'message': 'Successfully updated'}, 200
