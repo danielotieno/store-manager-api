@@ -1,8 +1,6 @@
 import unittest
 import json
 
-from .start import BaseClass
-
 from app.v2 import create_app
 
 ADD_UPDATE_URL = '/api/v2/sales/3'

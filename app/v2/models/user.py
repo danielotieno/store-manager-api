@@ -4,7 +4,6 @@ It also create data structure to store user data
 
 """
 from datetime import datetime
-from flask import current_app
 from werkzeug.security import check_password_hash, generate_password_hash
 
 

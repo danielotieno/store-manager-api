@@ -1,7 +1,5 @@
 """ Validations with decorator file """
 from functools import wraps
-
-from flask_restful import reqparse
 from flask_jwt_extended import get_jwt_identity
 
 from app.v2.models.user import User
