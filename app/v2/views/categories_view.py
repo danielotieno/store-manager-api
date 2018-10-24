@@ -39,3 +39,10 @@ class CategoryView(Resource):
         """ A method for modifying category """
         update_category = CATEGORY_OBJECT.modify_category(category_id)
         return update_category
+
+    @jwt_required
+    @admin_required
+    def delete(self, category_id):
+        """ A method to Delete a specific category """
+        delete_category = CATEGORY_OBJECT.delete_category(category_id)
+        return delete_category
