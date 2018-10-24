@@ -37,7 +37,7 @@ def create_app(config_name):
     user = user.save()
 
     from app.v2.views.welcome import Welcome
-    from app.v2.views.users_view import Signup, Login
+    from app.v2.views.users_view import Signup, Login, Logout
     from app.v2.views.products_view import Products
     from app.v2.views.products_view import ProductView
     from app.v2.views.sales_view import Sales
@@ -46,6 +46,7 @@ def create_app(config_name):
     api.add_resource(Welcome, '/')
     api.add_resource(Signup, '/api/v2/auth/signup')
     api.add_resource(Login, '/api/v2/auth/login')
+    api.add_resource(Logout, '/api/v2/auth/logout')
     api.add_resource(Products, '/api/v2/products')
     api.add_resource(ProductView, '/api/v2/products/<product_id>')
     api.add_resource(Sales, '/api/v2/sales')
