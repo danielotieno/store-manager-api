@@ -45,3 +45,10 @@ class Category:
         else:
             category.update(category)
         return {'Category': category, 'message': 'Successfully updated'}, 200
+
+    def delete_category(self, category_id):
+        """ A method to delete category using category id """
+        self.category_list
+        self.category_list = list(
+            filter(lambda x: x['category_id'] != category_id, self.category_list))
+        return {'message': 'Category deleted successfully'}, 200
