@@ -2,8 +2,7 @@
 import datetime
 import re
 from flask_restful import Resource, reqparse
-from flask_jwt_extended import (
-    JWTManager, create_access_token, jwt_required, get_raw_jwt)
+from flask_jwt_extended import (create_access_token, jwt_required, get_raw_jwt)
 
 from app.v2.models.user import User
 from utlis.required import required, admin_required
@@ -93,6 +92,7 @@ class Logout(Resource):
     """ A class resource to logout user """
     @jwt_required
     def delete(self):
+        """ Endpoint for revoking the current users access token"""
         jti = get_raw_jwt()['jti']
         try:
             BLACKLIST.add(jti)

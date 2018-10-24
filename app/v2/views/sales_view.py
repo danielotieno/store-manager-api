@@ -50,7 +50,8 @@ class SaleView(Resource):
     Resource for sales endpoints with ids
     """
 
-    def get(self, sale_id):
+    @classmethod
+    def get(cls, sale_id):
         """ Get a specific sale record method """
         get_sale = SALE_OBJECT.get_sale_record_by_id(sale_id)
         return get_sale

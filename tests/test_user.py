@@ -14,7 +14,6 @@ class UserTests(BaseClass):
     def test_user_registration(self):
         """ Test user registration works correcty """
         access_token = self.get_token()
-        print(access_token)
         response = self.client.post(SIGNUP_URL,
                                     data=json.dumps(self.user_data), content_type='application/json',
                                     headers={'Authorization': 'Bearer '+access_token})

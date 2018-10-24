@@ -91,7 +91,6 @@ class TestSale(unittest.TestCase):
     def test_add_sale(self):
         """ Test for sale order creation """
         access_token = self.login_user()
-        print(access_token)
 
         resource = self.client.post(
             GET_ALL_URL,
@@ -107,7 +106,6 @@ class TestSale(unittest.TestCase):
     def test_get_all_sales(self):
         """ Test for getting all sales record """
         access_token = self.get_admin_token()
-        print(access_token)
         resource = self.client.get(
             GET_ALL_URL,
             data=json.dumps(dict()),
@@ -115,7 +113,6 @@ class TestSale(unittest.TestCase):
             headers={'Authorization': 'Bearer '+access_token})
 
         data = json.loads(resource.data.decode())
-        print(data)
         self.assertEqual(resource.status_code, 200)
         self.assertEqual(resource.content_type, 'application/json')
         self.assertEqual(data["message"], "Successfully")
