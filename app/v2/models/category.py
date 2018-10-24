@@ -21,7 +21,7 @@ class Category:
 
         self.category_details = {}
 
-        self.category_details['product_id'] = str(uuid.uuid1())
+        self.category_details['cetegory_id'] = str(uuid.uuid1())
         self.category_details['name'] = name
         self.category_details['status'] = status
         self.category_details['date'] = str(datetime.now().replace(
