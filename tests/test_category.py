@@ -8,9 +8,9 @@ from app.v2 import create_app
 
 SIGNUP_URL = '/api/v2/auth/signup'
 LOGIN_URL = '/api/v2/auth/login'
-GET_ALL_URL = '/api/v2/sales'
-DELETE_URL = '/api/v2/sales/2'
-MODIFY_URL = '/api/v2/sales/8'
+GET_ALL_URL = '/api/v2/categories'
+DELETE_URL = '/api/v2/categories/2'
+MODIFY_URL = '/api/v2/categories/8'
 
 
 class TestCategory(unittest.TestCase):
@@ -103,7 +103,7 @@ class TestCategory(unittest.TestCase):
         """ Test to delete a category """
         access_token = self.get_token()
         response = self.client.delete(
-            DELETE_URL, data=json.dumps(dict(product_id=2,
+            DELETE_URL, data=json.dumps(dict(category_id=2,
                                              name='Shirt',
                                              status='Active')), content_type='application/json',
             headers={'Authorization': 'Bearer '+access_token})

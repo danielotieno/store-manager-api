@@ -42,6 +42,8 @@ def create_app(config_name):
     from app.v2.views.products_view import ProductView
     from app.v2.views.sales_view import Sales
     from app.v2.views.sales_view import SaleView
+    from app.v2.views.categories_view import Categories
+    from app.v2.views.categories_view import CategoryView
 
     api.add_resource(Welcome, '/')
     api.add_resource(Signup, '/api/v2/auth/signup')
@@ -51,5 +53,7 @@ def create_app(config_name):
     api.add_resource(ProductView, '/api/v2/products/<product_id>')
     api.add_resource(Sales, '/api/v2/sales')
     api.add_resource(SaleView, '/api/v2/sales/<sale_id>')
+    api.add_resource(Categories, '/api/v2/categories')
+    api.add_resource(CategoryView, '/api/v2/categories/<category_id>')
 
     return app
