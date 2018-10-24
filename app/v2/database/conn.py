@@ -18,19 +18,39 @@ def database_connection():
 def init_db():
     """Initialize a database"""
     try:
-        connection = dbcon()
+        connection = database_connection()
         connection.autocommit = True
 
         # activate cursor
         cursor = connection.cursor()
 
         for table in table_list:
-            cursor.execute(query)
+            cursor.execute(table)
         connection.commit()
+
+        create_admin()
 
     except (Exception, psycopg2.DatabaseError) as error:
         print("DB Error")
         print(error)
+
+
+def create_admin():
+    """create a default admin user"""
+    conn = database_connection()
+    cur = conn.cursor()
+
+    # check if user exists
+    email = "admin@email.com"
+    password = "admin12345"
+    cur.execute("SELECT * FROM users_table WHERE email=%(email)s",
+                {'email': email})
+    if cur.rowcount > 0:
+        return False
+    cur.execute("INSERT INTO users_table(username, email, password, user_role)\
+    VALUES(%(username)s, %(email)s, %(password)s, %(user_role)s);",
+                {'username': 'admin', 'email': 'admin@email,com', 'password': password, 'user_role': 'Admin'})
+    conn.commit()
 
 
 def drop_all_tables():
