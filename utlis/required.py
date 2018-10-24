@@ -58,3 +58,18 @@ def validate_data(data):
             return "valid"
     except Exception as error:
         return "please provide all the fields, missing " + str(error)
+
+
+def category_data(data):
+    """validate category details"""
+    try:
+        # check if there are specil characters in the name
+        if not re.match("^[a-zA-Z0-9_ ]+$", data['name'].strip()):
+            return "product name can only contain characters"
+
+        elif not re.match("^[a-zA-Z0-9_ ]+$", data['status'].strip()):
+            return "description can only contain characters"
+        else:
+            return "valid"
+    except Exception as error:
+        return "please provide all the fields, missing " + str(error)
