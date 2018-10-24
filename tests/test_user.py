@@ -5,6 +5,7 @@ from .start import BaseClass
 
 SIGNUP_URL = '/api/v2/auth/signup'
 LOGIN_URL = '/api/v2/auth/login'
+LOGOUT_URL = '/api/v2/auth/logout'
 
 
 class UserTests(BaseClass):
@@ -96,6 +97,18 @@ class UserTests(BaseClass):
         self.assertEqual(response.status_code, 400)
         result = json.loads(response.data.decode())
         self.assertEqual(result["message"], "Invalid username")
+
+    def test_user_can_logout(self):
+        """ Test user should be able to logout """
+        access_token = self.get_token()
+        response = self.client.delete(LOGOUT_URL,
+                                      data=json.dumps(
+                                          {'email': 'danny@gmail.com', 'password': 'password1', 'role': 'Store Attendant'}),
+                                      content_type='application/json',
+                                      headers={'Authorization': 'Bearer '+access_token})
+        self.assertEqual(response.status_code, 200)
+        result = json.loads(response.data.decode())
+        self.assertEqual(result["message"], "Successfully logged out")
 
     def test_login_for_user_not_registered(self):
         """ Test login for Non registered user """
