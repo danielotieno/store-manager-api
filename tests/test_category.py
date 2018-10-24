@@ -72,9 +72,9 @@ class TestCategory(unittest.TestCase):
             headers={'Authorization': 'Bearer '+access_token})
 
         data = json.loads(resource.data.decode())
-        print(data)
         self.assertEqual(resource.status_code, 201)
         self.assertEqual(resource.content_type, 'application/json')
+        self.assertEqual(data["message"], "Category added successfully")
 
     def test_modify_category(self):
         """ Test to modify category """
@@ -97,7 +97,7 @@ class TestCategory(unittest.TestCase):
                                    headers={'Authorization': 'Bearer '+access_token})
         self.assertEqual(response.status_code, 200)
         result = json.loads(response.data.decode('utf-8'))
-        print(result)
+        self.assertEqual(result["message"], "Successfully updated")
 
     def test_delete_category(self):
         """ Test to delete a category """

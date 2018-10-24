@@ -76,9 +76,9 @@ class TestProduct(unittest.TestCase):
             headers={'Authorization': 'Bearer '+access_token})
 
         data = json.loads(resource.data.decode())
-        print(data)
         self.assertEqual(resource.status_code, 201)
         self.assertEqual(resource.content_type, 'application/json')
+        self.assertEqual(data["message"], "Product added successfully")
 
     def test_get_all_products(self):
         """ Test for getting all products """
@@ -88,9 +88,9 @@ class TestProduct(unittest.TestCase):
             content_type='application/json')
 
         data = json.loads(resource.data.decode())
-        print(data)
         self.assertEqual(resource.status_code, 200)
         self.assertEqual(resource.content_type, 'application/json')
+        self.assertEqual(data["message"], "Successfully")
 
     def test_get_specific_product_by_id(self):
         """ Test for getting specific product by id """
@@ -123,7 +123,7 @@ class TestProduct(unittest.TestCase):
                                    headers={'Authorization': 'Bearer '+access_token})
         self.assertEqual(response.status_code, 200)
         result = json.loads(response.data.decode('utf-8'))
-        print(result)
+        self.assertEqual(result["message"], "Successfully updated")
 
     def test_delete_a_product(self):
         """ Test to delete a product """

@@ -62,7 +62,7 @@ class Product:
             self.product_list.append(product), 201
         else:
             product.update(product)
-        return {'Product': product, 'message': 'Successfully Update'}, 200
+        return {'Product': product, 'message': 'Successfully updated'}, 200
 
     def delete_a_product(self, product_id):
         """ A method to delete a product using product id """

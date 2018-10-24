@@ -100,9 +100,9 @@ class TestSale(unittest.TestCase):
             headers={'Authorization': 'Bearer '+access_token})
 
         data = json.loads(resource.data.decode('utf-8'))
-        print(data)
         self.assertEqual(resource.status_code, 201)
         self.assertEqual(resource.content_type, 'application/json')
+        self.assertEqual(data["message"], "Sale Order successfully created")
 
     def test_get_all_sales(self):
         """ Test for getting all sales record """
@@ -118,6 +118,7 @@ class TestSale(unittest.TestCase):
         print(data)
         self.assertEqual(resource.status_code, 200)
         self.assertEqual(resource.content_type, 'application/json')
+        self.assertEqual(data["message"], "Successfully")
 
     def test_get_specific_sale_by_id(self):
         """ Test for getting specific sale record by id """
