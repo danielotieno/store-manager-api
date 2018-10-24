@@ -6,6 +6,7 @@ from flask_restful import Api
 from flask_jwt_extended import JWTManager
 
 from app.v2.models.user import User
+from app.v2.views.users_view import BLACKLIST
 
 import config
 
@@ -21,8 +22,16 @@ def create_app(config_name):
     app.config.from_object('config')
     app.url_map.strict_slashes = False
     app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
+    app.config['JWT_BLACKLIST_ENABLED'] = True
+    app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access']
 
     JWT.init_app(app)
+
+    @JWT.token_in_blacklist_loader
+    def check_if_token_blacklist(decrypted_token):
+        '''check if jti(unique identifier) is in black list'''
+        jti = decrypted_token['jti']
+        return jti in BLACKLIST
 
     user = User('admin', 'admin@email.com', 'admin12345', 'Admin')
     user = user.save()

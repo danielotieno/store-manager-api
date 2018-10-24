@@ -2,10 +2,14 @@
 import datetime
 import re
 from flask_restful import Resource, reqparse
-from flask_jwt_extended import (create_access_token, jwt_required, get_raw_jwt)
+from flask_jwt_extended import (
+    JWTManager, create_access_token, jwt_required, get_raw_jwt)
 
 from app.v2.models.user import User
 from utlis.required import required, admin_required
+
+
+BLACKLIST = set()
 
 
 class Signup(Resource):
@@ -83,3 +87,15 @@ class Login(Resource):
                 user.to_json(), expires_delta=expires)
             return {'token': token, "message": "You are successfully logged in", 'user': user.view()}, 200
         return {"message": "Email or password is wrong."}, 401
+
+
+class Logout(Resource):
+    """ A class resource to logout user """
+    @jwt_required
+    def delete(self):
+        jti = get_raw_jwt()['jti']
+        try:
+            BLACKLIST.add(jti)
+            return {"message": "Successfully logged out"}, 200
+        except:
+            return {'message': 'Something went wrong'}, 500
