@@ -49,7 +49,7 @@ def create_admin():
         return False
     cur.execute("INSERT INTO users_table(username, email, password, user_role)\
     VALUES(%(username)s, %(email)s, %(password)s, %(user_role)s);",
-                {'username': 'admin', 'email': 'admin@email,com', 'password': password, 'user_role': 'Admin'})
+                {'username': 'admin', 'email': 'admin@email.com', 'password': password, 'user_role': 'Admin'})
     conn.commit()
 
 
