@@ -15,7 +15,7 @@ def database_connection():
     return psycopg2.connect(url)
 
 
-def init_db():
+def init_database():
     """Initialize a database"""
     try:
         connection = database_connection()

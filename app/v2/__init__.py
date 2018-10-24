@@ -7,6 +7,7 @@ from flask_jwt_extended import JWTManager
 
 from app.v2.models.user import User
 from app.v2.views.users_view import BLACKLIST
+from app.v2.database.conn import init_database
 
 import config
 
@@ -33,8 +34,7 @@ def create_app(config_name):
         jti = decrypted_token['jti']
         return jti in BLACKLIST
 
-    user = User('admin', 'admin@email.com', 'admin12345', 'Admin')
-    user = user.save()
+    init_database()
 
     from app.v2.views.welcome import Welcome
     from app.v2.views.users_view import Signup, Login, Logout
