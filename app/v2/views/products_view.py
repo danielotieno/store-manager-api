@@ -42,9 +42,7 @@ class Products(Resource):
 
 
 class ProductView(Resource):
-    """
-    Resource for product endpoints with ids
-    """
+    """ Resource for product endpoints with ids """
 
     def get(self, product_id):
         """ Get a specific product method """

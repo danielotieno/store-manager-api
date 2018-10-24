@@ -28,3 +28,14 @@ class Categories(Resource):
 
             return res
         return {"message": res}, 400
+
+
+class CategoryView(Resource):
+    """ Resource for categories endpoints """
+
+    @jwt_required
+    @admin_required
+    def put(self, category_id):
+        """ A method for modifying category """
+        update_category = CATEGORY_OBJECT.modify_category(category_id)
+        return update_category
