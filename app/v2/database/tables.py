@@ -1,4 +1,9 @@
 """ Creating data Table scripts """
+import uuid
+
+product_id = str(uuid.uuid1())
+category_id = str(uuid.uuid1())
+sale_id = str(uuid.uuid1())
 
 users = """ CREATE TABLE IF NOT EXISTS users_table(
     userid serial PRIMARY KEY,
@@ -11,7 +16,7 @@ users = """ CREATE TABLE IF NOT EXISTS users_table(
 """
 
 categories = """ CREATE TABLE IF NOT EXISTS categories_table(
-    category_id serial PRIMARY KEY,
+    category_id VARCHAR(250) PRIMARY KEY,
     category_name VARCHAR(50) NOT NULL,
     category_status VARCHAR(50) NOT NULL,
     created_at timestamp with time zone DEFAULT now()
@@ -20,9 +25,9 @@ categories = """ CREATE TABLE IF NOT EXISTS categories_table(
 
 
 products = """ CREATE TABLE IF NOT EXISTS products_table(
-    product_id serial PRIMARY KEY,
-    product_name VARCHAR(50) NOT NULL,
-    product_description VARCHAR(50) NOT NULL,
+    product_id VARCHAR(250) PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    description VARCHAR(50) NOT NULL,
     price INTEGER NOT NUll,
     category VARCHAR(50) NOT NULL,
     quantity INTEGER NOT NULL,
@@ -32,7 +37,7 @@ products = """ CREATE TABLE IF NOT EXISTS products_table(
 """
 
 sales = """ CREATE TABLE IF NOT EXISTS sales_table(
-    sale_id serial PRIMARY KEY,
+    sale_id VARCHAR(250) PRIMARY KEY,
     customer VARCHAR(50) NOT NULL,
     product VARCHAR(50) NOT NULL,
     quantity INTEGER NOT NULL,

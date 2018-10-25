@@ -8,9 +8,6 @@ from datetime import datetime
 from flask import request
 
 from app.v2.database.conn import database_connection
-conn = database_connection()
-conn.autocommit = True
-cur = conn.cursor()
 
 
 class Product:
@@ -18,24 +15,26 @@ class Product:
 
     def __init__(self):
         """ Initialize empty Product list"""
+        self.conn = database_connection()
+        self.conn.autocommit = True
+        self.cur = self.conn.cursor()
         self.product_list = []
+        self.product_details = {}
 
     def create_product(self, name, description, price, category, quantity, low_inventory):
         """Create product item"""
-
-        self.product_details = {}
-
-        self.product_details['product_id'] = str(uuid.uuid1())
-        self.product_details['name'] = name
-        self.product_details['description'] = description
-        self.product_details['price'] = price
-        self.product_details['category'] = category
-        self.product_details['quantity'] = quantity
-        self.product_details['low_inventory'] = low_inventory
-        self.product_details['date'] = str(datetime.now().replace(
-            second=0, microsecond=0))
-        self.product_list.append(self.product_details)
-        return {'Products': self.product_list, 'message': 'Product added successfully'}, 201
+        # check if product is already created
+        self.cur.execute("SELECT * FROM products_table WHERE name=%(name)s",
+                         {'name': name})
+        if self.cur.rowcount > 0:
+            return {"message": "Product already exists."}, 400
+        else:
+            self.cur.execute(
+                "INSERT INTO products_table(name,description,price,category,quantity,low_inventory)\
+            VALUES(%(name)s, %(description)s, %(price)s, %(category)s, %(quantity)s, %(low_inventory)s);", {
+                    'name': name, 'description': description, 'price': price, 'category': category, 'quantity': quantity, 'low_inventory': low_inventory})
+            self.conn.commit()
+            return {"message": "Product added successfully"}, 201
 
     def get_products(self):
         """ A method to get all products """
