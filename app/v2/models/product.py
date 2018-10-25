@@ -92,7 +92,14 @@ class Product:
 
     def delete_a_product(self, product_id):
         """ A method to delete a product using product id """
-        self.product_list
-        self.product_list = list(
-            filter(lambda x: x['product_id'] != product_id, self.product_list))
-        return {'message': 'Product deleted successfully'}, 200
+        self.cur.execute("SELECT * FROM products_table WHERE product_id=%(product_id)s",
+                         {'product_id': product_id})
+        if self.cur.rowcount > 0:
+            # delete a product
+            self.cur.execute(
+                "DELETE FROM products_table WHERE product_id=%(product_id)s", {
+                    'product_id': product_id})
+            self.conn.commit()
+            return {
+                "message": "Product deleted successfully"}, 201
+        return {"message": "Product Not Found"}, 400
