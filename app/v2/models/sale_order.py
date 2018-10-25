@@ -48,10 +48,22 @@ class Sale:
                 "message": "Successfully",
                 "Products": self.sales_details}, 200
         return {
-            "message": "Sales Not Found"}, 200
+            "message": "Sales Record Not Found"}, 200
 
     def get_sale_record_by_id(self, sale_id):
         """ A method to get a single sale record """
-        sale = next(
-            filter(lambda x: x['sale_id'] == sale_id, self.sales_list), None)
-        return {'Sale Record': sale}, 200 if sale else 404
+        self.cur.execute(
+            "SELECT * FROM sales_table WHERE sale_id=%(sale_id)s", {'sale_id': sale_id})
+        if self.cur.rowcount > 0:
+            rows = self.cur.fetchone()
+            self.sales_details.update({
+                'sale_id': rows[0],
+                'customer': rows[1],
+                'product': rows[2],
+                'quantity': rows[3],
+                'created_by': rows[4],
+                'total_amount': rows[5]})
+            return {
+                "message": "Successful",
+                "Product": self.sales_details}, 200
+        return {"message": "Sale Record Not Found."}, 400
