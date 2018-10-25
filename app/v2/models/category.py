@@ -37,22 +37,18 @@ class Category:
             self.conn.commit()
             return {"message": "Category added successfully"}, 201
 
-    def modify_category(self, category_id):
+    def modify_category(self, category_id, category_name, category_status):
         """ A method to modify category """
-        data = request.get_json()
-        category = next(
-            filter(lambda x: x['category_id'] == category_id, self.category_list), None)
-
-        if category is None:
-            category = {
-                'name': data['name'],
-                'status': data['status'],
-
-            }
-            self.category_list.append(category), 201
-        else:
-            category.update(category)
-        return {'Category': category, 'message': 'Successfully updated'}, 200
+        self.cur.execute("SELECT * FROM categories_table WHERE category_id=%(category_id)s",
+                         {'category_id': category_id})
+        if self.cur.rowcount > 0:
+            # update product details
+            self.cur.execute(
+                "UPDATE categories_table SET category_name=%s, category_status=%s\
+            WHERE category_id=%s", (category_name, category_status))
+            self.conn.commit()
+            return {"message": "Successfully updated"}, 201
+        return {"message": "Category Not Found."}, 400
 
     def delete_category(self, category_id):
         """ A method to delete category using category id """
