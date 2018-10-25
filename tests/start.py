@@ -2,7 +2,7 @@ import unittest
 import json
 
 from app.v2 import create_app
-from app.v2.models.user import User, DB
+from app.v2.models.user import User
 
 from app.v2.database.conn import init_database, drop_all_tables
 
@@ -82,6 +82,6 @@ class BaseClass(unittest.TestCase):
 
         return token
 
-    def tearDown(self):
-        '''Clears the database'''
-        DB.drop()
+    # def tearDown(self):
+    #     '''Clears the database'''
+    #     DB.drop()

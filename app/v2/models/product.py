@@ -7,6 +7,11 @@ import uuid
 from datetime import datetime
 from flask import request
 
+from app.v2.database.conn import database_connection
+conn = database_connection()
+conn.autocommit = True
+cur = conn.cursor()
+
 
 class Product:
     """ Create a Product class to hold product methods """
