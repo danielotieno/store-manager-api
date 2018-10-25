@@ -31,7 +31,24 @@ class Sale:
 
     def get_sales(self):
         """ A method to get all sales record """
-        return {'Sales Record': self.sales_list, 'message': 'Successfully'}, 200
+        self.cur.execute("SELECT * FROM sales_table")
+        if self.cur.rowcount > 0:
+            rows = self.cur.fetchall()
+            self.sales_list = []
+            for sale in rows:
+                self.sales_details.update({
+                    'sale_id': sale[0],
+                    'customer': sale[1],
+                    'product': sale[2],
+                    'quantity': sale[3],
+                    'created_by': sale[4],
+                    'total_amount': sale[5]})
+                self.sales_list.append(dict(self.sales_details))
+            return {
+                "message": "Successfully",
+                "Products": self.sales_details}, 200
+        return {
+            "message": "Sales Not Found"}, 200
 
     def get_sale_record_by_id(self, sale_id):
         """ A method to get a single sale record """
