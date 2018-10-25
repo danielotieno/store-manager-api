@@ -7,26 +7,35 @@ import uuid
 from datetime import datetime
 from flask import request
 
+from app.v2.database.conn import database_connection
+
 
 class Category:
     """ Create a Category class to hold cetegories methods """
 
     def __init__(self):
-        """ Initialize empty Category list"""
+        """ Initialize empty Category list and database connection"""
+        self.conn = database_connection()
+        self.conn.autocommit = True
+        self.cur = self.conn.cursor()
         self.category_list = []
-
-    def create_cetegory(self, name, status):
-        """ A method to create categories """
-
         self.category_details = {}
 
-        self.category_details['category_id'] = str(uuid.uuid1())
-        self.category_details['name'] = name
-        self.category_details['status'] = status
-        self.category_details['date'] = str(datetime.now().replace(
-            second=0, microsecond=0))
-        self.category_list.append(self.category_details)
-        return {'Categories': self.category_list, 'message': 'Category added successfully'}, 201
+    def create_cetegory(self, category_name, category_status):
+        """ A method to create categories """
+
+        # check if category is already created
+        self.cur.execute("SELECT * FROM categories_table WHERE category_name=%(category_name)s",
+                         {'category_name': category_name})
+        if self.cur.rowcount > 0:
+            return {"message": "Category already exists."}, 400
+        else:
+            self.cur.execute(
+                "INSERT INTO categories_table(category_name, category_status)\
+            VALUES(%(category_name)s, %(category_status)s);", {
+                    'category_name': category_name, 'category_status': category_status})
+            self.conn.commit()
+            return {"message": "Category added successfully"}, 201
 
     def modify_category(self, category_id):
         """ A method to modify category """

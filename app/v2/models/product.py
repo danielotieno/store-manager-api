@@ -14,7 +14,7 @@ class Product:
     """ Create a Product class to hold product methods """
 
     def __init__(self):
-        """ Initialize empty Product list"""
+        """ Initialize empty Product list and database connection"""
         self.conn = database_connection()
         self.conn.autocommit = True
         self.cur = self.conn.cursor()
