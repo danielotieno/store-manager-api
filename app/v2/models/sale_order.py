@@ -6,29 +6,28 @@ It also create data structure to store sales order data
 import uuid
 from datetime import datetime
 
+from app.v2.database.conn import database_connection
+
 
 class Sale:
     """ Create a Sale class to hold sales methods """
 
     def __init__(self):
-        """ Initialize empty Sales list"""
+        """ Initialize sales database table """
+        self.conn = database_connection()
+        self.conn.autocommit = True
+        self.cur = self.conn.cursor()
         self.sales_list = []
-
-    def create_sale(self, customer, product, quantity, created_by, total_amount):
-        """Create sale item"""
-
         self.sales_details = {}
 
-        self.sales_details['sale_id'] = str(uuid.uuid1())
-        self.sales_details['customer'] = customer
-        self.sales_details['product'] = product
-        self.sales_details['quantity'] = quantity
-        self.sales_details['created_by'] = created_by
-        self.sales_details['total_amount'] = total_amount
-        self.sales_details['sales_date'] = str(datetime.now().replace(
-            second=0, microsecond=0))
-        self.sales_list.append(self.sales_details)
-        return {'Sale Orders': self.sales_list, 'message': 'Sale Order successfully created'}, 201
+    def create_sale(self, customer, product, quantity, created_by, total_amount):
+        """Create sale item in table"""
+        self.cur.execute(
+            "INSERT INTO sales_table(customer, product, quantity, created_by, total_amount)\
+        VALUES(%(customer)s, %(product)s, %(quantity)s, %(created_by)s, %(total_amount)s);", {
+                'customer': customer, 'product': product, 'quantity': quantity, 'created_by': created_by, 'total_amount': total_amount})
+        self.conn.commit()
+        return {"message": "Sale Order successfully created"}, 201
 
     def get_sales(self):
         """ A method to get all sales record """
