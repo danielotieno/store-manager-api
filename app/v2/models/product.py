@@ -75,7 +75,7 @@ class Product:
             return {
                 "message": "Successful. Product Found",
                 "Product": self.product_details, "status": "Ok"}, 200
-        return {"message": "No Product Found."}, 400
+        return {"message": "Product Not Found."}, 400
 
     def update_a_product(self, product_id, product_name, product_description, price, category, quantity, low_inventory):
         """ A method to update a product """
@@ -88,7 +88,7 @@ class Product:
             WHERE product_id=%s", (product_name, product_description, price, category, quantity, low_inventory, product_id))
             self.conn.commit()
             return {"message": "Successfully updated"}, 201
-        return {"message": "No Product Found."}, 400
+        return {"message": "Product Not Found."}, 400
 
     def delete_a_product(self, product_id):
         """ A method to delete a product using product id """
