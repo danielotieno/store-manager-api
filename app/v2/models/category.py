@@ -52,7 +52,14 @@ class Category:
 
     def delete_category(self, category_id):
         """ A method to delete category using category id """
-        self.category_list
-        self.category_list = list(
-            filter(lambda x: x['category_id'] != category_id, self.category_list))
-        return {'message': 'Category deleted successfully'}, 200
+        self.cur.execute("SELECT * FROM categories_table WHERE category_id=%(category_id)s",
+                         {'category_id': category_id})
+        if self.cur.rowcount > 0:
+            # delete a category
+            self.cur.execute(
+                "DELETE FROM categories_table WHERE category_id=%(category_id)s", {
+                    'category_id': category_id})
+            self.conn.commit()
+            return {
+                "message": "Category deleted successfully"}, 201
+        return {"message": "Category Not Found"}, 400
