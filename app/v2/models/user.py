@@ -118,10 +118,12 @@ class User(Start):
     @classmethod
     def get_user_by_email(cls, email):
         """ Method for getting user by email"""
-        for id_ in DB.users:
-            user = DB.users.get(id_)
-            if user.email == email:
-                return user
+        cur.execute(
+            "SELECT * FROM users_table WHERE email=%s", (email,))
+        user = cur.fetchone()
+
+        if user:
+            return user.to_json()
         return None
 
     def view(self):
