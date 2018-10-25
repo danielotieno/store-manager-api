@@ -38,7 +38,25 @@ class Product:
 
     def get_products(self):
         """ A method to get all products """
-        return {'Products': self.product_list, 'message': 'Successfully'}, 200
+        self.cur.execute("SELECT * FROM products_table")
+        if self.cur.rowcount > 0:
+            rows = self.cur.fetchall()
+            self.product_list = []
+            for product in rows:
+                self.product_details.update({
+                    'product_id': product[0],
+                    'product_name': product[1],
+                    'product_description': product[2],
+                    'price': product[3],
+                    'category': product[4],
+                    'quantity': product[5],
+                    'low_inventory': product[4]})
+                self.product_list.append(dict(self.product_details))
+            return {
+                "message": "Successfully. Product Found",
+                "Products": self.product_list}, 200
+        return {
+            "message": "No Product.", "status": "Ok"}, 200
 
     def get_product_by_id(self, product_id):
         """ A method to get a single product """

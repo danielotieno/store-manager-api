@@ -127,11 +127,6 @@ class User(Start):
             return user
         return None
 
-    def view(self):
-        """ Method to jsonify object user"""
-        keys = ['username', 'email', 'id', 'role']
-        return {key: getattr(self, key) for key in keys}
-
     @classmethod
     def delete_user(cls, id):
         """ Method for deleting a user"""
