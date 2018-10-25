@@ -48,17 +48,17 @@ class Signup(Resource):
         if len(password) < 8:
             return {'message': 'Password should be atleast 8 characters'}, 400
 
-        username_exists = User.get_user_by_username(username=args['username'])
-        email_exists = User.get_user_by_email(email=args['email'])
+        username_exists = User.get('users_table', username=username)
+        email_exists = User.get('users_table', email=email)
 
         if username_exists or email_exists:
             return {'message': 'User already exists'}, 203
 
-        user = User(username=args.get('username'),
-                    email=args.get('email'), password=password)
+        user = User(username=username, email=email, password=password)
+        user.add_user()
+        user = User.get('users_table', email=email)
 
-        user = user.save()
-        return {'message': 'registration successful, now login', 'user': user}, 201
+        return {'message': 'registration successful, now login', 'user': User.to_json(user)}, 201
 
 
 class Login(Resource):
@@ -77,13 +77,13 @@ class Login(Resource):
         if required(email) or required(password) == '':
             return {'message': 'All fields are required'}, 400
 
-        user = User.get_user_by_email(email)
+        user = User.get("users_table", email=email)
         if not user:
             return {'message': 'User unavailable'}, 404
-        if user.validate_password(password):
+        if User.validate_password(email=email[2], password=password):
             expires = datetime.timedelta(minutes=30)
             token = create_access_token(
-                user.to_json(), expires_delta=expires)
+                User.to_json(user), expires_delta=expires)
             return {'token': token, "message": "You are successfully logged in", 'user': user.view()}, 200
         return {"message": "Email or password is wrong."}, 401
 

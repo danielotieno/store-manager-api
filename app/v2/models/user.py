@@ -61,7 +61,6 @@ class User(Start):
 
     def __init__(self, username, email, password, role='Store_Attendant'):
         """ A constructor method for creating a user """
-        self.id = None
         self.username = username
         self.email = email
         self.password = generate_password_hash(password)
@@ -87,9 +86,11 @@ class User(Start):
             role=user[4]
         )
 
-    def validate_password(self, password):
+    @staticmethod
+    def validate_password(password, email):
         """ Method for validating password input """
-        if check_password_hash(self.password, password):
+        user = User.get('users_table', email=email)
+        if check_password_hash(user[3], password):
             return True
         return False
 
@@ -101,18 +102,18 @@ class User(Start):
         user = cur.fetchone()
 
         if user:
-            return user.to_json()
+            return User.to_json(user)
         return None
 
     @classmethod
-    def get_user_by_id(cls, id):
+    def get_user_by_id(cls, userid):
         """ Get user given a user id"""
         cur.execute(
             "SELECT * FROM users_table WHERE userid=%s", (userid,))
         user = cur.fetchone()
 
         if user:
-            return user.to_json()
+            return User.to_json(user)
         return None
 
     @classmethod
@@ -123,7 +124,7 @@ class User(Start):
         user = cur.fetchone()
 
         if user:
-            return user.to_json()
+            return User.to_json(user)
         return None
 
     def view(self):
@@ -131,6 +132,16 @@ class User(Start):
         keys = ['username', 'email', 'id', 'role']
         return {key: getattr(self, key) for key in keys}
 
-    def delete_user(self):
+    @classmethod
+    def delete_user(cls, id):
         """ Method for deleting a user"""
-        del DB.users[self.id]
+        cur.execute(
+            "SELECT * FROM users_table WHERE userid=%(userid)s", {'userid': id})
+        if cur.rowcount > 0:
+            # delete this user details
+            cur.execute(
+                "DELETE FROM users_table WHERE userid=%(userid)s", {
+                    'userid': id})
+            conn.commit()
+            return {"message": "Delete Successful."}, 201
+        return {"message": "No user."}, 400
