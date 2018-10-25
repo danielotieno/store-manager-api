@@ -80,11 +80,11 @@ class Login(Resource):
         user = User.get("users_table", email=email)
         if not user:
             return {'message': 'User unavailable'}, 404
-        if User.validate_password(email=email[2], password=password):
+        if User.validate_password(email=user[2], password=password):
             expires = datetime.timedelta(minutes=30)
             token = create_access_token(
                 User.to_json(user), expires_delta=expires)
-            return {'token': token, "message": "You are successfully logged in", 'user': user.view()}, 200
+            return {'token': token, "message": "You are successfully logged in", 'user': User.to_json(user)}, 200
         return {"message": "Email or password is wrong."}, 401
 
 

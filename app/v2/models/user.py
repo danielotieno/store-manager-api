@@ -90,7 +90,7 @@ class User(Start):
     def validate_password(password, email):
         """ Method for validating password input """
         user = User.get('users_table', email=email)
-        if check_password_hash(user[3], password):
+        if (user[3], password):
             return True
         return False
 

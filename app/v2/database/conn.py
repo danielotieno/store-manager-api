@@ -2,6 +2,8 @@
 import os
 import psycopg2
 
+from werkzeug.security import check_password_hash, generate_password_hash
+
 from flask import current_app
 
 
@@ -44,7 +46,7 @@ def create_admin():
 
     # check if user exists
     email = "admin@email.com"
-    password = "admin12345"
+    password = "Admin12345"
     cur.execute("SELECT * FROM users_table WHERE email=%(email)s",
                 {'email': email})
     if cur.rowcount > 0:
