@@ -102,7 +102,7 @@ class User(Start):
         user = cur.fetchone()
 
         if user:
-            return User.to_json(user)
+            return user
         return None
 
     @classmethod
@@ -113,7 +113,7 @@ class User(Start):
         user = cur.fetchone()
 
         if user:
-            return User.to_json(user)
+            return user
         return None
 
     @classmethod
@@ -124,7 +124,7 @@ class User(Start):
         user = cur.fetchone()
 
         if user:
-            return User.to_json(user)
+            return user
         return None
 
     def view(self):

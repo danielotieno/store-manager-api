@@ -21,18 +21,18 @@ class Product:
         self.product_list = []
         self.product_details = {}
 
-    def create_product(self, name, description, price, category, quantity, low_inventory):
+    def create_product(self, product_name, product_description, price, category, quantity, low_inventory):
         """Create product item"""
         # check if product is already created
-        self.cur.execute("SELECT * FROM products_table WHERE name=%(name)s",
-                         {'name': name})
+        self.cur.execute("SELECT * FROM products_table WHERE product_name=%(product_name)s",
+                         {'product_name': product_name})
         if self.cur.rowcount > 0:
             return {"message": "Product already exists."}, 400
         else:
             self.cur.execute(
-                "INSERT INTO products_table(name,description,price,category,quantity,low_inventory)\
-            VALUES(%(name)s, %(description)s, %(price)s, %(category)s, %(quantity)s, %(low_inventory)s);", {
-                    'name': name, 'description': description, 'price': price, 'category': category, 'quantity': quantity, 'low_inventory': low_inventory})
+                "INSERT INTO products_table(product_name,product_description,price,category,quantity,low_inventory)\
+            VALUES(%(product_name)s, %(product_description)s, %(price)s, %(category)s, %(quantity)s, %(low_inventory)s);", {
+                    'product_name': product_name, 'product_description': product_description, 'price': price, 'category': category, 'quantity': quantity, 'low_inventory': low_inventory})
             self.conn.commit()
             return {"message": "Product added successfully"}, 201
 

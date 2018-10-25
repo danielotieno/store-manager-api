@@ -11,9 +11,9 @@ def admin_required(f):
     ''' Restrict access if not admin '''
     @wraps(f)
     def wrapper_function(*args, **kwargs):
-        user = User.get_user_by_email(get_jwt_identity()['email'])
+        user = User.get_user_by_email(get_jwt_identity()[2])
 
-        if not user.role == 'Admin':
+        if not user[4] == 'Admin':
             return {'message': 'Anauthorized access, you must be an admin to access this level'}, 401
         return f(*args, **kwargs)
     return wrapper_function
@@ -23,9 +23,9 @@ def store_attendant_required(f):
     ''' A decorator for store attendant '''
     @wraps(f)
     def wrapper_function(*args, **kwargs):
-        user = User.get_user_by_email(get_jwt_identity()['email'])
+        user = User.get_user_by_email(get_jwt_identity()[2])
 
-        if not user.role == 'Store_Attendant':
+        if not user[4] == 'Store_Attendant':
             return {'message': 'Anauthorized access, you must be a Store Attendant to access this level'}, 401
         return f(*args, **kwargs)
     return wrapper_function
