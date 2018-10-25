@@ -50,20 +50,32 @@ class Product:
                     'price': product[3],
                     'category': product[4],
                     'quantity': product[5],
-                    'low_inventory': product[4]})
+                    'low_inventory': product[6]})
                 self.product_list.append(dict(self.product_details))
             return {
                 "message": "Successfully. Product Found",
-                "Products": self.product_list}, 200
+                "Products": self.product_details}, 200
         return {
             "message": "No Product.", "status": "Ok"}, 200
 
     def get_product_by_id(self, product_id):
         """ A method to get a single product """
-        # The function filter function offers an elegant way to filter out all the elements of a list.
-        product = next(
-            filter(lambda x: x['product_id'] == product_id, self.product_list), None)
-        return {'Product': product}, 200 if product else 404
+        self.cur.execute(
+            "SELECT * FROM products_table WHERE product_id=%(product_id)s", {'product_id': product_id})
+        if self.cur.rowcount > 0:
+            rows = self.cur.fetchone()
+            self.product_details.update({
+                'product_id': rows[0],
+                'product_name': rows[1],
+                'product_description': rows[2],
+                'price': rows[3],
+                'category': rows[4],
+                'quantity': rows[5],
+                'low_inventory': rows[6]})
+            return {
+                "message": "Successful. Product Found",
+                "Product": self.product_details, "status": "Ok"}, 200
+        return {"message": "No Product Found."}, 400
 
     def update_a_product(self, product_id):
         """ A method to update a product """
