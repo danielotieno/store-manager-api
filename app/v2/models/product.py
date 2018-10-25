@@ -77,25 +77,18 @@ class Product:
                 "Product": self.product_details, "status": "Ok"}, 200
         return {"message": "No Product Found."}, 400
 
-    def update_a_product(self, product_id):
+    def update_a_product(self, product_id, product_name, product_description, price, category, quantity, low_inventory):
         """ A method to update a product """
-        data = request.get_json()
-        product = next(
-            filter(lambda x: x['product_id'] == product_id, self.product_list), None)
-
-        if product is None:
-            product = {
-                'name': data['name'],
-                'description': data['description'],
-                'price': float(data['price']),
-                'category': data['category'],
-                'quantity': int(data['quantity']),
-                'low_inventory': int(data['low_inventory'])
-            }
-            self.product_list.append(product), 201
-        else:
-            product.update(product)
-        return {'Product': product, 'message': 'Successfully updated'}, 200
+        self.cur.execute("SELECT * FROM products_table WHERE product_id=%(product_id)s",
+                         {'product_id': product_id})
+        if self.cur.rowcount > 0:
+            # update product details
+            self.cur.execute(
+                "UPDATE products_table SET product_name=%s, product_description=%s, price=%s, ategory=%s, quantity=%s, low_inventory=%s\
+            WHERE product_id=%s", (product_name, product_description, price, category, quantity, low_inventory, product_id))
+            self.conn.commit()
+            return {"message": "Successfully updated"}, 201
+        return {"message": "No Product Found."}, 400
 
     def delete_a_product(self, product_id):
         """ A method to delete a product using product id """
