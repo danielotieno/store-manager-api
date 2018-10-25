@@ -4,6 +4,8 @@ import json
 from app.v2 import create_app
 from app.v2.models.user import User, DB
 
+from app.v2.database.conn import init_database, drop_all_tables
+
 SIGNUP_URL = '/api/v2/auth/signup'
 LOGIN_URL = '/api/v2/auth/login'
 
@@ -15,8 +17,9 @@ class BaseClass(unittest.TestCase):
         """Initialize app and define test variables"""
         self.app = create_app("testing")
         self.client = self.app.test_client()
-        self.app_context = self.app.app_context()
-        self.app_context.push()
+        with self.app.app_context():
+            drop_all_tables()
+            init_database()
 
         self.admin_data = {
             "username": "admin",

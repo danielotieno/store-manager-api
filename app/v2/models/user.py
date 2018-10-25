@@ -6,32 +6,54 @@ It also create data structure to store user data
 from datetime import datetime
 from werkzeug.security import check_password_hash, generate_password_hash
 
+from app.v2.database.conn import database_connection
 
-class Model():
-    """Class for user data structure"""
-
-    def __init__(self):
-        """ A constructor to initialize empty user data structure """
-        self.users = {}
-        self.user_count = 0
-
-    def drop(self):
-        """ A constructor to drop the model """
-        self.__init__()
-
-
-DB = Model()
+conn = database_connection()
+conn.autocommit = True
+cur = conn.cursor()
 
 
 class Start():
     """Start class to be inherited by User classes"""
 
-    def update(self, data):
-        """ Validate keys before passing to data."""
-        for key in data:
-            setattr(self, key, data[key])
-        setattr(self, 'last_modified', datetime.utcnow().isoformat())
-        return self.view()
+    def save(self):
+        """ Method for saving user registration details """
+        conn.commit()
+
+    @staticmethod
+    def get(table_name, **kwargs):
+        '''pass condition as keyword argument, just one'''
+        for key, val in kwargs.items():
+            sql = "SELECT * FROM {} WHERE {}='{}'".format(table_name, key, val)
+            cur.execute(sql)
+            item = cur.fetchone()
+            return item
+
+    @staticmethod
+    def get_all(table_name):
+        """ A method to get all tables """
+        sql = 'SELECT * FROM {}'.format(table_name)
+        cur.execute(sql)
+        data = cur.fetchall()
+        return data
+
+    @staticmethod
+    def update(table, id, data):
+        """requires table as table name id as integer and data
+        as a dictionary"""
+
+        for key, val in data.items():
+            string = "{}='{}'".format(key, val)
+            sql = 'UPDATE {} SET {} WHERE id={}'.format(table, string, id)
+            cur.execute(sql)
+            conn.commit()
+
+    @staticmethod
+    def delete(table, id):
+        """ A method to delete a table """
+        sql = 'DELETE FROM {} WHERE id={}'.format(table, id)
+        cur.execute(sql)
+        conn.commit()
 
 
 class User(Start):
@@ -46,16 +68,24 @@ class User(Start):
         self.role = role
         self.created_at = datetime.utcnow().isoformat()
 
-    def to_json(self):
-        """ Convert user list to json """
-        jsonified_user = {
-            "id": self.id,
-            "username": self.username,
-            "email": self.email,
-            "role": self.role
+    def add_user(self):
+        '''Method for adding input into users table'''
+        cur.execute(
+            """
+            INSERT INTO users_table(username, email, password, role)
+            VALUES(%s,%s,%s,%s)""",
+            (self.username, self.email, self.password, self.role))
+        self.save()
 
-        }
-        return jsonified_user
+    @staticmethod
+    def to_json(user):
+        """ Convert user list to json """
+        return dict(
+            id=user[0],
+            username=user[1],
+            email=user[2],
+            role=user[4]
+        )
 
     def validate_password(self, password):
         """ Method for validating password input """
@@ -63,29 +93,27 @@ class User(Start):
             return True
         return False
 
-    def save(self):
-        """ Method for saving user registration details """
-        setattr(self, 'id', DB.user_count + 1)
-        DB.users.update({self.id: self})
-        DB.user_count += 1
-        return self.view()
-
     @classmethod
     def get_user_by_username(cls, username):
         """ Method for getting user by username """
-        for id_ in DB.users:
-            user = DB.users.get(id_)
-            if user.username == username:
-                return user
+        cur.execute(
+            "SELECT * FROM users_table WHERE username=%s", (username,))
+        user = cur.fetchone()
+
+        if user:
+            return user.to_json()
         return None
 
     @classmethod
     def get_user_by_id(cls, id):
         """ Get user given a user id"""
-        user = DB.users.get(id)
-        if not user:
-            return {'message': 'User does not exist.'}
-        return user
+        cur.execute(
+            "SELECT * FROM users_table WHERE userid=%s", (userid,))
+        user = cur.fetchone()
+
+        if user:
+            return user.to_json()
+        return None
 
     @classmethod
     def get_user_by_email(cls, email):
