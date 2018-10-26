@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.com/danielotieno/store-manager-api.svg?branch=ch-api-161336932)](https://travis-ci.com/danielotieno/store-manager-api)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/a6389889a33c56eb0160/test_coverage)](https://codeclimate.com/github/danielotieno/store-manager-api/test_coverage)
 [![codecov](https://codecov.io/gh/danielotieno/store-manager-api/branch/ch-api-161336932/graph/badge.svg)](https://codecov.io/gh/danielotieno/store-manager-api)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/00b0e64ca606433e86c2a51ba46439c4)](https://www.codacy.com/app/danielotieno/store-manager-api?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=danielotieno/store-manager-api&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/00b0e64ca606433e86c2a51ba46439c4)](https://www.codacy.com/app/danielotieno/store-manager-api?utm_source=github.com&utm_medium=referral&utm_content=danielotieno/store-manager-api&utm_campaign=Badge_Grade)
 
 Store Manager is a web application that helps store owners manage sales and product inventory records.
 
@@ -13,18 +13,23 @@ Deployed Link [store-manager-api](https://store-manager-app-v1.herokuapp.com)
 
 ## API Endpoints
 
-| EndPoint                    | Functionality                    |
-| --------------------------- | -------------------------------- |
-| GET  /products              | Get all the products.            |
-| GET  /products/<product_id> | Fetch a specific product         |
-| POST /products              | Add a new product.               |
-|                             |
-| GET  /sales/                | Get all sales record             |
-| GET  /sales/<sale_id>       | Fetch a specific sale record     |
-| POST /sales/                | Create a new sale order          |
-|                             |
-| POST /signup                | Register a new user              |
-| POST /login                 | Enables registered user to login |
+| EndPoint                      | Functionality                    |
+| ----------------------------- | -------------------------------- |
+| GET /products                 | Get all the products.            |
+| GET /products/<product_id>    | Fetch a specific product         |
+| POST /products                | Add a new product.               |
+|                               |
+| GET /sales/                   | Get all sales record             |
+| GET /sales/<sale_id>          | Fetch a specific sale record     |
+| POST /sales/                  | Create a new sale order          |
+|                               |
+| PUT /categories/<category_id> | Modify a category                |
+| DEL /categories/<category_id> | Delete a single category         |
+| POST /categories/             | Create a category                |
+|                               |
+| POST /signup                  | Register a new user              |
+| POST /login                   | Enables registered user to login |
+| POST /logout                  | Revoke current user token        |
 
 ### Technologies used to build the application
 
@@ -80,32 +85,48 @@ Fork the repo here [Fork me](https://github.com/danielotieno/store-manager-api/t
 
 #### User registration
 
-Send a `POST` request to `/api/v1/auth/signup` endpoint with the payload in `JSON`
+Send a `POST` request to `/api/v2/auth/signup` endpoint with the payload in `JSON`
 
 #### User Login
 
-Send a `POST` request to `/api/v1/auth/login` endpoint with the payload in `JSON`
+Send a `POST` request to `/api/v2/auth/login` endpoint with the payload in `JSON`
+
+#### User Logout
+
+Send a `DEL` request to `/api/v2/auth/logout` endpoint with the payload in `JSON`
 
 #### Get list of all products
 
-Send a `GET` request to `/api/v1/products`
+Send a `GET` request to `/api/v2/products`
 
 #### Featch a specific product
 
-Send a `GET` request to `/api/v1/products/<product_id>`
+Send a `GET` request to `/api/v2/products/<product_id>`
 
 #### Place/Create a product
 
-Send a `POST` request to `/api/v1/products` endpoint with the payload in `JSON`
+Send a `POST` request to `/api/v2/products` endpoint with the payload in `JSON`
 
 #### Get list of all sales record
 
-Send a `GET` request to `/api/v1/sales`
+Send a `GET` request to `/api/v2/sales`
 
 #### Featch a specific sale record
 
-Send a `GET` request to `/api/v1/sales/<sale_id>`
+Send a `GET` request to `/api/v2/sales/<sale_id>`
 
 #### Place/Create a sale order
 
-Send a `POST` request to `/api/v1/sales` endpoint with the payload in `JSON`
+Send a `POST` request to `/api/v2/sales` endpoint with the payload in `JSON`
+
+#### Place/Create a category
+
+Send a `POST` request to `/api/v2/categories` endpoint with the payload in `JSON`
+
+#### Modify a category
+
+Send a `PUT` request to `/api/v2/categories/</category_id>` endpoint with the payload in `JSON`
+
+#### Delete a category
+
+Send a `DEL` request to `/api/v2/categories/</category_id>` endpoint with the payload in `JSON`

@@ -22,15 +22,15 @@ class Products(Resource):
         res = validate_data(data)
 
         if res == "valid":
-            name = data['name']
-            description = data['description']
+            product_name = data['name']
+            product_description = data['description']
             price = float(data['price'])
             category = data['category']
             quantity = int(data['quantity'])
             low_inventory = int(data['low_inventory'])
 
             res = PRODUCT_OBJECT.create_product(
-                name, description, price, category, quantity, low_inventory)
+                product_name, product_description, price, category, quantity, low_inventory)
 
             return res
         return {"message": res}, 400
@@ -51,9 +51,10 @@ class ProductView(Resource):
 
     @jwt_required
     @admin_required
-    def put(self, product_id):
+    def put(self, product_id, product_name, product_description, price, category, quantity, low_inventory):
         """ A method for updating a product """
-        update_product = PRODUCT_OBJECT.update_a_product(product_id)
+        update_product = PRODUCT_OBJECT.update_a_product(
+            product_id, product_name, product_description, price, category, quantity, low_inventory)
         return update_product
 
     @jwt_required
