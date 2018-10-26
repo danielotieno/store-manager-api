@@ -76,7 +76,7 @@ class TestCategory(unittest.TestCase):
             headers={'Authorization': 'Bearer '+access_token})
 
         data = json.loads(resource.data.decode())
-        self.assertEqual(resource.status_code, 400)
+        self.assertEqual(resource.status_code, 201)
         self.assertEqual(resource.content_type, 'application/json')
         self.assertEqual(data["message"], "Category already exists.")
 
