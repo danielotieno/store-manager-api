@@ -51,10 +51,21 @@ class ProductView(Resource):
 
     @jwt_required
     @admin_required
-    def put(self, product_id, product_name, product_description, price, category, quantity, low_inventory):
+    def put(self, product_id):
         """ A method for updating a product """
-        update_product = PRODUCT_OBJECT.update_a_product(
-            product_id, product_name, product_description, price, category, quantity, low_inventory)
+        data = request.get_json()
+        res = validate_data(data)
+
+        if res == "valid":
+            product_name = data['name']
+            product_description = data['description']
+            price = float(data['price'])
+            category = data['category']
+            quantity = int(data['quantity'])
+            low_inventory = int(data['low_inventory'])
+
+            update_product = PRODUCT_OBJECT.update_a_product(
+                product_id, product_name, product_description, price, category, quantity, low_inventory)
         return update_product
 
     @jwt_required

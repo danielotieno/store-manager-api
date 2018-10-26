@@ -84,7 +84,7 @@ class Product:
         if self.cur.rowcount > 0:
             # update product details
             self.cur.execute(
-                "UPDATE products_table SET product_name=%s, product_description=%s, price=%s, ategory=%s, quantity=%s, low_inventory=%s\
+                "UPDATE products_table SET product_name=%s, product_description=%s, price=%s, category=%s, quantity=%s, low_inventory=%s\
             WHERE product_id=%s", (product_name, product_description, price, category, quantity, low_inventory, product_id))
             self.conn.commit()
             return {"message": "Successfully updated"}, 201
