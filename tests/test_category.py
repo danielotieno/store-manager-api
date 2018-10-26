@@ -5,6 +5,8 @@ from .start import BaseClass
 
 from app.v2 import create_app
 
+from app.v2.database.conn import init_database, drop_all_tables
+
 
 SIGNUP_URL = '/api/v2/auth/signup'
 LOGIN_URL = '/api/v2/auth/login'
@@ -20,6 +22,8 @@ class TestCategory(unittest.TestCase):
         """Initialize app and define test variables"""
         self.app = create_app("testing")
         self.client = self.app.test_client()
+        with self.app.app_context():
+            init_database()
 
         self.create_category = json.dumps(dict(
             category_id=1,

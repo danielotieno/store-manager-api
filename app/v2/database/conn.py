@@ -4,19 +4,20 @@ import psycopg2
 
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from flask import current_app
-
 
 # Local imports
-
+from flask import current_app
 from app.v2.database.tables import table_list, tables_to_drop
 
 
-def database_connection():
-    """ create a database connection  """
+def database_connection(config=None):
+    """ create a database connection """
+    if config == 'testing':
+        DATABASE_URL = os.getenv('DATABASE_TEST_URL')
+    else:
+        DATABASE_URL = os.getenv('DATABASE_URL')
 
-    url = os.getenv('DATABASE_URL')
-    return psycopg2.connect(url)
+    return psycopg2.connect(DATABASE_URL)
 
 
 def init_database():

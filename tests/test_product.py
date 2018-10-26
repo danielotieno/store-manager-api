@@ -3,6 +3,8 @@ import json
 
 from app.v2 import create_app
 
+from app.v2.database.conn import init_database, drop_all_tables
+
 ADD_UPDATE_URL = '/api/v2/products/3'
 GET_SINGLE_URL = '/api/v2/products/1'
 GET_ALL_URL = '/api/v2/products'
@@ -19,6 +21,8 @@ class TestProduct(unittest.TestCase):
         """Initialize app and define test variables"""
         self.app = create_app("testing")
         self.client = self.app.test_client()
+        with self.app.app_context():
+            init_database()
 
         self.create_product = json.dumps(dict(
             product_id=1,

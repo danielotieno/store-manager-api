@@ -5,7 +5,6 @@ from flask import Flask
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 
-from app.v2.models.user import User
 from app.v2.views.users_view import BLACKLIST
 from app.v2.database.conn import init_database
 
@@ -17,7 +16,7 @@ JWT = JWTManager()
 def create_app(config_name):
     """The create_app function wraps the creation of a new Flask object."""
 
-    app = Flask(__name__)
+    app = Flask(__name__, instance_relative_config=True)
     api = Api(app)
 
     app.config.from_object('config')
@@ -34,7 +33,8 @@ def create_app(config_name):
         jti = decrypted_token['jti']
         return jti in BLACKLIST
 
-    init_database()
+    with app.app_context():
+        init_database()
 
     from app.v2.views.welcome import Welcome
     from app.v2.views.users_view import Signup, Login, Logout

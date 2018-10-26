@@ -18,7 +18,6 @@ class BaseClass(unittest.TestCase):
         self.app = create_app("testing")
         self.client = self.app.test_client()
         with self.app.app_context():
-            drop_all_tables()
             init_database()
 
         self.admin_data = {
@@ -82,6 +81,7 @@ class BaseClass(unittest.TestCase):
 
         return token
 
-    # def tearDown(self):
-    #     '''Clears the database'''
-    #     DB.drop()
+    def tearDown(self):
+        """Teardown all the test data"""
+        with self.app.app_context():
+            drop_all_tables()

@@ -6,6 +6,8 @@ It also create data structure to store user data
 from datetime import datetime
 from werkzeug.security import check_password_hash, generate_password_hash
 
+from flask import current_app
+
 from app.v2.database.conn import database_connection
 
 conn = database_connection()

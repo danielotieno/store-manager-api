@@ -19,7 +19,7 @@ class Testing(Config):
     TESTING = True
     DEBUG = True
     SECRET = os.getenv('SECRET_KEY')
-    DATABASE_TEST_URL = os.getenv('DATABASE_TEST_URL')
+    DATABASE_URL = os.getenv('DATABASE_TEST_URL')
 
 
 class Production(Config):
