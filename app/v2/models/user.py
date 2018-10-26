@@ -61,21 +61,21 @@ class Start():
 class User(Start):
     """ A class to handle activities related to a user """
 
-    def __init__(self, username, email, password, role='Store_Attendant'):
+    def __init__(self, username, email, password, user_role='Store_Attendant'):
         """ A constructor method for creating a user """
         self.username = username
         self.email = email
         self.password = generate_password_hash(password)
-        self.role = role
+        self.user_role = user_role
         self.created_at = datetime.utcnow().isoformat()
 
     def add_user(self):
         '''Method for adding input into users table'''
         cur.execute(
             """
-            INSERT INTO users_table(username, email, password, role)
+            INSERT INTO users_table(username, email, password, user_role)
             VALUES(%s,%s,%s,%s)""",
-            (self.username, self.email, self.password, self.role))
+            (self.username, self.email, self.password, self.user_role))
         self.save()
 
     @staticmethod
@@ -85,7 +85,7 @@ class User(Start):
             id=user[0],
             username=user[1],
             email=user[2],
-            role=user[4]
+            user_role=user[4]
         )
 
     @staticmethod

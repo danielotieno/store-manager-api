@@ -2,10 +2,10 @@
 
 users = """ CREATE TABLE IF NOT EXISTS users_table(
     userid serial PRIMARY KEY,
-    username VARCHAR(50) NOT NULL,
-    email VARCHAR(50) UNIQUE,
-    password VARCHAR(50) NOT NULL,
-    user_role VARCHAR(50) NOT NULL DEFAULT 'Store_Attendant',
+    username VARCHAR(250) NOT NULL,
+    email VARCHAR(250) UNIQUE,
+    password VARCHAR(250) NOT NULL,
+    user_role VARCHAR(250) NOT NULL DEFAULT 'Store_Attendant',
     created_at timestamp with time zone DEFAULT now()
     );
 """

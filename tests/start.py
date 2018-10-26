@@ -20,11 +20,13 @@ class BaseClass(unittest.TestCase):
         with self.app.app_context():
             init_database()
 
+        self.user_model = User
+
         self.admin_data = {
             "username": "admin",
             "email": "admin@email.com",
             "password": "admin12345",
-            "role": "Admin"
+            "user_role": "Admin"
 
         }
 
@@ -32,20 +34,20 @@ class BaseClass(unittest.TestCase):
             "username": "danny",
             "email": "danny@gmail.com",
             "password": "password1",
-            "role": "Store Attendant"
+            "user_role": "Store Attendant"
         }
 
         self.user1 = User(
             username="testuser",
             email="testuser@email.com",
             password="password",
-            role="Store Attendant")
+            user_role="Store Attendant")
 
         self.test_user = User(
             username='dannyke',
             email='danny@mail.com',
             password='password2',
-            role="Store Attendant")
+            user_role="Store Attendant")
 
     def logged_in_user(self):
         # first create user
