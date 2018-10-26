@@ -6,6 +6,9 @@ python:
 services:
   - postgresql
 
+env:
+  - DATABASE_TEST_URL="dbname=teststore user=postgres password=Daniel1994 host=localhost port=5432"
+
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
