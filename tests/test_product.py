@@ -9,7 +9,6 @@ ADD_UPDATE_URL = '/api/v2/products/3'
 GET_SINGLE_URL = '/api/v2/products/1'
 GET_ALL_URL = '/api/v2/products'
 DELETE_URL = '/api/v2/products/2'
-MODIFY_URL = '/api/v2/products/8'
 SIGNUP_URL = '/api/v2/auth/signup'
 LOGIN_URL = '/api/v2/auth/login'
 
@@ -103,16 +102,7 @@ class TestProduct(unittest.TestCase):
     def test_update_a_product(self):
         """ Test to modify a product """
         access_token = self.get_token()
-        response = self.client.post(GET_ALL_URL, data=self.create_product,
-                                    content_type='application/json',
-                                    headers={'Authorization': 'Bearer '+access_token})
-
-        data = json.loads(response.data.decode('utf-8'))
-        print(data)
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.content_type, 'application/json')
-
-        response = self.client.put(MODIFY_URL,
+        response = self.client.put(GET_SINGLE_URL,
                                    data=json.dumps(dict(
                                        product_id=1,
                                        name='Suit',
@@ -123,7 +113,7 @@ class TestProduct(unittest.TestCase):
                                        low_inventory=10)),
                                    content_type='application/json',
                                    headers={'Authorization': 'Bearer '+access_token})
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 201)
         result = json.loads(response.data.decode('utf-8'))
         self.assertEqual(result["message"], "Successfully updated")
 

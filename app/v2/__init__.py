@@ -8,18 +8,17 @@ from flask_jwt_extended import JWTManager
 from app.v2.views.users_view import BLACKLIST
 from app.v2.database.conn import init_database
 
-import config
+from config import app_config
 
 JWT = JWTManager()
 
 
 def create_app(config_name):
     """The create_app function wraps the creation of a new Flask object."""
-
     app = Flask(__name__, instance_relative_config=True)
     api = Api(app)
 
-    app.config.from_object('config')
+    app.config.from_object(app_config[config_name])
     app.url_map.strict_slashes = False
     app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
     app.config['JWT_BLACKLIST_ENABLED'] = True

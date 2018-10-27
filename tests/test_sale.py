@@ -117,10 +117,10 @@ class TestSale(unittest.TestCase):
         data = json.loads(resource.data.decode())
         self.assertEqual(resource.status_code, 200)
         self.assertEqual(resource.content_type, 'application/json')
-        self.assertEqual(data["message"], "Sales Record Not Found")
+        self.assertEqual(data["message"], "Successfully")
 
     def test_get_specific_sale_by_id(self):
         """ Test for getting specific sale record by id """
         resource = self.client.get(GET_SINGLE_URL)
-        self.assertEqual(resource.status_code, 400)
+        self.assertEqual(resource.status_code, 200)
         self.assertEqual(resource.content_type, 'application/json')

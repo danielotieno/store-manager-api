@@ -45,7 +45,7 @@ class Category:
             # update product details
             self.cur.execute(
                 "UPDATE categories_table SET category_name=%s, category_status=%s\
-            WHERE category_id=%s", (category_name, category_status))
+            WHERE category_id=%s", (category_name, category_status, category_id))
             self.conn.commit()
             return {"message": "Successfully updated"}, 201
         return {"message": "Category Not Found."}, 400

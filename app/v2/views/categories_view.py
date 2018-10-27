@@ -37,7 +37,14 @@ class CategoryView(Resource):
     @admin_required
     def put(self, category_id):
         """ A method for modifying category """
-        update_category = CATEGORY_OBJECT.modify_category(category_id)
+        data = request.get_json()
+        res = category_data(data)
+
+        if res == "valid":
+            category_name = data['name']
+            category_status = data['status']
+        update_category = CATEGORY_OBJECT.modify_category(
+            category_id, category_name, category_status)
         return update_category
 
     @jwt_required

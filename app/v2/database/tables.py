@@ -50,11 +50,11 @@ blacklisted_tokens = """ CREATE TABLE IF NOT EXISTS blacklisted_table(
     );
 """
 
-drop_users = """ DROP TABLE IF EXISTS users CASCADE """
-drop_categories = """ DROP TABLE IF EXISTS categories CASCADE """
-drop_products = """ DROP TABLE IF EXISTS products CASCADE """
-drop_sales = """ DROP TABLE IF EXISTS sales CASCADE """
-drop_blacklisted_tokens = """ DROP TABLE IF EXISTS blacklisted CASCADE """
+drop_users = """ DROP TABLE IF EXISTS users_table CASCADE """
+drop_categories = """ DROP TABLE IF EXISTS categories_table CASCADE """
+drop_products = """ DROP TABLE IF EXISTS products_table CASCADE """
+drop_sales = """ DROP TABLE IF EXISTS sales_table CASCADE """
+drop_blacklisted_tokens = """ DROP TABLE IF EXISTS blacklisted_table CASCADE """
 
 tables_to_drop = [drop_users, drop_categories, drop_products,
                   drop_sales, drop_blacklisted_tokens]

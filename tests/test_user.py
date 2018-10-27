@@ -17,7 +17,7 @@ class UserTests(BaseClass):
         response = self.client.post(SIGNUP_URL,
                                     data=json.dumps(self.user_data), content_type='application/json',
                                     headers={'Authorization': 'Bearer '+access_token})
-        self.assertEqual(response.status_code, 500)
+        self.assertEqual(response.status_code, 201)
         result = json.loads(response.data.decode())
         self.assertEqual(result["message"],
                          "registration successful, now login")

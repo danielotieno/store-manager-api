@@ -12,7 +12,7 @@ SIGNUP_URL = '/api/v2/auth/signup'
 LOGIN_URL = '/api/v2/auth/login'
 GET_ALL_URL = '/api/v2/categories'
 DELETE_URL = '/api/v2/categories/2'
-MODIFY_URL = '/api/v2/categories/8'
+MODIFY_URL = '/api/v2/categories/1'
 
 
 class TestCategory(unittest.TestCase):
@@ -27,7 +27,7 @@ class TestCategory(unittest.TestCase):
 
         self.create_category = json.dumps(dict(
             category_id=1,
-            name='Shirt',
+            name='TestCategory',
             status='Active'))
 
         self.admin_data = {
@@ -76,6 +76,7 @@ class TestCategory(unittest.TestCase):
             headers={'Authorization': 'Bearer '+access_token})
 
         data = json.loads(resource.data.decode())
+        print(data)
         self.assertEqual(resource.status_code, 201)
         self.assertEqual(resource.content_type, 'application/json')
         self.assertEqual(data["message"], "Category added successfully")
@@ -83,15 +84,6 @@ class TestCategory(unittest.TestCase):
     def test_modify_category(self):
         """ Test to modify category """
         access_token = self.get_token()
-        response = self.client.post(GET_ALL_URL, data=self.create_category,
-                                    content_type='application/json',
-                                    headers={'Authorization': 'Bearer '+access_token})
-
-        data = json.loads(response.data.decode('utf-8'))
-        print(data)
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.content_type, 'application/json')
-
         response = self.client.put(MODIFY_URL,
                                    data=json.dumps(dict(
                                        category_id=1,
@@ -99,7 +91,7 @@ class TestCategory(unittest.TestCase):
                                        status='Inactive')),
                                    content_type='application/json',
                                    headers={'Authorization': 'Bearer '+access_token})
-        self.assertEqual(response.status_code, 500)
+        self.assertEqual(response.status_code, 201)
         result = json.loads(response.data.decode('utf-8'))
         self.assertEqual(result["message"], "Successfully updated")
 

@@ -46,14 +46,14 @@ class Start():
 
         for key, val in data.items():
             string = "{}='{}'".format(key, val)
-            sql = 'UPDATE {} SET {} WHERE id={}'.format(table, string, id)
+            sql = 'UPDATE {} SET {} WHERE userid={}'.format(table, string, id)
             cur.execute(sql)
             conn.commit()
 
     @staticmethod
-    def delete(table, id):
+    def delete(table, userid):
         """ A method to delete a table """
-        sql = 'DELETE FROM {} WHERE id={}'.format(table, id)
+        sql = 'DELETE FROM {} WHERE userid={}'.format(table, userid)
         cur.execute(sql)
         conn.commit()
 
