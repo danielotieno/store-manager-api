@@ -90,20 +90,20 @@ class TestSale(unittest.TestCase):
 
         return result['token']
 
-    # def test_add_sale(self):
-    #     """ Test for sale order creation """
-    #     access_token = self.login_user()
+    def test_add_sale(self):
+        """ Test for sale order creation """
+        access_token = self.login_user()
 
-    #     resource = self.client.post(
-    #         GET_ALL_URL,
-    #         data=self.create_sale,
-    #         content_type='application/json',
-    #         headers={'Authorization': 'Bearer '+access_token})
+        resource = self.client.post(
+            GET_ALL_URL,
+            data=self.create_sale,
+            content_type='application/json',
+            headers={'Authorization': 'Bearer '+access_token})
 
-    #     data = json.loads(resource.data.decode('utf-8'))
-    #     self.assertEqual(resource.status_code, 201)
-    #     self.assertEqual(resource.content_type, 'application/json')
-    #     self.assertEqual(data["message"], "Sale Order successfully created")
+        data = json.loads(resource.data.decode('utf-8'))
+        self.assertEqual(resource.status_code, 201)
+        self.assertEqual(resource.content_type, 'application/json')
+        self.assertEqual(data["message"], "Sale Order successfully created")
 
     def test_get_all_sales(self):
         """ Test for getting all sales record """

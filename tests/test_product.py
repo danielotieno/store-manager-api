@@ -100,32 +100,32 @@ class TestProduct(unittest.TestCase):
         self.assertEqual(resource.status_code, 200)
         self.assertEqual(resource.content_type, 'application/json')
 
-    # def test_update_a_product(self):
-    #     """ Test to modify a product """
-    #     access_token = self.get_token()
-    #     response = self.client.post(GET_ALL_URL, data=self.create_product,
-    #                                 content_type='application/json',
-    #                                 headers={'Authorization': 'Bearer '+access_token})
+    def test_update_a_product(self):
+        """ Test to modify a product """
+        access_token = self.get_token()
+        response = self.client.post(GET_ALL_URL, data=self.create_product,
+                                    content_type='application/json',
+                                    headers={'Authorization': 'Bearer '+access_token})
 
-    #     data = json.loads(response.data.decode('utf-8'))
-    #     print(data)
-    #     self.assertEqual(response.status_code, 400)
-    #     self.assertEqual(response.content_type, 'application/json')
+        data = json.loads(response.data.decode('utf-8'))
+        print(data)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content_type, 'application/json')
 
-    #     response = self.client.put(MODIFY_URL,
-    #                                data=json.dumps(dict(
-    #                                    product_id=1,
-    #                                    name='Suit',
-    #                                    description='Cool leather suit',
-    #                                    price=1000,
-    #                                    category='Polo',
-    #                                    quantity=5,
-    #                                    low_inventory=10)),
-    #                                content_type='application/json',
-    #                                headers={'Authorization': 'Bearer '+access_token})
-    #     self.assertEqual(response.status_code, 200)
-    #     result = json.loads(response.data.decode('utf-8'))
-    #     self.assertEqual(result["message"], "Successfully updated")
+        response = self.client.put(MODIFY_URL,
+                                   data=json.dumps(dict(
+                                       product_id=1,
+                                       name='Suit',
+                                       description='Cool leather suit',
+                                       price=1000,
+                                       category='Polo',
+                                       quantity=5,
+                                       low_inventory=10)),
+                                   content_type='application/json',
+                                   headers={'Authorization': 'Bearer '+access_token})
+        self.assertEqual(response.status_code, 200)
+        result = json.loads(response.data.decode('utf-8'))
+        self.assertEqual(result["message"], "Successfully updated")
 
     def test_delete_a_product(self):
         """ Test to delete a product """

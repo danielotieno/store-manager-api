@@ -11,16 +11,16 @@ LOGOUT_URL = '/api/v2/auth/logout'
 class UserTests(BaseClass):
     """ Defining and setup user class tests """
 
-    # def test_user_registration(self):
-    #     """ Test user registration works correcty """
-    #     access_token = self.get_token()
-    #     response = self.client.post(SIGNUP_URL,
-    #                                 data=json.dumps(self.user_data), content_type='application/json',
-    #                                 headers={'Authorization': 'Bearer '+access_token})
-    #     self.assertEqual(response.status_code, 500)
-    #     result = json.loads(response.data.decode())
-    #     self.assertEqual(result["message"],
-    #                      "registration successful, now login")
+    def test_user_registration(self):
+        """ Test user registration works correcty """
+        access_token = self.get_token()
+        response = self.client.post(SIGNUP_URL,
+                                    data=json.dumps(self.user_data), content_type='application/json',
+                                    headers={'Authorization': 'Bearer '+access_token})
+        self.assertEqual(response.status_code, 500)
+        result = json.loads(response.data.decode())
+        self.assertEqual(result["message"],
+                         "registration successful, now login")
 
     def test_user_wrong_registration(self):
         """Test wrong registration when user doesn't fill fields"""
