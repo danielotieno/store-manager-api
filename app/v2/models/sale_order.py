@@ -3,9 +3,6 @@ This model defines a sales order class and it's methods
 It also create data structure to store sales order data
 
 """
-import uuid
-from datetime import datetime
-
 from app.v2.database.conn import database_connection
 
 
@@ -24,8 +21,7 @@ class Sale:
         """Create sale item in table"""
         self.cur.execute(
             "INSERT INTO sales_table(customer, product, quantity, created_by, total_amount)\
-        VALUES(%(customer)s, %(product)s, %(quantity)s, %(created_by)s, %(total_amount)s);", {
-                'customer': customer, 'product': product, 'quantity': quantity, 'created_by': created_by, 'total_amount': total_amount})
+        VALUES(%(customer)s, %(product)s, %(quantity)s, %(created_by)s, %(total_amount)s);", {'customer': customer, 'product': product, 'quantity': quantity, 'created_by': created_by, 'total_amount': total_amount})
         self.conn.commit()
         return {"message": "Sale Order successfully created"}, 201
 
