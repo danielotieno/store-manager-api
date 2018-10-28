@@ -3,18 +3,17 @@ import os
 import psycopg2
 
 # Local imports
-from flask import current_app
 from app.v2.database.tables import TABLE_LIST, TABLES_TO_DROP
 
 
 def database_connection(config=None):
     """ create a database connection """
     if config == 'testing':
-        DATABASE_URL = os.getenv('DATABASE_TEST_URL')
+        database_url = os.getenv('DATABASE_TEST_URL')
     else:
-        DATABASE_URL = os.getenv('DATABASE_URL')
+        database_url = os.getenv('DATABASE_URL')
 
-    return psycopg2.connect(DATABASE_URL)
+    return psycopg2.connect(database_url)
 
 
 def init_database():
