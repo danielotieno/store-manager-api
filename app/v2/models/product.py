@@ -3,10 +3,6 @@ This model defines a product class and it's methods
 It also create data structure to store product data
 
 """
-import uuid
-from datetime import datetime
-from flask import request
-
 from app.v2.database.conn import database_connection
 
 
@@ -28,13 +24,12 @@ class Product:
                          {'product_name': product_name})
         if self.cur.rowcount > 0:
             return {"message": "Product already exists."}, 400
-        else:
-            self.cur.execute(
-                "INSERT INTO products_table(product_name,product_description,price,category,quantity,low_inventory)\
-            VALUES(%(product_name)s, %(product_description)s, %(price)s, %(category)s, %(quantity)s, %(low_inventory)s);", {
-                    'product_name': product_name, 'product_description': product_description, 'price': price, 'category': category, 'quantity': quantity, 'low_inventory': low_inventory})
-            self.conn.commit()
-            return {"message": "Product added successfully"}, 201
+
+        self.cur.execute(
+            "INSERT INTO products_table(product_name,product_description,price,category,quantity,low_inventory)\
+        VALUES(%(product_name)s, %(product_description)s, %(price)s, %(category)s, %(quantity)s, %(low_inventory)s);", {'product_name': product_name, 'product_description': product_description, 'price': price, 'category': category, 'quantity': quantity, 'low_inventory': low_inventory})
+        self.conn.commit()
+        return {"message": "Product added successfully"}, 201
 
     def get_products(self):
         """ A method to get all products """
