@@ -34,8 +34,8 @@ class Category:
 
     def modify_category(self, category_id, category_name, category_status):
         """ A method to modify category """
-        self.cur.execute("SELECT * FROM categories_table WHERE category_id=%(category_id)s",
-                         {'category_id': category_id})
+        self.cur.execute(
+            "SELECT * FROM categories_table WHERE category_id=%(category_id)s", {'category_id': category_id})
         if self.cur.rowcount > 0:
             # update product details
             self.cur.execute(
