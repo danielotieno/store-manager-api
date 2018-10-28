@@ -1,17 +1,16 @@
 import unittest
 import json
 
-from .start import BaseClass
+from app.v2 import create_app
 
-from app.v1 import create_app
+from app.v2.database.conn import init_database, drop_all_tables
 
-ADD_UPDATE_URL = '/api/v1/products/3'
-GET_SINGLE_URL = '/api/v1/products/1'
-GET_ALL_URL = '/api/v1/products'
-DELETE_URL = '/api/v1/products/2'
-MODIFY_URL = '/api/v1/products/8'
-SIGNUP_URL = '/api/v1/auth/signup'
-LOGIN_URL = '/api/v1/auth/login'
+ADD_UPDATE_URL = '/api/v2/products/3'
+GET_SINGLE_URL = '/api/v2/products/1'
+GET_ALL_URL = '/api/v2/products'
+DELETE_URL = '/api/v2/products/2'
+SIGNUP_URL = '/api/v2/auth/signup'
+LOGIN_URL = '/api/v2/auth/login'
 
 
 class TestProduct(unittest.TestCase):
@@ -21,6 +20,8 @@ class TestProduct(unittest.TestCase):
         """Initialize app and define test variables"""
         self.app = create_app("testing")
         self.client = self.app.test_client()
+        with self.app.app_context():
+            init_database()
 
         self.create_product = json.dumps(dict(
             product_id=1,
@@ -76,9 +77,9 @@ class TestProduct(unittest.TestCase):
             headers={'Authorization': 'Bearer '+access_token})
 
         data = json.loads(resource.data.decode())
-        print(data)
         self.assertEqual(resource.status_code, 201)
         self.assertEqual(resource.content_type, 'application/json')
+        self.assertEqual(data["message"], "Product added successfully")
 
     def test_get_all_products(self):
         """ Test for getting all products """
@@ -88,15 +89,47 @@ class TestProduct(unittest.TestCase):
             content_type='application/json')
 
         data = json.loads(resource.data.decode())
-        print(data)
         self.assertEqual(resource.status_code, 200)
         self.assertEqual(resource.content_type, 'application/json')
+        self.assertEqual(data["message"], "Successfully. Product Found")
 
     def test_get_specific_product_by_id(self):
         """ Test for getting specific product by id """
         resource = self.client.get(GET_SINGLE_URL)
-        self.assertEqual(resource.status_code, 404)
+        self.assertEqual(resource.status_code, 200)
         self.assertEqual(resource.content_type, 'application/json')
+
+    def test_update_a_product(self):
+        """ Test to modify a product """
+        access_token = self.get_token()
+        response = self.client.put(GET_SINGLE_URL,
+                                   data=json.dumps(dict(
+                                       product_id=1,
+                                       name='Suit',
+                                       description='Cool leather suit',
+                                       price=1000,
+                                       category='Polo',
+                                       quantity=5,
+                                       low_inventory=10)),
+                                   content_type='application/json',
+                                   headers={'Authorization': 'Bearer '+access_token})
+        self.assertEqual(response.status_code, 201)
+        result = json.loads(response.data.decode('utf-8'))
+        self.assertEqual(result["message"], "Successfully updated")
+
+    def test_delete_a_product(self):
+        """ Test to delete a product """
+        access_token = self.get_token()
+        response = self.client.delete(
+            DELETE_URL, data=json.dumps(dict(product_id=2,
+                                             name='Shirt',
+                                             description='Cool Polo shirt',
+                                             price=500,
+                                             category='Polo',
+                                             quantity=5,
+                                             low_inventory=10)), content_type='application/json',
+            headers={'Authorization': 'Bearer '+access_token})
+        self.assertEqual(response.status_code, 400)
 
 
 if __name__ == '__main__':

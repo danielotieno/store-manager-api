@@ -1,9 +1,8 @@
+""" Validations with decorator file """
 from functools import wraps
-
-from flask_restful import reqparse
 from flask_jwt_extended import get_jwt_identity
 
-from app.v1.models.user import User
+from app.v2.models.user import User
 
 import re
 
@@ -12,9 +11,9 @@ def admin_required(f):
     ''' Restrict access if not admin '''
     @wraps(f)
     def wrapper_function(*args, **kwargs):
-        user = User.get_user_by_email(get_jwt_identity()['email'])
+        user = User.get_user_by_email(get_jwt_identity()[2])
 
-        if not user.role == 'Admin':
+        if not user[4] == 'Admin':
             return {'message': 'Anauthorized access, you must be an admin to access this level'}, 401
         return f(*args, **kwargs)
     return wrapper_function
@@ -24,9 +23,9 @@ def store_attendant_required(f):
     ''' A decorator for store attendant '''
     @wraps(f)
     def wrapper_function(*args, **kwargs):
-        user = User.get_user_by_email(get_jwt_identity()['email'])
+        user = User.get_user_by_email(get_jwt_identity()[2])
 
-        if not user.role == 'Store_Attendant':
+        if not user[4] == 'Store_Attendant':
             return {'message': 'Anauthorized access, you must be a Store Attendant to access this level'}, 401
         return f(*args, **kwargs)
     return wrapper_function
@@ -53,6 +52,21 @@ def validate_data(data):
         # Check if category contains aplhanumeric characters
         elif not re.match("^[a-zA-Z0-9_ ]+$", data['category'].strip()):
             return "category can only contain alphanumeric characters"
+        else:
+            return "valid"
+    except Exception as error:
+        return "please provide all the fields, missing " + str(error)
+
+
+def category_data(data):
+    """validate category details"""
+    try:
+        # check if there are specil characters in the name
+        if not re.match("^[a-zA-Z0-9_ ]+$", data['name'].strip()):
+            return "product name can only contain characters"
+
+        elif not re.match("^[a-zA-Z0-9_ ]+$", data['status'].strip()):
+            return "description can only contain characters"
         else:
             return "valid"
     except Exception as error:

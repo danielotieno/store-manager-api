@@ -1,11 +1,13 @@
 import unittest
 import json
 
-from app.v1 import create_app
-from app.v1.models.user import User, DB
+from app.v2 import create_app
+from app.v2.models.user import User
 
-SIGNUP_URL = '/api/v1/auth/signup'
-LOGIN_URL = '/api/v1/auth/login'
+from app.v2.database.conn import init_database, drop_all_tables
+
+SIGNUP_URL = '/api/v2/auth/signup'
+LOGIN_URL = '/api/v2/auth/login'
 
 
 class BaseClass(unittest.TestCase):
@@ -15,14 +17,16 @@ class BaseClass(unittest.TestCase):
         """Initialize app and define test variables"""
         self.app = create_app("testing")
         self.client = self.app.test_client()
-        self.app_context = self.app.app_context()
-        self.app_context.push()
+        with self.app.app_context():
+            init_database()
+
+        self.user_model = User
 
         self.admin_data = {
             "username": "admin",
             "email": "admin@email.com",
             "password": "admin12345",
-            "role": "Admin"
+            "user_role": "Admin"
 
         }
 
@@ -30,20 +34,20 @@ class BaseClass(unittest.TestCase):
             "username": "danny",
             "email": "danny@gmail.com",
             "password": "password1",
-            "role": "Store Attendant"
+            "user_role": "Store Attendant"
         }
 
         self.user1 = User(
             username="testuser",
             email="testuser@email.com",
             password="password",
-            role="Store Attendant")
+            user_role="Store Attendant")
 
         self.test_user = User(
             username='dannyke',
             email='danny@mail.com',
             password='password2',
-            role="Store Attendant")
+            user_role="Store Attendant")
 
     def logged_in_user(self):
         # first create user
@@ -80,5 +84,6 @@ class BaseClass(unittest.TestCase):
         return token
 
     def tearDown(self):
-        '''Clears the database'''
-        DB.drop()
+        """Teardown all the test data"""
+        with self.app.app_context():
+            drop_all_tables()

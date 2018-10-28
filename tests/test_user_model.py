@@ -1,46 +1,43 @@
-from app.v1.models.user import User, DB
+""" Tests for user model """
+from app.v2.models.user import User
 from .start import BaseClass
 
 
 class TestUserModel(BaseClass):
     """ Class to test user model """
 
-    def test_get_user(self):
-        """ Test can get user """
-        self.user1.save()
-        user = User.get_user_by_id(id=1)
-        self.assertIsInstance(user, User)
-        keys = sorted(list(user.view().keys()))
-        self.assertListEqual(keys, sorted(['username', 'email', 'id', 'role']))
-
-    def test_get_non_existent_user(self):
-        """ Test cannot get non existent user """
-        user = User.get_user_by_id(id=4)
-        self.assertEqual('User does not exist.', user['message'])
-
-    def test_can_save_user(self):
-        """Test successful save operation for user"""
-        user = self.user1.save()
-        self.assertEqual(2, len(DB.users))
-        self.assertTrue(isinstance(user, dict))
-
-    def test_can_update_user_details(self):
-        """Test successful update of user deatails"""
-        data = {
-            'username': 'newusername',
-            'email': 'newusername@email.com',
-            'role': 'Store Attendant'}
-        self.user1.save()
-        user = User.get_user_by_id(id=1)
-        user = user.update(data=data)
-        self.assertEqual(data['username'], user['username'])
-        self.assertEqual(data['email'], user['email'])
-        self.assertEqual(data['role'], user['role'])
+    def test_can_create_user(self):
+        '''Test successful account creation for user'''
+        self.user1.add_user()
+        u = self.user_model.get('users_table', username=self.user1.username)
+        self.assertEqual(u[1], self.user1.username)
 
     def test_can_delete_user(self):
-        """Test suucessful deletion of user"""
-        self.user1.save()
-        self.assertEqual(2, len(DB.users))
-        user = User.get_user_by_id(id=1)
-        user.delete_user()
-        self.assertEqual(1, len(DB.users))
+        '''Test successful deletion of user'''
+        self.user1.add_user()
+        user = self.user_model.get('users_table')
+        self.user_model.delete('users_table', 1)
+        user = self.user_model.get('users_table')
+        self.assertIsNone(user)
+
+    def test_get_non_existent_user(self):
+        '''Test model cannot get a non-existent user'''
+        user = self.user_model.get('users_table', userid=3)
+        self.assertIsNone(user)
+
+    def test_get_user(self):
+        '''Test can successfully get a user'''
+        self.user1.add_user()
+        user = self.user_model.get('users_table', username="testuser")
+        user = self.user_model.to_json(user)
+        self.assertEqual(user['username'], "testuser")
+
+    def test_can_update_user_details(self):
+        '''Test successful update of user'''
+        self.user1.add_user()
+        initial_user_details = self.user_model.get(
+            'users_table', username="testuser")
+        self.user_model.update('users_table', 2, {'username': 'NewTestUser'})
+        updated_user_details = self.user_model.get(
+            'users_table', username="NewTestUser")
+        self.assertNotEqual(initial_user_details, updated_user_details)

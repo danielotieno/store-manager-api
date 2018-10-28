@@ -6,6 +6,7 @@ class Config():
     """Parent configuration class"""
     DEBUG = False
     SECRET = os.getenv('SECRET_KEY')
+    DATABASE_URL = os.getenv('DATABASE_URL')
 
 
 class Development(Config):
@@ -18,6 +19,7 @@ class Testing(Config):
     TESTING = True
     DEBUG = True
     SECRET = os.getenv('SECRET_KEY')
+    DATABASE_URL = os.getenv('DATABASE_TEST_URL')
 
 
 class Production(Config):

@@ -4,7 +4,7 @@ from flask_restful import Resource
 
 from flask_jwt_extended import jwt_required
 
-from app.v1.models.sale_order import Sale
+from app.v2.models.sale_order import Sale
 from utlis.salereq import validate_data
 from utlis.required import admin_required, store_attendant_required
 
@@ -50,7 +50,8 @@ class SaleView(Resource):
     Resource for sales endpoints with ids
     """
 
-    def get(self, sale_id):
+    @classmethod
+    def get(cls, sale_id):
         """ Get a specific sale record method """
         get_sale = SALE_OBJECT.get_sale_record_by_id(sale_id)
         return get_sale
