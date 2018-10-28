@@ -3,10 +3,6 @@ This model defines a category class and it's methods
 It also create data structure to store category data
 
 """
-import uuid
-from datetime import datetime
-from flask import request
-
 from app.v2.database.conn import database_connection
 
 
@@ -29,13 +25,12 @@ class Category:
                          {'category_name': category_name})
         if self.cur.rowcount > 0:
             return {"message": "Category already exists."}, 400
-        else:
-            self.cur.execute(
-                "INSERT INTO categories_table(category_name, category_status)\
-            VALUES(%(category_name)s, %(category_status)s);", {
-                    'category_name': category_name, 'category_status': category_status})
-            self.conn.commit()
-            return {"message": "Category added successfully"}, 201
+
+        self.cur.execute(
+            "INSERT INTO categories_table(category_name, category_status)\
+        VALUES(%(category_name)s, %(category_status)s);", {'category_name': category_name, 'category_status': category_status})
+        self.conn.commit()
+        return {"message": "Category added successfully"}, 201
 
     def modify_category(self, category_id, category_name, category_status):
         """ A method to modify category """
