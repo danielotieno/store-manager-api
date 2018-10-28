@@ -13,6 +13,7 @@ def database_connection(config=None):
     else:
         database_url = os.getenv('DATABASE_URL')
 
+    # Connect to an existing database
     return psycopg2.connect(database_url)
 
 
@@ -26,7 +27,10 @@ def init_database():
         cursor = connection.cursor()
 
         for table in TABLE_LIST:
+            # Execute a command: this creates a new table
             cursor.execute(table)
+
+        # Make the changes to the database persistent
         connection.commit()
 
         create_admin()
@@ -39,6 +43,7 @@ def init_database():
 def create_admin():
     """create a default admin user"""
     conn = database_connection()
+    # Open a cursor to perform database operations
     cur = conn.cursor()
 
     # Add default user admin details

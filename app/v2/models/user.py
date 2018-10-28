@@ -22,7 +22,7 @@ class Start():
 
     @staticmethod
     def get(table_name, **kwargs):
-        '''pass condition as keyword argument, just one'''
+        '''Query the database and obtain data as Python objects'''
         for key, val in kwargs.items():
             sql = "SELECT * FROM {} WHERE {}='{}'".format(table_name, key, val)
             CUR.execute(sql)
