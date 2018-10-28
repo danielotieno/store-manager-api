@@ -41,16 +41,19 @@ def create_admin():
     conn = database_connection()
     cur = conn.cursor()
 
-    # check if user exists
-    email = "admin@email.com"
-    password = "Admin12345"
+    # Add default user admin details
+    username = os.getenv('ADMIN_USERNAME')
+    email = os.getenv('ADMIN_EMAIL')
+    password = os.getenv('ADMIN_PASS')
+    role = os.getenv('ROLE')
+
+    # Check if user exists
     cur.execute("SELECT * FROM users_table WHERE email=%(email)s",
                 {'email': email})
     if cur.rowcount > 0:
         return False
     cur.execute("INSERT INTO users_table(username, email, password, user_role)\
-    VALUES(%(username)s, %(email)s, %(password)s, %(user_role)s);",
-                {'username': 'admin', 'email': 'admin@email.com', 'password': password, 'user_role': 'Admin'})
+    VALUES(%(username)s, %(email)s, %(password)s, %(user_role)s);", {'username': username, 'email': email, 'password': password, 'user_role': role})
     conn.commit()
 
 
