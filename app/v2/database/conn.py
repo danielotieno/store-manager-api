@@ -2,12 +2,9 @@
 import os
 import psycopg2
 
-from werkzeug.security import check_password_hash, generate_password_hash
-
-
 # Local imports
 from flask import current_app
-from app.v2.database.tables import table_list, tables_to_drop
+from app.v2.database.tables import TABLE_LIST, TABLES_TO_DROP
 
 
 def database_connection(config=None):
@@ -29,7 +26,7 @@ def init_database():
         # activate cursor
         cursor = connection.cursor()
 
-        for table in table_list:
+        for table in TABLE_LIST:
             cursor.execute(table)
         connection.commit()
 
@@ -62,7 +59,7 @@ def drop_all_tables():
     """A method to drop tables """
     connection = database_connection()
     cursor = connection.cursor()
-    for drop in tables_to_drop:
+    for drop in TABLES_TO_DROP:
         cursor.execute(drop)
         connection.commit()
     connection.close()
