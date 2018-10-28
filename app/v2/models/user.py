@@ -26,7 +26,7 @@ class Start():
         for key, val in kwargs.items():
             sql = "SELECT * FROM {} WHERE {}='{}'".format(table_name, key, val)
             CUR.execute(sql)
-            item = CONN.fetchone()
+            item = CUR.fetchone()
             return item
 
     @staticmethod
