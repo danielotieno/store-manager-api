@@ -6,7 +6,7 @@ from flask_restful import Api
 from flask_jwt_extended import JWTManager
 
 from app.v2.views.users_view import BLACKLIST
-from app.v2.database.conn import init_database
+from app.v2.database.conn import init_database, create_admin
 
 import config
 
@@ -34,6 +34,7 @@ def create_app(config_name):
 
     with app.app_context():
         init_database()
+        create_admin()
 
     from app.v2.views.welcome import Welcome
     from app.v2.views.users_view import Signup, Login, Logout

@@ -35,8 +35,6 @@ def init_database():
         # Make the changes to the database persistent
         connection.commit()
 
-        create_admin()
-
     except (Exception, psycopg2.DatabaseError) as error:
         print("DB Error")
         print(error)
