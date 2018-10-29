@@ -1,6 +1,7 @@
 """ Database initialize file """
 import os
 import psycopg2
+import config
 
 # Local imports
 from app.v2.database.tables import TABLE_LIST, TABLES_TO_DROP
