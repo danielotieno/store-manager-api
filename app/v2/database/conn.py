@@ -9,9 +9,11 @@ from app.v2.database.tables import TABLE_LIST, TABLES_TO_DROP
 def database_connection(config=None):
     """ create a database connection """
     if config == 'testing':
-        database_url = os.getenv('DATABASE_TEST_URL')
+        database_url = os.getenv(
+            'DATABASE_TEST_URL', 'postgres://vgzssioscyqndx:656c03a65f21725b34cfa614b1cb2d8f4bed33deda3e938426ee47ced665f1ee@ec2-54-204-46-60.compute-1.amazonaws.com:5432/dckpotr4cr2na0')
     else:
-        database_url = os.getenv('DATABASE_URL')
+        database_url = os.getenv(
+            'DATABASE_URL', 'postgres://vgzssioscyqndx:656c03a65f21725b34cfa614b1cb2d8f4bed33deda3e938426ee47ced665f1ee@ec2-54-204-46-60.compute-1.amazonaws.com:5432/dckpotr4cr2na0')
 
     # Connect to an existing database
     return psycopg2.connect(database_url)
