@@ -17,6 +17,19 @@ class Product:
         self.product_list = []
         self.product_details = {}
 
+    def serialiser_product(self, product):
+        """ Serialize tuple into dictionary """
+        products = dict(
+            product_id=product[0],
+            product_name=product[1],
+            product_description=product[2],
+            price=product[3],
+            category=product[4],
+            quantity=product[5],
+            low_inventory=product[6]
+        )
+        return products
+
     def create_product(self, product_name, product_description, price, category, quantity, low_inventory):
         """Create product item"""
         # check if product is already created
@@ -30,11 +43,11 @@ class Product:
         VALUES(%(product_name)s, %(product_description)s, %(price)s, %(category)s, %(quantity)s, %(low_inventory)s);", {'product_name': product_name, 'product_description': product_description, 'price': price, 'category': category, 'quantity': quantity, 'low_inventory': low_inventory})
         self.conn.commit()
 
-        # self.cur.execute(
-        #     "SELECT * FROM products_table WHERE product_name=%(product_name)s", {'product_name': product_name})
+        self.cur.execute(
+            "SELECT * FROM products_table WHERE product_name=%(product_name)s", {'product_name': product_name})
 
-        # self.conn.commit()
-        # res = self.cur.fetchone()
+        self.conn.commit()
+        res = self.cur.fetchone()
         return {"message": "Product added successfully"}, 201
 
     def get_products(self):
