@@ -131,6 +131,11 @@ class TestProduct(unittest.TestCase):
             headers={'Authorization': 'Bearer '+access_token})
         self.assertEqual(response.status_code, 400)
 
+    def tearDown(self):
+        """Teardown all the test data"""
+        with self.app.app_context():
+            drop_all_tables()
+
 
 if __name__ == '__main__':
     unittest.main()

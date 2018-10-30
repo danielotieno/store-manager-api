@@ -10,12 +10,12 @@ def validate_data(data):
             return "product name can only contain characters"
 
         # check if the name contains only numbers or underscore
-        elif not re.match("^[a-zA-Z0-9_ ]+$", data['product'].strip()):
+        elif not re.match("^[a-zA-Z0-9_ ]+$", data['product_name'].strip()):
             return "description can only contain characters"
 
         # Check if category contains aplhanumeric characters
         elif not re.match("^[a-zA-Z0-9_ ]+$", data['created_by'].strip()):
-            return "category can only contain alphanumeric characters"
+            return "createdby can only contain alphanumeric characters"
         else:
             return "valid"
     except Exception as error:

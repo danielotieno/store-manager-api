@@ -1,8 +1,6 @@
 import unittest
 import json
 
-from .start import BaseClass
-
 from app.v2 import create_app
 
 from app.v2.database.conn import init_database, drop_all_tables
@@ -104,3 +102,8 @@ class TestCategory(unittest.TestCase):
                                              status='Active')), content_type='application/json',
             headers={'Authorization': 'Bearer '+access_token})
         self.assertEqual(response.status_code, 400)
+
+    def tearDown(self):
+        """Teardown all the test data"""
+        with self.app.app_context():
+            drop_all_tables()

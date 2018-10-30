@@ -26,13 +26,13 @@ class Sales(Resource):
 
         if res == "valid":
             customer = data['customer']
-            product = data['product']
+            product_name = data['product_name']
             quantity = int(data['quantity'])
             created_by = data['created_by']
             total_amount = int(data['total_amount'])
 
             res = SALE_OBJECT.create_sale(
-                customer, product, quantity, created_by, total_amount)
+                customer, product_name, quantity, created_by, total_amount)
 
             return res
         return {"message": res}, 400

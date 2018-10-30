@@ -125,6 +125,11 @@ class TestSale(unittest.TestCase):
         self.assertEqual(resource.status_code, 200)
         self.assertEqual(resource.content_type, 'application/json')
 
+    def tearDown(self):
+        """Teardown all the test data"""
+        with self.app.app_context():
+            drop_all_tables()
+
 
 if __name__ == '__main__':
     unittest.main()
