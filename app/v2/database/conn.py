@@ -1,15 +1,14 @@
 """ Database initialize file """
 import os
 import psycopg2
-import config
 
 # Local imports
 from app.v2.database.tables import TABLE_LIST, TABLES_TO_DROP
 
 
-def database_connection(config=None):
+def database_connection():
     """ create a database connection """
-    if config == 'testing':
+    if os.getenv("APP_SETTINGS") == 'testing':
         database_url = os.getenv('DATABASE_TEST_URL')
     else:
         database_url = os.getenv('DATABASE_URL')
@@ -21,7 +20,7 @@ def database_connection(config=None):
 def init_database():
     """Initialize a database"""
     try:
-        connection = database_connection(config=config)
+        connection = database_connection()
         connection.autocommit = True
 
         # activate cursor
