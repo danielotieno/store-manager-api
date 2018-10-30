@@ -48,7 +48,7 @@ class Product:
 
         self.conn.commit()
         res = self.cur.fetchone()
-        return {"message": "Product added successfully"}, 201
+        return {"message": "Product added successfully", "Products": self.serialiser_product(res)}, 201
 
     def get_products(self):
         """ A method to get all products """
