@@ -34,7 +34,7 @@ PRODUCTS = """ CREATE TABLE IF NOT EXISTS products_table(
 SALES = """ CREATE TABLE IF NOT EXISTS sales_table(
     sale_id serial PRIMARY KEY,
     customer VARCHAR(50) NOT NULL,
-    product VARCHAR(50) NOT NULL,
+    product_name VARCHAR(50) NOT NULL,
     quantity INTEGER NOT NULL,
     created_by VARCHAR(50) NOT NULL,
     total_amount INTEGER NOT NULL,
