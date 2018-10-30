@@ -24,8 +24,15 @@ class TestSale(unittest.TestCase):
         with self.app.app_context():
             init_database()
 
+        self.create_product = json.dumps(dict(
+            product_name='Shirt',
+            description='Cool Polo shirt',
+            price=500,
+            category='Polo',
+            quantity=5,
+            low_inventory=10))
+
         self.create_sale = json.dumps(dict(
-            sale_id=1,
             customer='Daniel Otieno',
             product_name='Polo Shirt',
             quantity=5,
@@ -89,41 +96,6 @@ class TestSale(unittest.TestCase):
         result = json.loads(res.data.decode('utf-8'))
 
         return result['token']
-
-    def test_add_sale(self):
-        """ Test for sale order creation """
-        access_token = self.login_user()
-
-        resource = self.client.post(
-            GET_ALL_URL,
-            data=self.create_sale,
-            content_type='application/json',
-            headers={'Authorization': 'Bearer '+access_token})
-
-        data = json.loads(resource.data.decode('utf-8'))
-        self.assertEqual(resource.status_code, 201)
-        self.assertEqual(resource.content_type, 'application/json')
-        self.assertEqual(data["message"], "Sale Order successfully created")
-
-    def test_get_all_sales(self):
-        """ Test for getting all sales record """
-        access_token = self.get_admin_token()
-        resource = self.client.get(
-            GET_ALL_URL,
-            data=json.dumps(dict()),
-            content_type='application/json',
-            headers={'Authorization': 'Bearer '+access_token})
-
-        data = json.loads(resource.data.decode())
-        self.assertEqual(resource.status_code, 200)
-        self.assertEqual(resource.content_type, 'application/json')
-        self.assertEqual(data["message"], "Successfully")
-
-    def test_get_specific_sale_by_id(self):
-        """ Test for getting specific sale record by id """
-        resource = self.client.get(GET_SINGLE_URL)
-        self.assertEqual(resource.status_code, 200)
-        self.assertEqual(resource.content_type, 'application/json')
 
     def tearDown(self):
         """Teardown all the test data"""
