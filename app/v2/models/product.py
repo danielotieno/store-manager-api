@@ -29,6 +29,12 @@ class Product:
             "INSERT INTO products_table(product_name,product_description,price,category,quantity,low_inventory)\
         VALUES(%(product_name)s, %(product_description)s, %(price)s, %(category)s, %(quantity)s, %(low_inventory)s);", {'product_name': product_name, 'product_description': product_description, 'price': price, 'category': category, 'quantity': quantity, 'low_inventory': low_inventory})
         self.conn.commit()
+
+        # self.cur.execute(
+        #     "SELECT * FROM products_table WHERE product_name=%(product_name)s", {'product_name': product_name})
+
+        # self.conn.commit()
+        # res = self.cur.fetchone()
         return {"message": "Product added successfully"}, 201
 
     def get_products(self):
@@ -49,7 +55,7 @@ class Product:
                 self.product_list.append(dict(self.product_details))
             return {
                 "message": "Successfully. Product Found",
-                "Products": self.product_details}, 200
+                "Products": self.product_list}, 200
         return {
             "message": "No Product.", "status": "Ok"}, 200
 

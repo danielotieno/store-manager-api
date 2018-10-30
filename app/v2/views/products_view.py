@@ -22,7 +22,7 @@ class Products(Resource):
         res = validate_data(data)
 
         if res == "valid":
-            product_name = data['name']
+            product_name = data['product_name']
             product_description = data['description']
             price = float(data['price'])
             category = data['category']
@@ -57,7 +57,7 @@ class ProductView(Resource):
         res = validate_data(data)
 
         if res == "valid":
-            product_name = data['name']
+            product_name = data['product_name']
             product_description = data['description']
             price = float(data['price'])
             category = data['category']

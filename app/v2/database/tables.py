@@ -5,16 +5,14 @@ USERS = """ CREATE TABLE IF NOT EXISTS users_table(
     username VARCHAR(250) NOT NULL,
     email VARCHAR(250) UNIQUE,
     password VARCHAR(250) NOT NULL,
-    user_role VARCHAR(250) NOT NULL DEFAULT 'Store_Attendant',
-    created_at timestamp with time zone DEFAULT now()
+    user_role VARCHAR(250) NOT NULL DEFAULT 'Store_Attendant'
     );
 """
 
 CATEGORIES = """ CREATE TABLE IF NOT EXISTS categories_table(
     category_id serial PRIMARY KEY,
     category_name VARCHAR(50) NOT NULL,
-    category_status VARCHAR(50) NOT NULL,
-    created_at timestamp with time zone DEFAULT now()
+    category_status VARCHAR(50) NOT NULL
     );
 """
 
@@ -26,8 +24,7 @@ PRODUCTS = """ CREATE TABLE IF NOT EXISTS products_table(
     price INTEGER NOT NUll,
     category VARCHAR(50) NOT NULL,
     quantity INTEGER NOT NULL,
-    low_inventory INTEGER NOT NULL,
-    created_at timestamp with time zone DEFAULT now()
+    low_inventory INTEGER NOT NULL
     );
 """
 
@@ -37,16 +34,14 @@ SALES = """ CREATE TABLE IF NOT EXISTS sales_table(
     product_name VARCHAR(50) NOT NULL,
     quantity INTEGER NOT NULL,
     created_by VARCHAR(50) NOT NULL,
-    total_amount INTEGER NOT NULL,
-    created_at timestamp with time zone DEFAULT now()
+    total_amount INTEGER NOT NULL
     );
 """
 
 
 BLACKLISTED_TOKENS = """ CREATE TABLE IF NOT EXISTS blacklisted_table(
     black_id serial PRIMARY KEY,
-    token VARCHAR(255) NOT NULL,
-    created_at timestamp with time zone DEFAULT now()
+    token VARCHAR(255) NOT NULL
     );
 """
 

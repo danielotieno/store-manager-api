@@ -24,8 +24,7 @@ class TestProduct(unittest.TestCase):
             init_database()
 
         self.create_product = json.dumps(dict(
-            product_id=1,
-            name='Shirt',
+            product_name='Shirt',
             description='Cool Polo shirt',
             price=500,
             category='Polo',
@@ -66,10 +65,18 @@ class TestProduct(unittest.TestCase):
 
         return token
 
+    def create_default_product(self):
+        """ Create default prdouct """
+        access_token = self.get_token()
+        self.client.post(
+            GET_ALL_URL,
+            data=self.create_product,
+            content_type='application/json',
+            headers={'Authorization': 'Bearer '+access_token})
+
     def test_add_product(self):
         """ Test for product creation """
         access_token = self.get_token()
-
         resource = self.client.post(
             GET_ALL_URL,
             data=self.create_product,
@@ -77,15 +84,15 @@ class TestProduct(unittest.TestCase):
             headers={'Authorization': 'Bearer '+access_token})
 
         data = json.loads(resource.data.decode())
+        self.assertEqual(data["message"], "Product added successfully")
         self.assertEqual(resource.status_code, 201)
         self.assertEqual(resource.content_type, 'application/json')
-        self.assertEqual(data["message"], "Product added successfully")
 
     def test_get_all_products(self):
         """ Test for getting all products """
+        self.create_default_product()
         resource = self.client.get(
             GET_ALL_URL,
-            data=json.dumps(dict()),
             content_type='application/json')
 
         data = json.loads(resource.data.decode())
@@ -95,6 +102,7 @@ class TestProduct(unittest.TestCase):
 
     def test_get_specific_product_by_id(self):
         """ Test for getting specific product by id """
+        self.create_default_product()
         resource = self.client.get(GET_SINGLE_URL)
         self.assertEqual(resource.status_code, 200)
         self.assertEqual(resource.content_type, 'application/json')
@@ -102,10 +110,11 @@ class TestProduct(unittest.TestCase):
     def test_update_a_product(self):
         """ Test to modify a product """
         access_token = self.get_token()
+        self.create_default_product()
         response = self.client.put(GET_SINGLE_URL,
                                    data=json.dumps(dict(
                                        product_id=1,
-                                       name='Suit',
+                                       product_name='Suit',
                                        description='Cool leather suit',
                                        price=1000,
                                        category='Polo',
@@ -113,16 +122,16 @@ class TestProduct(unittest.TestCase):
                                        low_inventory=10)),
                                    content_type='application/json',
                                    headers={'Authorization': 'Bearer '+access_token})
-        self.assertEqual(response.status_code, 201)
         result = json.loads(response.data.decode('utf-8'))
         self.assertEqual(result["message"], "Successfully updated")
+        self.assertEqual(response.status_code, 201)
 
     def test_delete_a_product(self):
         """ Test to delete a product """
         access_token = self.get_token()
         response = self.client.delete(
             DELETE_URL, data=json.dumps(dict(product_id=2,
-                                             name='Shirt',
+                                             product_name='Shirt',
                                              description='Cool Polo shirt',
                                              price=500,
                                              category='Polo',

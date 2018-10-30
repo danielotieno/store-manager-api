@@ -19,7 +19,6 @@ class Sale:
 
     def create_sale(self, customer, product_name, quantity, created_by, total_amount):
         """Create sale item in table and update product quantity"""
-
         # Get quantity from products table
         self.cur.execute("SELECT quantity FROM products_table WHERE product_name=%(product_name)s", {
             'product_name': product_name})
