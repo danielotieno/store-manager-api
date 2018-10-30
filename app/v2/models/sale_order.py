@@ -24,11 +24,16 @@ class Sale:
         self.cur.execute("SELECT quantity FROM products_table WHERE product_name=%(product_name)s", {
             'product_name': product_name})
 
-        self.cur.execute(
-            "INSERT INTO sales_table(customer, product_name, quantity, created_by, total_amount)\
-        VALUES(%(customer)s, %(product_name)s, %(quantity)s, %(created_by)s, %(total_amount)s);", {'customer': customer, 'product_name': product_name, 'quantity': quantity, 'created_by': created_by, 'total_amount': total_amount})
-        self.conn.commit()
-        return {"message": "Sale Order successfully created"}, 201
+        # Get the product if name exists
+        product_quantity = self.cur.fetchone()
+
+        if product_quantity:
+            self.cur.execute(
+                "INSERT INTO sales_table(customer, product_name, quantity, created_by, total_amount)\
+            VALUES(%(customer)s, %(product_name)s, %(quantity)s, %(created_by)s, %(total_amount)s);", {'customer': customer, 'product_name': product_name, 'quantity': quantity, 'created_by': created_by, 'total_amount': total_amount})
+            self.conn.commit()
+            quantity_balance = product_quantity[0] - quantity
+            return {"message": "Sale Order successfully created"}, 201
 
     def get_sales(self):
         """ A method to get all sales record """
