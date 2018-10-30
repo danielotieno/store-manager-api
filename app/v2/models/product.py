@@ -101,7 +101,13 @@ class Product:
                 "UPDATE products_table SET product_name=%s, product_description=%s, price=%s, category=%s, quantity=%s, low_inventory=%s\
             WHERE product_id=%s", (product_name, product_description, price, category, quantity, low_inventory, product_id))
             self.conn.commit()
-            return {"message": "Successfully updated"}, 201
+
+            self.cur.execute(
+                "SELECT * FROM products_table WHERE product_id=%(product_id)s", {'product_id': product_id})
+
+            self.conn.commit()
+            update_prod = self.cur.fetchone()
+            return {"message": "Successfully updated", "Product": self.serialiser_product(update_prod)}, 201
         return {"message": "Product Not Found."}, 400
 
     def delete_a_product(self, product_id):
