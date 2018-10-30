@@ -27,7 +27,7 @@ class TestSale(unittest.TestCase):
         self.create_sale = json.dumps(dict(
             sale_id=1,
             customer='Daniel Otieno',
-            product='Polo Shirt',
+            product_name='Polo Shirt',
             quantity=5,
             created_by='Store Attendant',
             total_amount=3000
