@@ -32,8 +32,16 @@ class Sale:
                 "INSERT INTO sales_table(customer, product_name, quantity, created_by, total_amount)\
             VALUES(%(customer)s, %(product_name)s, %(quantity)s, %(created_by)s, %(total_amount)s);", {'customer': customer, 'product_name': product_name, 'quantity': quantity, 'created_by': created_by, 'total_amount': total_amount})
             self.conn.commit()
+
+            # Calculate remaining quantity
             quantity_balance = product_quantity[0] - quantity
+
+            # Update quantity in products table with remaning quantity
+            self.cur.execute(
+                "UPDATE products_table SET quantity=%s WHERE product_name=%s", (quantity_balance, product_name))
+            self.conn.commit()
             return {"message": "Sale Order successfully created"}, 201
+        return {"message": "Product Not Found"}, 404
 
     def get_sales(self):
         """ A method to get all sales record """
