@@ -6,9 +6,9 @@ from flask_restful import Api
 from flask_jwt_extended import JWTManager
 
 from app.v2.views.users_view import BLACKLIST
-from app.v2.database.conn import init_database
+from app.v2.database.conn import init_database, create_admin
 
-from config import app_config
+import config
 
 JWT = JWTManager()
 
@@ -18,7 +18,7 @@ def create_app(config_name):
     app = Flask(__name__, instance_relative_config=True)
     api = Api(app)
 
-    app.config.from_object(app_config[config_name])
+    app.config.from_object('config')
     app.url_map.strict_slashes = False
     app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
     app.config['JWT_BLACKLIST_ENABLED'] = True
@@ -34,6 +34,7 @@ def create_app(config_name):
 
     with app.app_context():
         init_database()
+        create_admin()
 
     from app.v2.views.welcome import Welcome
     from app.v2.views.users_view import Signup, Login, Logout

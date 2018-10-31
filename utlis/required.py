@@ -42,7 +42,7 @@ def validate_data(data):
     """validate product details"""
     try:
         # check if there are specil characters in the username
-        if not re.match("^[a-zA-Z0-9_ ]+$", data['name'].strip()):
+        if not re.match("^[a-zA-Z0-9_ ]+$", data['product_name'].strip()):
             return "product name can only contain characters"
 
         # check if the name contains only numbers or underscore

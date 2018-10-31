@@ -1,8 +1,6 @@
 import unittest
 import json
 
-from .start import BaseClass
-
 from app.v2 import create_app
 
 from app.v2.database.conn import init_database, drop_all_tables
@@ -81,20 +79,6 @@ class TestCategory(unittest.TestCase):
         self.assertEqual(resource.content_type, 'application/json')
         self.assertEqual(data["message"], "Category added successfully")
 
-    def test_modify_category(self):
-        """ Test to modify category """
-        access_token = self.get_token()
-        response = self.client.put(MODIFY_URL,
-                                   data=json.dumps(dict(
-                                       category_id=1,
-                                       name='Shirt',
-                                       status='Inactive')),
-                                   content_type='application/json',
-                                   headers={'Authorization': 'Bearer '+access_token})
-        self.assertEqual(response.status_code, 201)
-        result = json.loads(response.data.decode('utf-8'))
-        self.assertEqual(result["message"], "Successfully updated")
-
     def test_delete_category(self):
         """ Test to delete a category """
         access_token = self.get_token()
@@ -104,3 +88,8 @@ class TestCategory(unittest.TestCase):
                                              status='Active')), content_type='application/json',
             headers={'Authorization': 'Bearer '+access_token})
         self.assertEqual(response.status_code, 400)
+
+    def tearDown(self):
+        """Teardown all the test data"""
+        with self.app.app_context():
+            drop_all_tables()

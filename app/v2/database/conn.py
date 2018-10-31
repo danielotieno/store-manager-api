@@ -2,22 +2,19 @@
 import os
 import psycopg2
 
-from werkzeug.security import check_password_hash, generate_password_hash
-
-
 # Local imports
-from flask import current_app
-from app.v2.database.tables import table_list, tables_to_drop
+from app.v2.database.tables import TABLE_LIST, TABLES_TO_DROP
 
 
-def database_connection(config=None):
+def database_connection():
     """ create a database connection """
-    if config == 'testing':
-        DATABASE_URL = os.getenv('DATABASE_TEST_URL')
+    if os.getenv("APP_SETTINGS") == 'testing':
+        database_url = os.getenv('DATABASE_TEST_URL')
     else:
-        DATABASE_URL = os.getenv('DATABASE_URL')
+        database_url = os.getenv('DATABASE_URL')
 
-    return psycopg2.connect(DATABASE_URL)
+    # Connect to an existing database
+    return psycopg2.connect(database_url)
 
 
 def init_database():
@@ -29,11 +26,12 @@ def init_database():
         # activate cursor
         cursor = connection.cursor()
 
-        for table in table_list:
+        for table in TABLE_LIST:
+            # Execute a command: this creates a new table
             cursor.execute(table)
-        connection.commit()
 
-        create_admin()
+        # Make the changes to the database persistent
+        connection.commit()
 
     except (Exception, psycopg2.DatabaseError) as error:
         print("DB Error")
@@ -43,18 +41,22 @@ def init_database():
 def create_admin():
     """create a default admin user"""
     conn = database_connection()
+    # Open a cursor to perform database operations
     cur = conn.cursor()
 
-    # check if user exists
-    email = "admin@email.com"
-    password = "Admin12345"
+    # Add default user admin details
+    username = os.getenv('ADMIN_USERNAME')
+    email = os.getenv('ADMIN_EMAIL')
+    password = os.getenv('ADMIN_PASS')
+    role = os.getenv('ROLE')
+
+    # Check if user exists
     cur.execute("SELECT * FROM users_table WHERE email=%(email)s",
                 {'email': email})
     if cur.rowcount > 0:
         return False
     cur.execute("INSERT INTO users_table(username, email, password, user_role)\
-    VALUES(%(username)s, %(email)s, %(password)s, %(user_role)s);",
-                {'username': 'admin', 'email': 'admin@email.com', 'password': password, 'user_role': 'Admin'})
+    VALUES(%(username)s, %(email)s, %(password)s, %(user_role)s);", {'username': username, 'email': email, 'password': password, 'user_role': role})
     conn.commit()
 
 
@@ -62,7 +64,7 @@ def drop_all_tables():
     """A method to drop tables """
     connection = database_connection()
     cursor = connection.cursor()
-    for drop in tables_to_drop:
+    for drop in TABLES_TO_DROP:
         cursor.execute(drop)
         connection.commit()
     connection.close()

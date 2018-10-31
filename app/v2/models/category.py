@@ -3,10 +3,6 @@ This model defines a category class and it's methods
 It also create data structure to store category data
 
 """
-import uuid
-from datetime import datetime
-from flask import request
-
 from app.v2.database.conn import database_connection
 
 
@@ -21,6 +17,14 @@ class Category:
         self.category_list = []
         self.category_details = {}
 
+    def serialiser_cetegory(self, category):
+        """ Serialize tuple into dictionary """
+        categories = dict(
+            category_name=category[0],
+            category_status=category[1]
+        )
+        return categories
+
     def create_cetegory(self, category_name, category_status):
         """ A method to create categories """
 
@@ -29,18 +33,23 @@ class Category:
                          {'category_name': category_name})
         if self.cur.rowcount > 0:
             return {"message": "Category already exists."}, 400
-        else:
-            self.cur.execute(
-                "INSERT INTO categories_table(category_name, category_status)\
-            VALUES(%(category_name)s, %(category_status)s);", {
-                    'category_name': category_name, 'category_status': category_status})
-            self.conn.commit()
-            return {"message": "Category added successfully"}, 201
+
+        self.cur.execute(
+            "INSERT INTO categories_table(category_name, category_status)\
+        VALUES(%(category_name)s, %(category_status)s);", {'category_name': category_name, 'category_status': category_status})
+        self.conn.commit()
+
+        self.cur.execute(
+            "SELECT * FROM categories_table WHERE category_name=%(category_name)s", {'category_name': category_name})
+
+        self.conn.commit()
+        res = self.cur.fetchone()
+        return {"message": "Category added successfully", "Categories": self.serialiser_cetegory(res)}, 201
 
     def modify_category(self, category_id, category_name, category_status):
         """ A method to modify category """
-        self.cur.execute("SELECT * FROM categories_table WHERE category_id=%(category_id)s",
-                         {'category_id': category_id})
+        self.cur.execute(
+            "SELECT * FROM categories_table WHERE category_id=%(category_id)s", {'category_id': category_id})
         if self.cur.rowcount > 0:
             # update product details
             self.cur.execute(

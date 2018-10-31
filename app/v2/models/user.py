@@ -4,15 +4,13 @@ It also create data structure to store user data
 
 """
 from datetime import datetime
-from werkzeug.security import check_password_hash, generate_password_hash
-
-from flask import current_app
+from werkzeug.security import generate_password_hash
 
 from app.v2.database.conn import database_connection
 
-conn = database_connection()
-conn.autocommit = True
-cur = conn.cursor()
+CONN = database_connection()
+CONN.autocommit = True
+CUR = CONN.cursor()
 
 
 class Start():
@@ -20,23 +18,23 @@ class Start():
 
     def save(self):
         """ Method for saving user registration details """
-        conn.commit()
+        CONN.commit()
 
     @staticmethod
     def get(table_name, **kwargs):
-        '''pass condition as keyword argument, just one'''
+        '''Query the database and obtain data as Python objects'''
         for key, val in kwargs.items():
             sql = "SELECT * FROM {} WHERE {}='{}'".format(table_name, key, val)
-            cur.execute(sql)
-            item = cur.fetchone()
+            CUR.execute(sql)
+            item = CUR.fetchone()
             return item
 
     @staticmethod
     def get_all(table_name):
         """ A method to get all tables """
         sql = 'SELECT * FROM {}'.format(table_name)
-        cur.execute(sql)
-        data = cur.fetchall()
+        CUR.execute(sql)
+        data = CUR.fetchall()
         return data
 
     @staticmethod
@@ -47,15 +45,15 @@ class Start():
         for key, val in data.items():
             string = "{}='{}'".format(key, val)
             sql = 'UPDATE {} SET {} WHERE userid={}'.format(table, string, id)
-            cur.execute(sql)
-            conn.commit()
+            CUR.execute(sql)
+            CONN.commit()
 
     @staticmethod
     def delete(table, userid):
         """ A method to delete a table """
         sql = 'DELETE FROM {} WHERE userid={}'.format(table, userid)
-        cur.execute(sql)
-        conn.commit()
+        CUR.execute(sql)
+        CONN.commit()
 
 
 class User(Start):
@@ -71,7 +69,7 @@ class User(Start):
 
     def add_user(self):
         '''Method for adding input into users table'''
-        cur.execute(
+        CUR.execute(
             """
             INSERT INTO users_table(username, email, password, user_role)
             VALUES(%s,%s,%s,%s)""",
@@ -99,9 +97,9 @@ class User(Start):
     @classmethod
     def get_user_by_username(cls, username):
         """ Method for getting user by username """
-        cur.execute(
+        CUR.execute(
             "SELECT * FROM users_table WHERE username=%s", (username,))
-        user = cur.fetchone()
+        user = CUR.fetchone()
 
         if user:
             return user
@@ -110,9 +108,9 @@ class User(Start):
     @classmethod
     def get_user_by_id(cls, userid):
         """ Get user given a user id"""
-        cur.execute(
+        CUR.execute(
             "SELECT * FROM users_table WHERE userid=%s", (userid,))
-        user = cur.fetchone()
+        user = CUR.fetchone()
 
         if user:
             return user
@@ -121,9 +119,9 @@ class User(Start):
     @classmethod
     def get_user_by_email(cls, email):
         """ Method for getting user by email"""
-        cur.execute(
+        CUR.execute(
             "SELECT * FROM users_table WHERE email=%s", (email,))
-        user = cur.fetchone()
+        user = CUR.fetchone()
 
         if user:
             return user
@@ -132,13 +130,13 @@ class User(Start):
     @classmethod
     def delete_user(cls, id):
         """ Method for deleting a user"""
-        cur.execute(
+        CUR.execute(
             "SELECT * FROM users_table WHERE userid=%(userid)s", {'userid': id})
-        if cur.rowcount > 0:
+        if CUR.rowcount > 0:
             # delete this user details
-            cur.execute(
+            CUR.execute(
                 "DELETE FROM users_table WHERE userid=%(userid)s", {
                     'userid': id})
-            conn.commit()
+            CONN.commit()
             return {"message": "Delete Successful."}, 201
         return {"message": "No user."}, 400
