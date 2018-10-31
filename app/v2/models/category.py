@@ -17,6 +17,15 @@ class Category:
         self.category_list = []
         self.category_details = {}
 
+    def serialiser_cetegory(self, category):
+        """ Serialize tuple into dictionary """
+        categories = dict(
+            category_id=category[0],
+            category_name=category[1],
+            category_status=product[2]
+        )
+        return categories
+
     def create_cetegory(self, category_name, category_status):
         """ A method to create categories """
 
