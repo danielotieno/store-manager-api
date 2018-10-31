@@ -20,13 +20,12 @@ class Category:
     def serialiser_cetegory(self, category):
         """ Serialize tuple into dictionary """
         categories = dict(
-            category_id=category[0],
-            category_name=category[1],
-            category_status=category[2]
+            category_name=category[0],
+            category_status=category[1]
         )
         return categories
 
-    def create_cetegory(self, category_id, category_name, category_status):
+    def create_cetegory(self, category_name, category_status):
         """ A method to create categories """
 
         # check if category is already created
@@ -41,7 +40,7 @@ class Category:
         self.conn.commit()
 
         self.cur.execute(
-            "SELECT * FROM categories_table WHERE category_id=%(category_id)s", {'category_id': category_id})
+            "SELECT * FROM categories_table WHERE category_name=%(category_name)s", {'category_name': category_name})
 
         self.conn.commit()
         res = self.cur.fetchone()
