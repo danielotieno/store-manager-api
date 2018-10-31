@@ -22,11 +22,11 @@ class Category:
         categories = dict(
             category_id=category[0],
             category_name=category[1],
-            category_status=product[2]
+            category_status=category[2]
         )
         return categories
 
-    def create_cetegory(self, category_name, category_status):
+    def create_cetegory(self, category_id, category_name, category_status):
         """ A method to create categories """
 
         # check if category is already created
@@ -39,7 +39,13 @@ class Category:
             "INSERT INTO categories_table(category_name, category_status)\
         VALUES(%(category_name)s, %(category_status)s);", {'category_name': category_name, 'category_status': category_status})
         self.conn.commit()
-        return {"message": "Category added successfully"}, 201
+
+        self.cur.execute(
+            "SELECT * FROM categories_table WHERE category_id=%(category_id)s", {'category_id': category_id})
+
+        self.conn.commit()
+        res = self.cur.fetchone()
+        return {"message": "Category added successfully", "Categories": self.serialiser_cetegory(res)}, 201
 
     def modify_category(self, category_id, category_name, category_status):
         """ A method to modify category """
