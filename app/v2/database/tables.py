@@ -45,6 +45,8 @@ BLACKLISTED_TOKENS = """ CREATE TABLE IF NOT EXISTS blacklisted_table(
     );
 """
 
+EXT = """ CREATE EXTENSION IF NOT EXISTS citext; """
+
 DROP_USERS = """ DROP TABLE IF EXISTS users_table CASCADE """
 DROP_CATEGORIES = """ DROP TABLE IF EXISTS categories_table CASCADE """
 DROP_PRODUCTS = """ DROP TABLE IF EXISTS products_table CASCADE """
