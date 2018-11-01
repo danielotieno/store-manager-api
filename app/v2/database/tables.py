@@ -33,6 +33,15 @@ SALES = """ CREATE TABLE IF NOT EXISTS sales_table(
     customer VARCHAR(50) NOT NULL,
     product_name VARCHAR(50) NOT NULL,
     quantity INTEGER NOT NULL,
+    created_by VARCHAR(50) NOT NULL
+    );
+"""
+
+CART = """ CREATE TABLE IF NOT EXISTS cart_table(
+    cart_id serial PRIMARY KEY,
+    sale_id VARCHAR(50) NOT NULL,
+    product_name VARCHAR(50) NOT NULL,
+    quantity INTEGER NOT NULL,
     created_by VARCHAR(50) NOT NULL,
     total_amount INTEGER NOT NULL
     );
