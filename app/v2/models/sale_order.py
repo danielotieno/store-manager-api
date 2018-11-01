@@ -17,30 +17,47 @@ class Sale:
         self.sales_list = []
         self.sales_details = {}
 
-    def create_sale(self, customer, product_name, quantity, created_by, total_amount):
-        """Create sale item in table and update product quantity"""
-        # Get quantity from products table
-        self.cur.execute("SELECT quantity FROM products_table WHERE product_name=%(product_name)s", {
-            'product_name': product_name})
+    def create_sale(self, customer, products, total_amount):
+        """Add sale item in table """
+        self.cur.execute(
+            """INSERT INTO sales_table(customer, total_amount)
+            VALUES(%s, %s, %s)""", (customer, total_amount)
+        )
 
-        # Get the product if name exists
-        product_quantity = self.cur.fetchone()
+        sale_id = self.cur.fetchone()[0]
+        self.conn.commit()
 
-        if product_quantity:
+        for item in products:
+            product_name = item["product_name"]
+            quantity = item["quantity"]
+            price = item["price"]
             self.cur.execute(
-                "INSERT INTO sales_table(customer, product_name, quantity, created_by, total_amount)\
-            VALUES(%(customer)s, %(product_name)s, %(quantity)s, %(created_by)s, %(total_amount)s);", {'customer': customer, 'product_name': product_name, 'quantity': quantity, 'created_by': created_by, 'total_amount': total_amount})
+                """INSERT INTO cart_table(sale_id, product_name, price, quantity)
+                VALUES(%s, %s, %s, %s)""", (sale_id, product_name, price, quantity)
+            )
             self.conn.commit()
+        # # Get quantity from products table
+        # self.cur.execute("SELECT quantity FROM products_table WHERE product_name=%(product_name)s", {
+        #     'product_name': product_name})
 
-            # Calculate remaining quantity
-            quantity_balance = product_quantity[0] - quantity
+        # # Get the product if name exists
+        # product_quantity = self.cur.fetchone()
 
-            # Update quantity in products table with remaning quantity
-            self.cur.execute(
-                "UPDATE products_table SET quantity=%s WHERE product_name=%s", (quantity_balance, product_name))
-            self.conn.commit()
-            return {"message": "Sale Order successfully created"}, 201
-        return {"message": "Product Not Found"}, 404
+        # if product_quantity:
+        #     self.cur.execute(
+        #         "INSERT INTO sales_table(customer, product_name, quantity, created_by, total_amount)\
+        #     VALUES(%(customer)s, %(product_name)s, %(quantity)s, %(created_by)s, %(total_amount)s);", {'customer': customer, 'product_name': product_name, 'quantity': quantity, 'created_by': created_by, 'total_amount': total_amount})
+        #     self.conn.commit()
+
+        #     # Calculate remaining quantity
+        #     quantity_balance = product_quantity[0] - quantity
+
+        #     # Update quantity in products table with remaning quantity
+        #     self.cur.execute(
+        #         "UPDATE products_table SET quantity=%s WHERE product_name=%s", (quantity_balance, product_name))
+        #     self.conn.commit()
+        #     return {"message": "Sale Order successfully created"}, 201
+        # return {"message": "Product Not Found"}, 404
 
     def get_sales(self):
         """ A method to get all sales record """

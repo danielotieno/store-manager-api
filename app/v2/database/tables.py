@@ -39,8 +39,8 @@ SALES = """ CREATE TABLE IF NOT EXISTS sales_table(
 CART = """ CREATE TABLE IF NOT EXISTS cart_table(
     sale_id INT REFERENCES sales_table(sale_id) ON UPDATE CASCADE ON DELETE CASCADE,
     product_name VARCHAR(50) REFERENCES products_table (product_name) ON UPDATE CASCADE,
-    quantity INTEGER NOT NULL,
-
+    price INTEGER NOT NUll,
+    quantity INTEGER NOT NULL
     );
 """
 
