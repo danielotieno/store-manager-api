@@ -44,49 +44,31 @@ class Sale:
                 quantity, product_name)
         )
         self.conn.commit()
-        # # Get quantity from products table
-        # self.cur.execute("SELECT quantity FROM products_table WHERE product_name=%(product_name)s", {
-        #     'product_name': product_name})
-
-        # # Get the product if name exists
-        # product_quantity = self.cur.fetchone()
-
-        # if product_quantity:
-        #     self.cur.execute(
-        #         "INSERT INTO sales_table(customer, product_name, quantity, created_by, total_amount)\
-        #     VALUES(%(customer)s, %(product_name)s, %(quantity)s, %(created_by)s, %(total_amount)s);", {'customer': customer, 'product_name': product_name, 'quantity': quantity, 'created_by': created_by, 'total_amount': total_amount})
-        #     self.conn.commit()
-
-        #     # Calculate remaining quantity
-        #     quantity_balance = product_quantity[0] - quantity
-
-        #     # Update quantity in products table with remaning quantity
-        #     self.cur.execute(
-        #         "UPDATE products_table SET quantity=%s WHERE product_name=%s", (quantity_balance, product_name))
-        #     self.conn.commit()
-        #     return {"message": "Sale Order successfully created"}, 201
-        # return {"message": "Product Not Found"}, 404
 
     def get_sales(self):
-        """ A method to get all sales record """
-        self.cur.execute("SELECT * FROM sales_table")
-        if self.cur.rowcount > 0:
-            rows = self.cur.fetchall()
-            self.sales_list = []
-            for sale in rows:
-                self.sales_details.update({
-                    'sale_id': sale[0],
-                    'customer': sale[1],
-                    'product_name': sale[2],
-                    'quantity': sale[3],
-                    'created_by': sale[4],
-                    'total_amount': sale[5]})
-                self.sales_list.append(dict(self.sales_details))
-            return {
-                "message": "Successfully",
-                "Products": self.sales_details}, 200
-        return {
-            "message": "Sales Record Not Found"}, 200
+        """A method to get all sales record"""
+        self.cur.execute("SELECT * from sales_table")
+        rows = self.cur.fetchall()
+        sales_list = []
+        for row in rows:
+            sale = {}
+            sale["sale_id"] = row[0]
+            sale["customer"] = row[1]
+            sale["created_by"] = row[2]
+            sale["total_amount"] = row[3]
+            sales_list.append(sale)
+        for sale in sales_list:
+            sale["products"] = []
+            self.cur.execute(
+                "SELECT * from cart_table where sale_id = %s" % sale["sale_id"])
+            items = self.cur.fetchall()
+            for item in items:
+                product = {}
+                product["product_name"] = item[1]
+                product["price"] = item[2]
+                product["quantity"] = item[3]
+                sale["products"].append(product)
+        return sales_list
 
     def get_sale_record_by_id(self, sale_id):
         """ A method to get a single sale record """
