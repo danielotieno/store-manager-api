@@ -36,6 +36,14 @@ class Sale:
                 VALUES(%s, %s, %s, %s)""", (sale_id, product_name, price, quantity)
             )
             self.conn.commit()
+
+    def update_quantity(self, product_name, quantity):
+        """Update product quantity"""
+        self.cur.execute(
+            """UPDATE products_table SET quantity = %s where product_name = %s""", (
+                quantity, product_name)
+        )
+        self.conn.commit()
         # # Get quantity from products table
         # self.cur.execute("SELECT quantity FROM products_table WHERE product_name=%(product_name)s", {
         #     'product_name': product_name})
