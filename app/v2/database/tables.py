@@ -19,10 +19,10 @@ CATEGORIES = """ CREATE TABLE IF NOT EXISTS categories_table(
 
 PRODUCTS = """ CREATE TABLE IF NOT EXISTS products_table(
     product_id serial PRIMARY KEY,
+    category_id serial REFERENCES categories_table (category_id),
     product_name VARCHAR(50) NOT NULL,
     product_description VARCHAR(50) NOT NULL,
     price INTEGER NOT NUll,
-    category VARCHAR(50) NOT NULL,
     quantity INTEGER NOT NULL,
     low_inventory INTEGER NOT NULL
     );
@@ -30,8 +30,7 @@ PRODUCTS = """ CREATE TABLE IF NOT EXISTS products_table(
 
 SALES = """ CREATE TABLE IF NOT EXISTS sales_table(
     sale_id serial PRIMARY KEY,
-    customer VARCHAR(50) NOT NULL,
-    created_by VARCHAR(50) NOT NULL
+    created_by VARCHAR(50) NOT NULL,
     total_amount INTEGER NOT NULL
     );
 """
