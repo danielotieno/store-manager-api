@@ -4,9 +4,11 @@ from flask_restful import Resource
 from flask_jwt_extended import jwt_required
 
 from app.v2.models.product import Product
+from app.v2.models.category import Category
 from utlis.required import validate_data, admin_required
 
 PRODUCT_OBJECT = Product()
+CATEGORY_OBJECT = Category()
 
 
 class Products(Resource):
@@ -29,10 +31,14 @@ class Products(Resource):
             quantity = int(data['quantity'])
             low_inventory = int(data['low_inventory'])
 
-            res = PRODUCT_OBJECT.create_product(
-                product_name, product_description, price, category, quantity, low_inventory)
+            check_category = CATEGORY_OBJECT.check_if_category_exists(category)
 
-            return res
+            if check_category == True:
+                res = PRODUCT_OBJECT.create_product(
+                    product_name, product_description, price, category, quantity, low_inventory)
+                return res
+            return check_category
+
         return {"message": res}, 400
 
     def get(self):

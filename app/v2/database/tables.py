@@ -11,7 +11,7 @@ USERS = """ CREATE TABLE IF NOT EXISTS users_table(
 
 CATEGORIES = """ CREATE TABLE IF NOT EXISTS categories_table(
     category_id serial PRIMARY KEY,
-    category_name VARCHAR(50) NOT NULL,
+    category_name VARCHAR(50) UNIQUE,
     category_status VARCHAR(50) NOT NULL
     );
 """
@@ -19,7 +19,6 @@ CATEGORIES = """ CREATE TABLE IF NOT EXISTS categories_table(
 
 PRODUCTS = """ CREATE TABLE IF NOT EXISTS products_table(
     product_id serial PRIMARY KEY,
-    category_id serial REFERENCES categories_table (category_id),
     product_name VARCHAR(50) NOT NULL,
     product_description VARCHAR(50) NOT NULL,
     price INTEGER NOT NUll,

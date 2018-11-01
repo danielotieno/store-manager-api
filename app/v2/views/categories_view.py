@@ -21,7 +21,7 @@ class Categories(Resource):
         res = category_data(data)
 
         if res == "valid":
-            name = data['name']
+            name = data['category_name']
             status = data['status']
 
             res = CATEGORY_OBJECT.create_cetegory(name, status)
