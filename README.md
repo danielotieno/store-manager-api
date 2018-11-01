@@ -1,9 +1,9 @@
 # store-manager-api
 
-[![Build Status](https://travis-ci.com/danielotieno/store-manager-api.svg?branch=ch-api-161336932)](https://travis-ci.com/danielotieno/store-manager-api)
+[![Build Status](https://travis-ci.com/danielotieno/store-manager-api.svg?branch=develop)](https://travis-ci.com/danielotieno/store-manager-api)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/a6389889a33c56eb0160/test_coverage)](https://codeclimate.com/github/danielotieno/store-manager-api/test_coverage)
-[![codecov](https://codecov.io/gh/danielotieno/store-manager-api/branch/ch-api-161336932/graph/badge.svg)](https://codecov.io/gh/danielotieno/store-manager-api)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/00b0e64ca606433e86c2a51ba46439c4)](https://www.codacy.com/app/danielotieno/store-manager-api?utm_source=github.com&utm_medium=referral&utm_content=danielotieno/store-manager-api&utm_campaign=Badge_Grade)
+[![codecov](https://codecov.io/gh/danielotieno/store-manager-api/branch/develop/graph/badge.svg)](https://codecov.io/gh/danielotieno/store-manager-api)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/00b0e64ca606433e86c2a51ba46439c4)](https://www.codacy.com/app/danielotieno/store-manager-api?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=danielotieno/store-manager-api&amp;utm_campaign=Badge_Grade)
 
 Store Manager is a web application that helps store owners manage sales and product inventory records.
 
@@ -66,7 +66,7 @@ Fork the repo here [Fork me](https://github.com/danielotieno/store-manager-api/t
 
 #### Change directory to develop branch
 
-`cd api`
+`cd develop`
 
 #### Then run the command below to start the application
 
