@@ -51,7 +51,9 @@ BLACKLISTED_TOKENS = """ CREATE TABLE IF NOT EXISTS blacklisted_table(
 """
 
 EXT = """ CREATE EXTENSION IF NOT EXISTS citext; """
-ALT = """ ALTER TABLE products_table ALTER COLUMN product_name TYPE citext; """
+ALT_PRODUCT = """ ALTER TABLE products_table ALTER COLUMN product_name TYPE citext; """
+ALT_CATEGORY = """ ALTER TABLE categories_table ALTER COLUMN category_name TYPE citext; """
+ALT_STATUS = """ ALTER TABLE categories_table ALTER COLUMN category_status TYPE citext; """
 
 DROP_USERS = """ DROP TABLE IF EXISTS users_table CASCADE """
 DROP_CATEGORIES = """ DROP TABLE IF EXISTS categories_table CASCADE """
@@ -64,4 +66,4 @@ TABLES_TO_DROP = [DROP_USERS, DROP_CATEGORIES, DROP_PRODUCTS,
                   DROP_SALES, DROP_BLACKLISTED_TOKENS]
 
 TABLE_LIST = [USERS, CATEGORIES, PRODUCTS,
-              SALES, CART, BLACKLISTED_TOKENS, EXT, ALT]
+              SALES, CART, BLACKLISTED_TOKENS, EXT, ALT_PRODUCT, ALT_CATEGORY, ALT_STATUS]
