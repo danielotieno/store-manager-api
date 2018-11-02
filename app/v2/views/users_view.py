@@ -90,8 +90,6 @@ class Login(Resource):
 class Logout(Resource):
     """ A class resource to logout user """
     @jwt_required
-    @admin_required
-    @store_attendant_required
     def delete(self):
         """ Endpoint for revoking the current users access token"""
         jti = get_raw_jwt()['jti']
