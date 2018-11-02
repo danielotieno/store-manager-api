@@ -9,7 +9,7 @@ Store Manager is a web application that helps store owners manage sales and prod
 
 ## Application Demo
 
-Deployed Link [store-manager-api](https://store-manager-app-v2.herokuapp.com)
+Deployed Link [https://store-manager-app-v2.herokuapp.com](https://store-manager-app-v2.herokuapp.com)
 
 ## API Endpoints
 
@@ -47,7 +47,7 @@ Deployed Link [store-manager-api](https://store-manager-app-v2.herokuapp.com)
 
 #### How should this be manually tested
 
-Fork the repo here [Fork me](https://github.com/danielotieno/store-manager-api/tree/api)
+Fork the repo here [Fork me](https://github.com/danielotieno/store-manager-api/tree/develop)
 
 `git clone the forked repo in your machine`
 
@@ -85,6 +85,8 @@ Fork the repo here [Fork me](https://github.com/danielotieno/store-manager-api/t
 
 #### User registration
 
+This Endpoint is accessible to only the store owner/admin
+
 Send a `POST` request to `/api/v2/auth/signup` endpoint with the payload in `JSON`
 
 #### User Login
@@ -105,9 +107,13 @@ Send a `GET` request to `/api/v2/products/<product_id>`
 
 #### Place/Create a product
 
-Send a `POST` request to `/api/v2/products` endpoint with the payload in `JSON`
+This endpoint should be accessible to only the store owner/admin.
+
+Send a POST request to /api/v2/products endpoint with the payload in JSON
 
 #### Get list of all sales record
+
+This endpoint should be accessible to only the store owner/admin.
 
 Send a `GET` request to `/api/v2/sales`
 
@@ -121,12 +127,18 @@ Send a `POST` request to `/api/v2/sales` endpoint with the payload in `JSON`
 
 #### Place/Create a category
 
+This endpoint is accessible to only the store owner/admin.
+
 Send a `POST` request to `/api/v2/categories` endpoint with the payload in `JSON`
 
 #### Modify a category
 
+This endpoint is accessible to only the store owner/admin.
+
 Send a `PUT` request to `/api/v2/categories/</category_id>` endpoint with the payload in `JSON`
 
 #### Delete a category
+
+This endpoint is accessible to only the store owner/admin.
 
 Send a `DEL` request to `/api/v2/categories/</category_id>` endpoint with the payload in `JSON`
