@@ -82,8 +82,8 @@ class Product:
                 'product_id': rows[0],
                 'product_name': rows[1],
                 'product_description': rows[2],
-                'price': rows[3],
-                'category': rows[4],
+                'price': rows[4],
+                'category': rows[3],
                 'quantity': rows[5],
                 'low_inventory': rows[6]})
             return {

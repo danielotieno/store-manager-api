@@ -5,7 +5,7 @@ from flask_restful import Resource
 from flask_jwt_extended import jwt_required
 
 from app.v2.models.sale_order import Sale
-from utlis.salereq import validate_data
+from utlis.salereq import validate_data, validate_cart
 from utlis.required import admin_required, store_attendant_required
 
 SALE_OBJECT = Sale()
@@ -23,19 +23,28 @@ class Sales(Resource):
 
         data = request.get_json()
         res = validate_data(data)
-
         if res == "valid":
-            customer = data['customer']
-            product_name = data['product_name']
-            quantity = int(data['quantity'])
-            created_by = data['created_by']
-            total_amount = int(data['total_amount'])
+            cart = data['cart']
+            for item in cart:
+                cart_res = validate_cart(item)
+                if cart_res != "valid":
+                    return cart_res
+            cart_res = SALE_OBJECT.create_sale(cart)
+            return cart_res
+        return res
 
-            res = SALE_OBJECT.create_sale(
-                customer, product_name, quantity, created_by, total_amount)
+        # if res == "valid":
+        #     customer = data['customer']
+        #     product_name = data['product_name']
+        #     quantity = int(data['quantity'])
+        #     created_by = data['created_by']
+        #     total_amount = int(data['total_amount'])
 
-            return res
-        return {"message": res}, 400
+        #     res = SALE_OBJECT.create_sale(
+        #         customer, product_name, quantity, created_by, total_amount)
+
+        #     return res
+        # return {"message": res}, 400
 
     @jwt_required
     @admin_required

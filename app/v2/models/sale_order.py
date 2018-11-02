@@ -4,6 +4,10 @@ It also create data structure to store sales order data
 
 """
 from app.v2.database.conn import database_connection
+from flask_jwt_extended import get_jwt_identity
+from .product import Product
+
+product_obj = Product()
 
 
 class Sale:
@@ -17,31 +21,50 @@ class Sale:
         self.sales_list = []
         self.sales_details = {}
 
-    def create_sale(self, products, total_amount):
+    def create_sale(self, cart):
         """Add sale item in table """
+        total = 0
+        for item in cart:
+            res = product_obj.get_product_by_id(item['product_id'])
+            if res[0]['message'] == "Product Not Found.":
+                msg = str(item['product_id'])
+                return {"message": "product with " + msg + " doesnt exist"}
+            else:
+                product_price = res[0]['Product']['price']
+                total = product_price + total
+
+        created_by = get_jwt_identity()
         self.cur.execute(
-            """INSERT INTO sales_table(total_amount)
-            VALUES(%s, %s, %s)""", (total_amount)
+            """INSERT INTO sales_table(created_by, total_amount)
+            VALUES(%s,%s)""", (created_by[2], total)
         )
-
-        sale_id = self.cur.fetchone()[0]
+        self.cur.execute("SELECT * from sales_table")
         self.conn.commit()
+        sales = self.cur.fetchall()
+        last_index = len(sales) - 1
+        sale_id = sales[last_index][0]
 
-        for item in products:
-            product_name = item["product_name"]
+        for item in cart:
+            product_id = item["product_id"]
             quantity = item["quantity"]
-            price = item["price"]
+            get_data = product_obj.get_product_by_id(product_id)
+            price = get_data[0]['Product']['price']
+            current_qty = get_data[0]['Product']['quantity']
+
             self.cur.execute(
-                """INSERT INTO cart_table(sale_id, product_name, price, quantity)
-                VALUES(%s, %s, %s, %s)""", (sale_id, product_name, price, quantity)
+                """INSERT INTO cart_table(sale_id, product_id, price, quantity)
+                VALUES(%s, %s, %s, %s)""", (sale_id, product_id, price, quantity)
             )
             self.conn.commit()
+            balance_qty = current_qty - quantity
+            self.update_quantity(product_id, balance_qty)
+        return self.get_sale_record_by_id(sale_id)
 
-    def update_quantity(self, product_name, quantity):
+    def update_quantity(self, product_id, quantity):
         """Update product quantity"""
         self.cur.execute(
-            """UPDATE products_table SET quantity = %s where product_name = %s""", (
-                quantity, product_name)
+            """UPDATE products_table SET quantity = %s where product_id = %s""", (
+                quantity, product_id)
         )
         self.conn.commit()
 
@@ -76,13 +99,15 @@ class Sale:
             "SELECT * FROM sales_table WHERE sale_id=%(sale_id)s", {'sale_id': sale_id})
         if self.cur.rowcount > 0:
             rows = self.cur.fetchall()
+            print("sales here")
+            print(rows)
             if not rows:
                 return rows
             sale = {}
             for row in rows:
                 sale["sale_id"] = row[0]
                 sale["created_by"] = row[1]
-                sale["total_amount"] = row[3]
+                sale["total_amount"] = row[2]
             sale["products"] = []
             self.cur.execute(
                 "SELECT * from cart_table where sale_id = %s" % sale["sale_id"])
