@@ -20,8 +20,9 @@ class Category:
     def serialiser_cetegory(self, category):
         """ Serialize tuple into dictionary """
         categories = dict(
-            category_name=category[0],
-            category_status=category[1]
+            category_id=category[0],
+            category_name=category[1],
+            category_status=category[2]
         )
         return categories
 
@@ -58,6 +59,14 @@ class Category:
             self.conn.commit()
             return {"message": "Successfully updated"}, 201
         return {"message": "Category Not Found."}, 400
+
+    def check_if_category_exists(self, category_name):
+        """ A method to verify category name """
+        self.cur.execute("SELECT * FROM categories_table WHERE category_name=%(category_name)s",
+                         {'category_name': category_name})
+        if self.cur.rowcount > 0:
+            return True
+        return {"message": "Category with that name does not exists"}, 400
 
     def delete_category(self, category_id):
         """ A method to delete category using category id """

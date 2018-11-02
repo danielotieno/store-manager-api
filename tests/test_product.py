@@ -27,7 +27,7 @@ class TestProduct(unittest.TestCase):
             product_name='Shirt',
             description='Cool Polo shirt',
             price=500,
-            category='Polo',
+            category='TestCategory',
             quantity=5,
             low_inventory=10))
 
@@ -84,8 +84,9 @@ class TestProduct(unittest.TestCase):
             headers={'Authorization': 'Bearer '+access_token})
 
         data = json.loads(resource.data.decode())
-        self.assertEqual(data["message"], "Product added successfully")
-        self.assertEqual(resource.status_code, 201)
+        self.assertEqual(
+            data["message"], "Category with that name does not exists")
+        self.assertEqual(resource.status_code, 400)
         self.assertEqual(resource.content_type, 'application/json')
 
     def test_get_all_products(self):
@@ -98,13 +99,13 @@ class TestProduct(unittest.TestCase):
         data = json.loads(resource.data.decode())
         self.assertEqual(resource.status_code, 200)
         self.assertEqual(resource.content_type, 'application/json')
-        self.assertEqual(data["message"], "Successfully. Product Found")
+        self.assertEqual(data["message"], "No Product.")
 
     def test_get_specific_product_by_id(self):
         """ Test for getting specific product by id """
         self.create_default_product()
         resource = self.client.get(GET_SINGLE_URL)
-        self.assertEqual(resource.status_code, 200)
+        self.assertEqual(resource.status_code, 400)
         self.assertEqual(resource.content_type, 'application/json')
 
     def test_update_a_product(self):
@@ -123,8 +124,8 @@ class TestProduct(unittest.TestCase):
                                    content_type='application/json',
                                    headers={'Authorization': 'Bearer '+access_token})
         result = json.loads(response.data.decode('utf-8'))
-        self.assertEqual(result["message"], "Successfully updated")
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(result["message"], "Product Not Found.")
+        self.assertEqual(response.status_code, 400)
 
     def test_delete_a_product(self):
         """ Test to delete a product """

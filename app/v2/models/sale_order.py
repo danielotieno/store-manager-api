@@ -4,6 +4,10 @@ It also create data structure to store sales order data
 
 """
 from app.v2.database.conn import database_connection
+from flask_jwt_extended import get_jwt_identity
+from .product import Product
+
+product_obj = Product()
 
 
 class Sale:
@@ -17,66 +21,102 @@ class Sale:
         self.sales_list = []
         self.sales_details = {}
 
-    def create_sale(self, customer, product_name, quantity, created_by, total_amount):
-        """Create sale item in table and update product quantity"""
-        # Get quantity from products table
-        self.cur.execute("SELECT quantity FROM products_table WHERE product_name=%(product_name)s", {
-            'product_name': product_name})
+    def create_sale(self, cart):
+        """Add sale item in table """
+        total = 0
+        for item in cart:
+            res = product_obj.get_product_by_id(item['product_id'])
+            if res[0]['message'] == "Product Not Found.":
+                msg = str(item['product_id'])
+                return {"message": "product with " + msg + " doesnt exist"}
+            else:
+                product_price = res[0]['Product']['price']
+                total = product_price + total
 
-        # Get the product if name exists
-        product_quantity = self.cur.fetchone()
+        created_by = get_jwt_identity()
+        self.cur.execute(
+            """INSERT INTO sales_table(created_by, total_amount)
+            VALUES(%s,%s)""", (created_by[2], total)
+        )
+        self.cur.execute("SELECT * from sales_table")
+        self.conn.commit()
+        sales = self.cur.fetchall()
+        last_index = len(sales) - 1
+        sale_id = sales[last_index][0]
 
-        if product_quantity:
+        for item in cart:
+            product_id = item["product_id"]
+            quantity = item["quantity"]
+            get_data = product_obj.get_product_by_id(product_id)
+            price = get_data[0]['Product']['price']
+            current_qty = get_data[0]['Product']['quantity']
+
             self.cur.execute(
-                "INSERT INTO sales_table(customer, product_name, quantity, created_by, total_amount)\
-            VALUES(%(customer)s, %(product_name)s, %(quantity)s, %(created_by)s, %(total_amount)s);", {'customer': customer, 'product_name': product_name, 'quantity': quantity, 'created_by': created_by, 'total_amount': total_amount})
+                """INSERT INTO cart_table(sale_id, product_id, price, quantity)
+                VALUES(%s, %s, %s, %s)""", (sale_id, product_id, price, quantity)
+            )
             self.conn.commit()
+            balance_qty = current_qty - quantity
+            self.update_quantity(product_id, balance_qty)
+        return self.get_sale_record_by_id(sale_id)
 
-            # Calculate remaining quantity
-            quantity_balance = product_quantity[0] - quantity
-
-            # Update quantity in products table with remaning quantity
-            self.cur.execute(
-                "UPDATE products_table SET quantity=%s WHERE product_name=%s", (quantity_balance, product_name))
-            self.conn.commit()
-            return {"message": "Sale Order successfully created"}, 201
-        return {"message": "Product Not Found"}, 404
+    def update_quantity(self, product_id, quantity):
+        """Update product quantity"""
+        self.cur.execute(
+            """UPDATE products_table SET quantity = %s where product_id = %s""", (
+                quantity, product_id)
+        )
+        self.conn.commit()
 
     def get_sales(self):
-        """ A method to get all sales record """
-        self.cur.execute("SELECT * FROM sales_table")
-        if self.cur.rowcount > 0:
-            rows = self.cur.fetchall()
-            self.sales_list = []
-            for sale in rows:
-                self.sales_details.update({
-                    'sale_id': sale[0],
-                    'customer': sale[1],
-                    'product_name': sale[2],
-                    'quantity': sale[3],
-                    'created_by': sale[4],
-                    'total_amount': sale[5]})
-                self.sales_list.append(dict(self.sales_details))
-            return {
-                "message": "Successfully",
-                "Products": self.sales_details}, 200
-        return {
-            "message": "Sales Record Not Found"}, 200
+        """A method to get all sales record"""
+        self.cur.execute("SELECT * from sales_table")
+        rows = self.cur.fetchall()
+        sale_list = []
+        for row in rows:
+            sale = {}
+            sale["sale_id"] = row[0]
+            sale["customer"] = row[1]
+            sale["created_by"] = row[2]
+            sale["total_amount"] = row[3]
+            sale_list.append(sale)
+        for sale in sale_list:
+            sale["products"] = []
+            self.cur.execute(
+                "SELECT * from cart_table where sale_id = %s" % sale["sale_id"])
+            items = self.cur.fetchall()
+            for item in items:
+                product = {}
+                product["product_name"] = item[1]
+                product["price"] = item[2]
+                product["quantity"] = item[3]
+                sale["products"].append(product)
+        return sale_list
 
     def get_sale_record_by_id(self, sale_id):
         """ A method to get a single sale record """
         self.cur.execute(
             "SELECT * FROM sales_table WHERE sale_id=%(sale_id)s", {'sale_id': sale_id})
         if self.cur.rowcount > 0:
-            rows = self.cur.fetchone()
-            self.sales_details.update({
-                'sale_id': rows[0],
-                'customer': rows[1],
-                'product_name': rows[2],
-                'quantity': rows[3],
-                'created_by': rows[4],
-                'total_amount': rows[5]})
-            return {
-                "message": "Successful",
-                "Product": self.sales_details}, 200
+            rows = self.cur.fetchall()
+            print("sales here")
+            print(rows)
+            if not rows:
+                return rows
+            sale = {}
+            for row in rows:
+                sale["sale_id"] = row[0]
+                sale["created_by"] = row[1]
+                sale["total_amount"] = row[2]
+            sale["products"] = []
+            self.cur.execute(
+                "SELECT * from cart_table where sale_id = %s" % sale["sale_id"])
+            items = self.cur.fetchall()
+            for item in items:
+                product = {}
+                product["product_name"] = item[1]
+                product["price"] = item[2]
+                product["quantity"] = item[3]
+                sale["products"].append(product)
+            return sale
         return {"message": "Sale Record Not Found."}, 400

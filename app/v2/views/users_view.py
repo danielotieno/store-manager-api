@@ -83,7 +83,7 @@ class Login(Resource):
         if User.validate_password(email=user[2], password=password):
             expires = datetime.timedelta(minutes=2880)
             token = create_access_token(user, expires_delta=expires)
-            return {'token': token, "message": "You are successfully logged in", 'user': User.to_json(user)}, 200
+            return {'token': token, "message": "You are successfully logged in"}, 200
         return {"message": "Email or password is wrong."}, 401
 
 
