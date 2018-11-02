@@ -25,7 +25,7 @@ class TestCategory(unittest.TestCase):
 
         self.create_category = json.dumps(dict(
             category_id=1,
-            name='TestCategory',
+            category_name='TestCategory',
             status='Active'))
 
         self.admin_data = {
